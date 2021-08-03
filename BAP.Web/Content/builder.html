@@ -1,0 +1,158 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Content Builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">  
+    <link rel="shortcut icon" href="#" /> 
+    <link href="assets/minimalist-blocks/content.css" rel="stylesheet" type="text/css" />
+    <link href="contentbuilder/contentbuilder.css" rel="stylesheet" type="text/css" />
+    <style>
+        .container {  margin: 150px auto; max-width: 800px; width:100%; padding:0 35px; box-sizing: border-box;}
+    </style>
+    <script src="/Content/themes/base/assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+    <div id="OutputContainer" style="display:none;">
+        <label for="OutPutText">Output HTML:</label><br/>
+        <textarea id="OutPutText" rows="10" width="100%"></textarea>
+    </div>
+<!-- This is just a sample content. Content can be loaded from a database. -->
+<div class="container" id="htmlContainer">    
+    <div class="row clearfix">
+    <div class="column full"><div class="spacer height-40">Place you content here...</div></div>
+    </div>
+</div>
+
+<div class="is-tool" style="position:fixed;width:450px;height:50px;border:none;top:auto;bottom:30px;left:30px;right:auto;display:flex">    
+    <button id="btnSaveHtml" class="classic" style="height:50px;">Save</button>
+    <button id="btnCancel" class="classic" style="height:50px;">Cancel</button>
+
+    <input id="nodeId" type="hidden" />
+    <input id="bearerToken" type="hidden" />
+    <input id="contentUrl" type="hidden" />
+    <input id="contentTab" type="hidden" />
+    <input id="contentViewId" type="hidden" />
+</div>
+
+<script src="contentbuilder/lang/en.js" type="text/javascript"></script>
+<script src="contentbuilder/contentbuilder.min.js" type="text/javascript"></script>
+<script src="assets/minimalist-blocks/content.js" type="text/javascript"></script> <!-- Snippets file -->
+
+<script>
+    var builder = null;
+    var xmlhttp = new XMLHttpRequest();
+    var nodeId = getParameterByName("nodeId");
+    var token = getParameterByName("token");
+    var callUrl = '/api/v1/NodeContent?sourceApp=2&nodeId=' + nodeId;
+
+    $("#nodeId").val(nodeId);
+    $("#bearerToken").val(token);
+    $("#contentUrl").val(getParameterByName("url"));
+    $("#contentTab").val(getParameterByName("tab"));
+    $("#contentViewId").val(getParameterByName("viewId"));
+
+    // Read Content Data
+    if (nodeId && token) {
+        xmlhttp.open("GET", callUrl, true);
+        xmlhttp.setRequestHeader('Authorization', 'Bearer ' + token);
+        xmlhttp.send();
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var obj = JSON.parse(this.responseText);
+            readContentFromAjax(obj);
+        }
+    };
+
+    function readContentFromAjax(obj) {
+        console.log(obj);
+        if (obj && obj.HtmlContent)
+        {            
+            $("#htmlContainer").html(obj.HtmlContent);
+        }    
+
+        builder = new ContentBuilder({
+            container: '.container',
+            builderMode: '',
+            toolbar: 'top',
+            columnTool: true,
+            rowTool: 'right',
+            elementTool: true,
+            snippetAddTool: true,
+            outlineMode: '',
+            rowcolOutline: true,
+            outlineStyle: '',
+            elementHighlight: true,
+            snippetOpen: false,
+            toolStyle: '',
+            snippetsSidebarDisplay: 'auto',
+            clearPreferences: true, //reset settings on load
+            //See readme.txt for more
+        });
+    }
+        
+    function UpdateContentHtml(html) {
+        var nodeId = parseInt($("#nodeId").val());
+        var bearerToken = $("#bearerToken").val();
+        var callUrl = '/api/v1/NodeContent?nodeId=' + nodeId;
+        var updateParams = {
+            "nodeId": nodeId,
+            "contentHtml": html,
+            "sourceApp": 2
+        };
+        $.ajax({
+            type: "PUT",
+            url: callUrl,
+            contentType: "application/json",
+            data: JSON.stringify(updateParams),
+            beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + bearerToken); },
+            success: function (result) {
+                console.log(result);
+                if (!result.Success) {
+                    console.log('NodeContent Failed.');
+                }
+                else {
+                    console.log("Updated content HTML in DB.");
+                }
+            },
+            error: function (xhr) {
+                console.log('Exception: ' + xhr.responseText);
+            }
+        });
+    }
+
+    // Initialize Content Builder -------------------------------------------------------------------------    
+    
+    var btnSaveHtml = document.querySelector('#btnSaveHtml');
+    btnSaveHtml.addEventListener('click', function(){
+        if(!builder.builderStuff) {
+            alert('Builder is destroyed. Please click the Init button');
+            return;
+        }
+
+        var html = builder.html(); // get HTML
+        UpdateContentHtml(html);
+        document.location = "/Administration/ContentManagement?currentUrl=" + $("#contentUrl").val() + "&currentTab=preview&currentViewId=" + $("#contentViewId").val();
+    });
+
+    var btnCancel = document.querySelector('#btnCancel');
+    btnCancel.addEventListener('click', function () {
+        window.history.back();
+    });    
+
+    function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    
+</script>
+
+</body>
+</html>

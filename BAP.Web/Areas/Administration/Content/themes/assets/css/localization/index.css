@@ -1,0 +1,28 @@
+.hidden-value {
+    display: none;
+}
+
+.edit-value-div {
+    display: flex;
+}
+
+.edit-value-div > * {
+    margin-right: 8px;
+}
+
+.edit-value-div.hidden-value {
+    display: none;
+}
+
+.localization-search-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.localization-search-form >  div {
+    width: 40%;
+}
+.localization-search-form > .localization-culture-dropdown-holder {
+    width: 10%;
+}

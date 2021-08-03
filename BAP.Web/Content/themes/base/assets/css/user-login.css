@@ -1,0 +1,21 @@
+.modal {background: rgba(0, 0, 0, 0.4);}
+.modal-dialog.form-login {width: 90%; max-width: 480px; margin-right: auto; margin-left: auto;}
+.modal-dialog.form-login .form-group-wrapper {display: flex; justify-content: space-between; flex-wrap: wrap;}
+.modal-dialog.form-login .modal-title a {cursor: text;}
+.modal-dialog.form-login .modal-title a:hover {text-decoration: none;}
+.modal-dialog.form-login .modal-footer.wrapper {display: flex; justify-content: space-between; padding: 15px; border-top: 1px solid #e2e7eb; align-items: center; flex-wrap: wrap; }
+.modal-dialog.form-login .modal-footer.wrapper::before,
+.modal-dialog.form-login .modal-footer.wrapper::after {display:none;}
+.modal-dialog.form-login .button-wrapper {display: flex; justify-content: space-between;}
+.modal-dialog.form-login .button-wrapper .btn {min-width: 100px;}
+ .modal-dialog.form-login .btn.btn-default {background: #929ba1; border-color: #929ba1; }
+ .modal-dialog.form-login .btn.btn-default:hover {background: #2d353c;  border-color: #2d353c;}
+.modal-dialog.form-login .modal-footer.wrapper .form-group {margin-bottom: 0; padding: .5em 0;}
+.modal-dialog.form-login .modal-footer.wrapper label {margin-bottom:0; font-weight: 400;}
+ .modal-dialog.form-login .modal-footer.wrapper input {margin-top:0;}
+
+
+ @media(max-width:400px) {
+    .modal-dialog.form-login .form-group-wrapper .form-group {width: 100%;}
+ }
+

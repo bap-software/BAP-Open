@@ -1,0 +1,38 @@
+﻿@using BAP.Resources
+@{
+    var facebookUrl = ViewBag.BlogFacebookUrl;
+    var twitterUrl = ViewBag.BlogTwitterUrl;
+    var linkedinUrl = ViewBag.BlogLinkedinUrl;
+    var googleplusUrl = ViewBag.BlogGoogleplusUrl;
+    var instagramUrl = ViewBag.BlogInstagramUrl;
+    bool hasLinks = !string.IsNullOrEmpty(facebookUrl) || !string.IsNullOrEmpty(twitterUrl) || !string.IsNullOrEmpty(linkedinUrl) || !string.IsNullOrEmpty(googleplusUrl) || !string.IsNullOrEmpty(instagramUrl);
+}
+
+@if (hasLinks)
+{
+    <div class="section-container">
+        <h4 class="section-title"><span>@Resources.FieldLabel_Blog_FollowUs</span></h4>
+        <ul class="sidebar-social-list">
+            @if (!string.IsNullOrWhiteSpace(facebookUrl))
+            {
+                <li><a href="@facebookUrl"><i class="fa fa-facebook fa-fw"></i></a></li>
+            }
+            @if (!string.IsNullOrWhiteSpace(twitterUrl))
+            {
+                <li><a href="@twitterUrl"><i class="fa fa-twitter fa-fw"></i></a></li>
+            }
+            @if (!string.IsNullOrWhiteSpace(googleplusUrl))
+            {
+                <li><a href="@googleplusUrl"><i class="fa fa-google-plus fa-fw"></i></a></li>
+            }
+            @if (!string.IsNullOrWhiteSpace(linkedinUrl))
+            {
+                <li><a href="@linkedinUrl"><i class="fa fa-linkedin fa-fw"></i></a></li>
+            }
+            @if (!string.IsNullOrWhiteSpace(instagramUrl))
+            {
+                <li><a href="@instagramUrl"><i class="fa fa-instagram fa-fw"></i></a></li>
+            }
+        </ul>
+    </div>
+}

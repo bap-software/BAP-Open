@@ -1,0 +1,20 @@
+﻿@model BAP.Web.Models.RegisterViewModel
+@{
+    this.Layout = null;
+}
+
+
+<!-- SIGN UP MODAL -->
+<div class="modal fade" id="signup" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">Create an account</h3>
+            </div>
+            <div class="modal-body">                
+                @Html.Partial("_RegisterForm")
+            </div>
+        </div>
+    </div>
+</div>

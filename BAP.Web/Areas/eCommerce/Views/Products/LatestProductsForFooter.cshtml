@@ -1,0 +1,27 @@
+﻿@using System.Configuration
+@model IList<BAP.Web.Areas.eCommerce.Models.LatestProductModel>
+@{    
+    Layout = null;
+    bool quickAddToCart = (bool)ViewBag.QuickAddToCart;            
+    var currencySymbol = (string)ViewBag.CurrencySymbol;    
+}
+<h4 class="footer-header">Latest Products</h4>
+@if (Model.Count > 0)
+{
+    <ul class="list-unstyled list-product">
+        @foreach (var item in Model)
+        {
+            <li>
+                <a href="@Url.Action("Details", "Products", new { pid = item.PublicId })" class="d-inline-block">
+                    <div class="image clearfix">
+                        <img src="@item.ImagePath" alt="Latest Product image" class="img-responsive" style="max-height:50px;"/>
+                    </div>
+                    <div class="info">
+                        <h4 class="info-title">@item.Name</h4>
+                        <p class="price text-white">$@item.Price</p>
+                    </div>
+                </a>
+            </li>
+        }
+    </ul>
+}

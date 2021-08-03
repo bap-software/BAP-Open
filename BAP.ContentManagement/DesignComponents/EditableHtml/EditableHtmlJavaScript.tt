@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<script>
+$(document).ready(function () {
+	var contentTemplate = "@using(Html.BeginControl(\"EditableHtml\", \"EditableHtml<%1%>\", \"EditableHtml<%1%>\", \"textarea\", \"<#= CssClass #>\", new {rows=\"<%0%>\"}))\r\n{\r\n<text>Some text will be here</text>\r\n  }\r\n";
+	$("#hdnEditableHtmlContent").val(contentTemplate.replace(/<%0%>/g, '5').replace(/<%1%>/g, '1'));
+
+    $("#TextAreaRowsCount").change(function () {           
+        var text = contentTemplate.replace(/<%0%>/g, $(this).val()).replace(/<%1%>/g, $("#TextAreaIdSuffix").val());		
+        $("#hdnEditableHtmlContent").val(text);
+    });
+
+	$("#TextAreaIdSuffix").change(function () {           
+        var text = contentTemplate.replace(/<%1%>/g, $(this).val()).replace(/<%0%>/g, $("#TextAreaRowsCount").val());		
+        $("#hdnEditableHtmlContent").val(text);
+    });
+});
+</script>
+
+<#+
+public string CssClass { get; set; }
+#>

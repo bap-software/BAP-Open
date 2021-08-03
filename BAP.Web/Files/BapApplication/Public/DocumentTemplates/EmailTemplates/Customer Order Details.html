@@ -1,0 +1,80 @@
+<p>Dear {Customer.FirstName} {Customer.LastName},</p>
+<p>Your order details are as following:</p>
+<div class="container">
+<table class="table">
+<tbody>
+<tr>
+<td colspan="2">
+<div class="center">Order #{Id} from {CreateDate}</div>
+</td>
+</tr>
+<tr>
+<td>
+<table cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<th>Bill To:</th>
+</tr>
+<tr>
+<td>{BillingAddress.CompanyName}</td>
+</tr>
+<tr>
+<td>{BillingAddress.FirstName} {BillingAddress.LastName}</td>
+</tr>
+<tr>
+<td>{BillingAddress.AddressLine1} {BillingAddress.AddressLine2} {BillingAddress.Country} {BillingAddress.City} {BillingAddress.State} {BillingAddress.County} {BillingAddress.Zip}</td>
+</tr>
+<tr>
+<td>{BillingAddress.Email}</td>
+</tr>
+<tr>
+<td>{BillingAddress.PhoneExtension} {BillingAddress.PhoneNumber}</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<th>Ship To:</th>
+</tr>
+<tr>
+<td>{ShippingAddress.CompanyName}</td>
+</tr>
+<tr>
+<td>{ShippingAddress.FirstName} {ShippingAddress.LastName}</td>
+</tr>
+<tr>
+<td>{ShippingAddress.AddressLine1} {ShippingAddress.AddressLine2} {ShippingAddress.Country} {ShippingAddress.City} {ShippingAddress.State} {ShippingAddress.County} {ShippingAddress.Zip}</td>
+</tr>
+<tr>
+<td>{ShippingAddress.Email}</td>
+</tr>
+<tr>
+<td>{ShippingAddress.PhoneExtension} {ShippingAddress.PhoneNumber}</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2"><br />{ROWS}
+<table class="table" border="1">
+<tbody>
+<tr>
+<th>Product</th>
+<th>Price</th>
+<th>Count</th>
+<th>Total</th>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td class="right" colspan="2">Total: {Total}</td>
+</tr>
+</tbody>
+</table>
+</div>

@@ -1,0 +1,38 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@model BAP.Web.Models.VerifyCodeViewModel
+@{
+    ViewBag.Title = "Verify code";
+}
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>@ViewBag.Title</h3></div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("provider", @Model.Provider)
+                            @Html.Hidden("rememberMe", @Model.RememberMe)
+                            <h4>Enter verification code</h4>
+                            <hr />
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Code, new { @class = "" })
+                                @Html.BapTextBoxFor(m => m.Code, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.CheckBoxFor(m => m.RememberBrowser)
+                                @Html.LabelFor(m => m.RememberBrowser)
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">@Resources.UIText_Submit</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

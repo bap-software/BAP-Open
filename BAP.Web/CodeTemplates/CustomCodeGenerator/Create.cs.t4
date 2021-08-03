@@ -1,0 +1,72 @@
+﻿<#@ template hostspecific="false" language="C#" #>
+<#@ output extension=".cshtml" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data.Linq" #>
+<#@ assembly name="EnvDTE" #>
+<#@ ScaffoldingAssembly Processor="ScaffoldingAssemblyLoader" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="Microsoft.AspNet.Scaffolding.Core.Metadata" #>
+<#@ parameter type="EnvDTE.CodeType" name="ModelType" #>
+<#@ parameter type="Microsoft.AspNet.Scaffolding.Core.Metadata.ModelMetadata" name="ModelMetadata" #>
+<#@ parameter type="System.String" name="ModelVariable" #>
+<#@ parameter type="System.String" name="ModelTypeName" #>
+<#@ parameter type="System.String" name="ModelTypeFullName" #>
+<#@ parameter type="System.String" name="AreaName" #>
+<#@ parameter type="System.String" name="ControllerName" #>
+<#@ parameter type="System.String" name="ControllerRootName" #>
+<#@ parameter type="System.String" name="BindAttributeIncludeText" #>
+<#@ parameter type="System.String" name="PrimaryKeyName" #>
+<#@ parameter type="System.String" name="PrimaryKeyShortTypeName" #>
+<#@ parameter type="System.String" name="PrimaryKeyType" #>
+<#@ parameter type="System.String" name="NameSpace" #>
+<#@ parameter type="System.String" name="LayoutPath" #>
+@using BAP.Resources
+@using BAP.eCommerce.Resources
+@model <#=ModelTypeFullName #>
+@{
+    Layout = "<#=LayoutPath #>";
+	ViewBag.Title = Resources.UIText_Create + " " + ResObject.EntityLabel_<#=ModelTypeName #>;
+}
+
+@using (Html.BeginForm()) 
+{
+@Html.AntiForgeryToken()
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("AdminIndex", "<#=ControllerName #>")" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>
+    <button type="submit" class="btn btn-default btn-default btn-success" title="@Resources.UIText_Save"><i class="fa fa-floppy-o"></i></button>    
+     @ViewBag.Title<small></small>
+</h1>
+<!-- end page-header -->
+
+<!-- begin row -->
+<div class="row">
+<!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>                    
+                </div>
+                <h4 class="panel-title">@ResObject.EntityLabel_<#=ModelTypeName #> @Resources.UIText_Details</h4>
+            </div>
+            <div class="panel-body panel-form">                
+                <div class="form-horizontal form-bordered" data-parsley-validate="true" name="demo-form" novalidate>        
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })                   
+                    @Html.Partial("_EditFields")    					
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="@Resources.UIText_Create" class="btn btn-default btn-success" />
+                        </div>
+                    </div>
+                </div>	            				
+            </div>
+        </div>
+    </div>
+</div>
+}

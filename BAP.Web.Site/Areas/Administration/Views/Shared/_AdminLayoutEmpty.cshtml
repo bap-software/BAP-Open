@@ -1,0 +1,144 @@
+﻿@using BAP.DAL;
+@{ 
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();    
+}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <!-- SITE TITTLE -->
+    <meta charset="utf-8">
+    <title>@ViewBag.Title | @BAP.Resources.Resources.UIText_ApplicationTitle</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <meta content="@ViewBag.Description" name="description" />
+    <meta content="BAP Software, Victor Mamray" name="author" />
+    
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />    
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/css/animate.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/css/style.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/css/theme/default.css" rel="stylesheet" id="theme" />
+
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/jquery-jvectormap/jquery-jvectormap.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet">
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/dropzone/min/dropzone.min.css" rel="stylesheet">
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-eonasdan-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jquery/jquery-1.9.1.min.js"></script>    
+    
+    <!-- ================== END BASE JS ================== -->
+    <link href="~/Areas/Administration/Content/Themes/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />   
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }    
+</head>
+<body>
+        
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade">
+
+        <!-- begin #content -->
+        <div id="content" class="content" style="margin: 0px">
+            @RenderBody()
+        </div>
+        <!-- end #content -->
+
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>    
+    <!-- end page container -->
+
+    <!-- ================== BEGIN BASE JS ================== -->   
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/respond.min.js"></script>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <!-- ================== END BASE JS ================== -->
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/flot/jquery.flot.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/flot/jquery.flot.time.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/flot/jquery.flot.resize.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/flot/jquery.flot.pie.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/sparkline/jquery.sparkline.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jquery-jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jquery-jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    
+
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/masked-input/masked-input.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/password-indicator/js/password-indicator.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-combobox/js/bootstrap-combobox.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-daterangepicker/moment.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/Content/themes/base/assets/plugins/select2/dist/js/select2.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-eonasdan-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-show-password/bootstrap-show-password.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/bootstrap-colorpalette/js/bootstrap-colorpalette.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
+
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/ckeditor/ckeditor.js"></script>
+
+    <script src="~/Areas/Administration/Content/Themes/assets/js/dashboard.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/jstree/dist/jstree.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/js/ui-tree.demo.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/dropzone/min/dropzone.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/js/copy-to-clipboard.js"></script>
+    <script src="~/Areas/Administration/Content/themes/assets/plugins/ace-builds/src-noconflict/ace.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/js/form-plugins.demo.min.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/plugins/parsley/dist/parsley.js"></script>
+    <script src="~/Areas/Administration/Content/Themes/assets/js/apps.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <script>
+		$(document).ready(function() {
+			App.init();
+			Dashboard.init();
+			TreeView.init();
+			FormPlugins.init();
+		});
+    </script>      
+
+    @Html.Partial("_AlertModal")    
+    @Html.Partial("_NotificationPartial")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

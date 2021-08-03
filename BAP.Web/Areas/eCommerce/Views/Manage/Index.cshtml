@@ -1,0 +1,80 @@
+@using BAP.eCommerce.Resources
+@model BAP.Web.Areas.eCommerce.Models.ManageIndexModel
+@{ 
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+}
+
+<section class="mainContent clearfix" style="padding-top:20px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <!-- BEGIN account-container -->
+                        <div class="account-container">
+                            <!-- BEGIN account-sidebar -->
+                            <div class="account-sidebar">
+                                <div class="account-sidebar-cover">
+                                    <img src="~/Content/themes/base/assets/img/cover/cover-14.jpg" alt="">
+                                </div>
+                                <div class="account-sidebar-content">
+                                    <h4>@ResObject.FieldLabel_YourAccount</h4>
+                                    <p>
+                                        @ResObject.FieldLabel_ModifyOrderAndUpdateAccount
+                                    </p>
+                                    <p>
+                                        @ResObject.FieldLabel_AllYouNeedInOnePlace
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- END account-sidebar -->
+                            <!-- BEGIN account-body -->
+                            <div class="account-body">
+                                <!-- BEGIN row -->
+                                <div class="row">
+                                    <!-- BEGIN col-6 -->
+                                    <div class="col-md-6">
+                                        <h4><i class="fa fa-gitlab fa-fw text-muted"></i> @ResObject.FieldLabel_Orders</h4>
+                                        <ul class="nav nav-list">
+                                            <li><a href="#">@ResObject.FieldLabel_CheckStatusOfOrder</a></li>
+                                            <li><a href="#">@ResObject.FieldLabel_TrackShipment</a></li>
+                                            <li><a href="#">@ResObject.FieldLabel_CancelItems</a></li>
+                                            <li><a href="#">@ResObject.FieldLabel_PrintInvoice</a></li>
+                                            <li><a href="#">@ResObject.FieldLabel_ReturnItems</a></li>
+                                            <li><a href="#">@ResObject.FieldLabel_ChangeShippingOrBillingInfoForOrder</a></li>
+                                            <li><a href="@Url.Action("Index", "CustomerOrders", new { Area = "eCommerce" })">@ResObject.FieldLabel_ViewOrderHistory</a></li>
+                                        </ul>
+                                        <h4><i class="fa fa-universal-access fa-fw text-muted"></i> @ResObject.FieldLabel_AccountSettings</h4>
+                                        <ul class="nav nav-list">
+                                            <li>
+                                                @Html.ActionLink("Update your email address and password", "ChangePassword")
+                                            </li>
+                                            <li><a href="#">@ResObject.FieldLabel_ChangeYourDefaultShippingOrBillingInfo</a></li>
+                                            <li><a href="#">@ResObject.FieldLabel_ManageEmailSubscriptions</a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- END col-6 -->
+                                    <!-- BEGIN col-6 -->
+                                    <div class="col-md-6">
+                                        <h4><i class="fa fa-cc-visa fa-fw text-muted"></i> @ResObject.FieldLabel_PaymentsAndFinancing</h4>
+                                        <ul class="nav nav-list">
+                                            <li><a href="#">@ResObject.FieldLabel_ChangePreferablePaymentMethod</a></li>
+                                        </ul>
+                                        <h4><i class="fa fa-wpforms fa-fw text-muted"></i> @ResObject.FieldLabel_Specialists</h4>
+                                        <ul class="nav nav-list">
+                                            <li><a href="#">@ResObject.FieldLabel_ViewYourPreviousActivity</a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- END col-6 -->
+                                </div>
+                                <!-- END row -->
+                            </div>
+                            <!-- END account-body -->
+                        </div>
+                        <!-- END account-container -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

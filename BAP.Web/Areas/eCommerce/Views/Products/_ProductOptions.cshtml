@@ -1,0 +1,64 @@
+﻿@using BAP.Resources;
+@using BAP.eCommerce.DAL.Entities;
+@model BAP.Web.Models.ProductModel
+
+@if (Model.Options != null && Model.Options.Any(a => a.Enabled))
+{
+    foreach (var optionCat in Model.Options.Where(a => a.Enabled))
+    {
+        var optionItems = optionCat.ProductOptionItems;
+        if (optionCat.Type == ProductOptionType.Product)
+        {
+            optionItems = optionItems.Where(a => a.RelatedProductId > 0).ToList();
+            if (optionItems == null || optionItems.Count == 0)
+            {
+                continue;
+            }
+        }
+        <div>           
+            <h4>@optionCat.Name</h4>
+            <p>@optionCat.ShortDescription</p>
+            @switch (optionCat.UserControl)
+            {
+                case ProductOptionUserControl.CheckboxHorizontal:
+                case ProductOptionUserControl.CheckboxVertical:
+                    foreach (var optionItem in optionCat.ProductOptionItems)
+                    {
+                        <input type="checkbox" value="@optionItem.Id" id="Option@(optionCat.Id)" name="Option@(optionCat.Id)"/><span>&nbsp;</span><label for="Option@(optionCat.Id)" class="control-label">@optionItem.Name @(optionItem.PriceAdded > 0 ? " (+" + Model.Currency.Symbol + optionItem.PriceAdded + ")" : "")</label>
+                        if (optionCat.UserControl == ProductOptionUserControl.CheckboxVertical)
+                        {
+                            <br/>
+                        }
+                    }
+                    break;
+                case ProductOptionUserControl.DropDownList:
+                    <select  class="form-control" id="Option@(optionCat.Id)" name="Option@(optionCat.Id)" >
+                        <option value="0">@Resources.UIText_DropDown_SelectOption</option>
+                        @foreach (var optionItem in optionItems)
+                        {
+                            <option value="@optionItem.Id">@optionItem.Name @(optionItem.PriceAdded > 0 ? " (+" + Model.Currency.Symbol + optionItem.PriceAdded + ")": "")</option>                    
+                        }
+                    </select>
+                    break;
+                case ProductOptionUserControl.RadioHorizontal:
+                case ProductOptionUserControl.RadioVertical:
+                    foreach (var optionItem in optionItems)
+                    {
+                        <input type="radio" value="@optionItem.Id" id="Option@(optionCat.Id)" name="Option@(optionCat.Id)"/><span>&nbsp;</span><label for="Option@(optionCat.Id)" class="control-label">@optionItem.Name @(optionItem.PriceAdded > 0 ? " (+" + Model.Currency.Symbol + optionItem.PriceAdded + ")" : "")</label>
+                        if (optionCat.UserControl == ProductOptionUserControl.RadioVertical)
+                        {
+                            <br />
+                        }
+                    }
+                    break;
+
+                case ProductOptionUserControl.Text:                    
+                    <input type="text" class="form-control" id="Option@(optionCat.Id)" name="Option@(optionCat.Id)"/>
+                    break;
+                case ProductOptionUserControl.TextArea:
+                    <textarea type="text" class="form-control" id="Option@(optionCat.Id)" name="Option@(optionCat.Id)" ></textarea>
+                    break;
+            }
+        </div>
+    }
+ }

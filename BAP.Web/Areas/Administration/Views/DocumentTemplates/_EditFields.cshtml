@@ -1,0 +1,140 @@
+﻿@using BAP.Lookups
+@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@model BAP.DAL.Entities.DocumentTemplate
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+    <style>
+        .input-choose-image {
+            cursor: pointer;
+        }
+
+        .modal-image-select {
+            width: 1400px;
+            height: auto;
+            margin: auto;
+        }
+
+            .modal-image-select iframe {
+                height: 800px;
+            }
+
+        @@media (max-width: 1200px) {
+            .modal-image-select {
+                width: 1170px;
+                height: auto;
+                margin: auto;
+            }
+
+                .modal-image-select iframe {
+                    height: 600px;
+                }
+        }
+
+        @@media (max-width: 768px) {
+            .modal-image-select {
+                width: 700px;
+                height: auto;
+                margin: auto;
+            }
+
+                .modal-image-select iframe {
+                    height: 400px;
+                }
+        }
+    </style>
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2 col-sm-2">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShortDescription, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-6 col-sm-6">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control", @placeholder = "Short description" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TemplateType, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2 col-sm-2">
+        @Html.BapDropDownFor(model => model.TemplateType, engine, @"TemplateType", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TemplateType, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.IsEnabled, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.IsEnabled, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.IsEnabled, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "ckeditor", placeholder = "Description", maxlength = "50" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        <span>@Resources.FieldLabel_DocumentTemplate_Description_MaxCharacters</span>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TemplateBody, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.TextAreaFor(model => model.TemplateBody, htmlAttributes: new { @class = "ckeditor", placeholder = "Template", maxlength = "50" })
+        @Html.ValidationMessageFor(model => model.TemplateBody, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TemplateBodyUrl, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        <div class="input-group">
+            @Html.EditorFor(model => model.TemplateBodyUrl, new { htmlAttributes = new { @class = "form-control", placeholder = "Relative document URL", maxlength = "1024" } })
+            <span class="input-group-addon input-choose-image">
+                <span class="glyphicon glyphicon-open-file"></span>
+            </span>
+        </div>
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
+<div id="TemplateChooseModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-image-select">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="text" style="width:0px;height:0px;position:absolute;left:10px;top:10px;z-index:-10;" id="FocusControl" /><button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="ModalTitle">Choose template document</h4>
+            </div>
+            <div class="modal-body">
+                <iframe src='@Url.Action("Index", "FileSystem" , new { Area = "Administration", Mode = "Select" })' frameborder="0" width="100%"></iframe>
+                <span id="hdnUrl" style="display:none;"></span>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info m-r-5 m-b-5" data-dismiss="modal">@Resources.UIText_Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $(".input-choose-image").click(function () {
+            var opt = {
+                show: true,
+                keyboard: true
+            };
+            $("#TemplateChooseModal").modal(opt);
+        });
+    });
+
+    window.ChooseFileFromModal = function (url) {
+        $("#TemplateBodyUrl").val(url);
+        $('#TemplateChooseModal').modal('hide');
+    };
+</script>

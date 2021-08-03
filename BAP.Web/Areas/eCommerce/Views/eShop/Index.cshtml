@@ -1,0 +1,24 @@
+﻿@using BAP.Resources;
+@model BAP.Web.Areas.eCommerce.Models.HomePageModel
+@{
+    //Layout = "~/Areas/eCommerce/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Resources.UIText_HomePage;
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+}
+
+<!-- BEGIN #slider -->
+@{Html.RenderAction("ProductBanners", "Products", new { Area = "eCommerce" });}
+<!-- END #slider -->
+<!-- BEGIN #promotions -->
+@{Html.RenderAction("FeaturedProductsSlider", "Products", new { Area = "eCommerce" });}
+<!-- END #promotions -->
+<!-- BEGIN #trending-items -->
+@{Html.RenderAction("TrendingProducts", "Products", new { Area = "eCommerce" });}
+<!-- END #trending-items -->
+@{Html.RenderAction("ProductsByCategories", "Products", new { Area = "eCommerce" });}
+<!-- BEGIN #policy -->
+@Html.Partial("_OurServicesPartial", Model.OrgServices);
+<!-- END #policy -->
+<!-- BEGIN #subscribe -->
+@Html.Partial("_LetsStayInTouchPartial")
+<!-- END #subscribe -->

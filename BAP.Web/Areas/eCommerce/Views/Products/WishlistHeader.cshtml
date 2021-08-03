@@ -1,0 +1,36 @@
+﻿@using BAP.eCommerce.Resources
+@{
+    this.Layout = null;
+}
+
+<div class="modal fade" id="wishlistpopup" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">@ResObject.UIText_Wishlist</h3>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#wishlistpopup').on('show.bs.modal', function () {
+        $('.modal-body').load('/Products/WishlistItems');
+    });
+
+    function removeFromWishlist(id) {
+        var url = '@Url.Action("RemoveFromWishlist", "Products")';
+        url += "?productId=" + id;
+        $.post(url).always(function () {
+            $('.modal-body').load('/eCommerce/Products/WishlistItems', function (response, status, xhr) {
+                if (status == 'nocontent') {
+                    $('#wishlistpopup').modal('hide');
+                };
+            });
+            $('#wishlist').load('/eCommerce/Products/WishlistCount');
+        });
+    }
+</script>

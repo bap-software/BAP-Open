@@ -1,0 +1,200 @@
+﻿@using BAP.Resources;
+@using BAP.eCommerce.Resources;
+@using BAP.UI.HtmlHelpers;
+@using BAP.Lookups;
+@using BAP.eCommerce.DAL.Entities;
+@model ProductOption
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+@if (Model != null)
+{
+    using (Html.BeginForm("MultirowActionForm", "ProductOptions", FormMethod.Post, new { id = "MultirowActionForm", role = "row", data_parsley_validate = "true" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        <input type="hidden" id="selectedAction" name="selectedAction" value="delete" />
+        <input type="hidden" id="selectedItems" name="selectedItems" />
+        <input type="hidden" id="itemRowData" name="itemRowData" />
+
+        <div class="form-group optional">
+            <div id="data-table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                <h4>
+                    <a href="#" class="btn btn-icon btn-success btn-remove-items" title="@Resources.UIText_Delete"><i class="fa fa-trash"></i></a>      
+                    @if (!(Model.Type == ProductOptionType.Text && Model.ProductOptionItems != null && Model.ProductOptionItems.Count > 0))
+                    {
+                        <a href="#" class="btn btn-icon btn-success btn-add-item" title="@Resources.UIText_Add"><i class="fa fa-plus"></i></a>
+                    }                    
+                    <a href="#" class="btn btn-icon btn-success btn-save-items" title="@Resources.UIText_Save"><i class="fa fa-floppy-o"></i></a>                    
+                    @ResObject.EntityLabel_ProductOptionItem
+                </h4>
+                <div class="row" style="display:none;">
+                    <div class="col-sm-6">
+                        <div class="dataTables_length" id="data-table_length">
+                            <label>Show <select name="data-table_length" aria-controls="data-table" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="data-table_filter" class="dataTables_filter">
+                            <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="data-table"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="data-table" class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                            <thead>
+                                <tr>
+                                    <th style="width:15px;">
+                                        <input type="checkbox" id="check-all-rows" />
+                                    </th>
+                                    <th>
+                                        @Resources.UIText_Actions
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ProductOptionItems.First().Name)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ProductOptionItems.First().PriceAdded)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ProductOptionItems.First().ShortDescription)
+                                    </th>
+                                    @if (Model.Type == ProductOptionType.Product)
+                                    {
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ProductOptionItems.First().RelatedProduct)
+                                        </th>
+                                    }                                    
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ProductOptionItems.First().Description)
+                                    </th>
+                                </tr>
+                            </thead>
+                            @if (Model.ProductOptionItems != null && Model.ProductOptionItems.Count > 0)
+                            {
+                                foreach (var item in Model.ProductOptionItems)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" id="checkRow" name="checkRow" class="check-row" value="@item.Id" /></td>
+                                        <td>
+                                            <a title="@Resources.UIText_Details" style="text-decoration: none;" href="#" data-item-id="@item.Id" class="btn-save-item">
+                                                <i class="fa fa-floppy-o"></i>
+                                            </a>
+                                            <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="#"  data-item-id="@item.Id" class="btn-delete-item">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </a>
+                                        </td>
+
+                                        <td>                                            
+                                            @Html.EditorFor(model => item.Name, new { htmlAttributes = new { @class = "form-control", @style = "width:100%;", @data_item_id = item.Id, @data_parsley_required = "true" } })
+                                            @Html.ValidationMessageFor(model => item.Name, "", new { @class = "text-danger" })
+                                        </td>
+
+                                        <td>
+                                            @Html.EditorFor(model => item.PriceAdded, new { htmlAttributes = new { @class = "form-control", @style = "width:100%;", @data_item_id = item.Id, @type="number", @min = "0", @step="0.01", @data_parsley_required = "true" } })
+                                            @Html.ValidationMessageFor(model => item.PriceAdded, "", new { @class = "text-danger" })
+                                        </td>
+
+                                        <td>
+                                            @Html.EditorFor(model => item.ShortDescription, new { htmlAttributes = new { @class = "form-control", @style = "width:100%;", @data_item_id = item.Id, @data_parsley_required = "true" } })                                            
+                                            @Html.ValidationMessageFor(model => item.ShortDescription, "", new { @class = "text-danger" })
+                                        </td>
+
+                                        @if (Model.Type == ProductOptionType.Product)
+                                        {
+                                            <td>
+                                                @Html.BapParentDropDownFor(model => item.RelatedProduct, engine, "Id", "Name", "ShortDescription", new { @class = "form-control", @style = "width:100%;", @data_item_id = item.Id, @data_parsley_required = "true" }, "RelatedProductId")
+                                                @Html.ValidationMessageFor(model => item.RelatedProduct, "", new { @class = "text-danger" })
+                                            </td>
+                                        }                                        
+                                        <td>
+                                            @Html.EditorFor(model => item.Description, new { htmlAttributes = new { @class = "form-control", @style = "width:100%;", @data_item_id = item.Id } })
+                                            @Html.ValidationMessageFor(model => item.Description, "", new { @class = "text-danger" })
+                                        </td>
+                                    </tr>
+                                }
+                            }                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    }
+    <script>
+        $(document).ready(function () {
+
+            $("#MultirowActionForm #check-all-rows").change(function () {
+                $('#MultirowActionForm .check-row').prop("checked", $(this).is(':checked'));
+            });
+
+            $(".btn-add-item").click(function () {
+                $("#selectedAction").val("add");
+                $('#MultirowActionForm').submit();
+            });
+
+            $(".btn-remove-items").click(function () {
+                $("#selectedAction").val("delete");
+                var selectedItems = [];                
+                $.each($("#MultirowActionForm").find("input[id='checkRow']:checked"), function () {
+                    selectedItems.push($(this).val());
+                });
+                $("#selectedItems").val(selectedItems.join(","));
+                $('#MultirowActionForm').submit();
+            });        
+
+            $(".btn-save-item").click(function () {                
+                $("#selectedAction").val("save");                
+                var dataItemId = $(this).attr("data-item-id");
+                var data = GetItemData(dataItemId);                
+                $("#itemRowData").val(JSON.stringify(data));
+                $('#MultirowActionForm').submit();
+            });
+
+            $(".btn-save-items").click(function () {
+                $("#selectedAction").val("save-items");
+                var items = [];                
+                $.each($("#MultirowActionForm").find("a.btn-save-item"), function () {
+                    var dataItemId = $(this).attr("data-item-id");
+                    var data = GetItemData(dataItemId);
+                    items.push(data);                    
+                });
+                $("#itemRowData").val(JSON.stringify(items));                
+                $('#MultirowActionForm').submit();
+            });            
+
+            $(".btn-delete-item").click(function () {
+                $("#selectedAction").val("delete-item");
+                $("#selectedItems").val($(this).attr("data-item-id"));
+                $('#MultirowActionForm').submit();
+            });
+
+            $("#btnSelectProducts").click(function () {
+                $("#selectedAction").val("add");
+                var selectedProducts = [];
+                $.each($("#frameSelectProducts").contents().find("input[id='checkRow']:checked"), function () {
+                    selectedProducts.push($(this).val());
+                });
+                $("#selectedProducts").val(selectedProducts.join(","));
+            });
+        });
+
+        function GetItemData(dataItemId)
+        {
+            var data = {};
+            data.Id = dataItemId;
+            data.Name = $("input[id='item_Name'][data-item-id='" + dataItemId + "']").val();
+            data.PriceAdded = $("input[id='item_PriceAdded'][data-item-id='" + dataItemId + "']").val();
+            data.ShortDescription = $("input[id='item_ShortDescription'][data-item-id='" + dataItemId + "']").val();
+            data.RelatedProductId = $("select[id='RelatedProductId'][data_item_id='" + dataItemId + "']").val();
+            data.Description = $("input[id='item_Description'][data-item-id='" + dataItemId + "']").val();
+
+            return data;
+        }
+    </script>    
+}

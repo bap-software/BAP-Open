@@ -1,0 +1,95 @@
+﻿@using BAP.UI.HtmlHelpers
+@model BAP.eCommerce.DAL.Entities.Store
+
+@Html.HiddenFor(model => model.BillingAddressId)
+@Html.HiddenFor(model => model.BillingAddress.Id)
+@Html.HiddenFor(model => model.BillingAddress.CreatedBy)
+@Html.HiddenFor(model => model.BillingAddress.LastModifiedBy)
+@Html.HiddenFor(model => model.BillingAddress.TenantUnit)
+@Html.HiddenFor(model => model.BillingAddress.TenantUnitId)
+@Html.HiddenFor(model => model.BillingAddress.OwnerGroup)
+@Html.HiddenFor(model => model.BillingAddress.OwnerPermissions)
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.FirstName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.FirstName, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.LastName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.LastName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.LastName, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.ContactEmail, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.ContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.ContactEmail, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.CompanyName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.CompanyName, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.AddressLine1, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.AddressLine1, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.AddressLine1, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.AddressLine2, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.AddressLine2, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.City, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.City, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.City, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.Zip, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.Zip, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.Zip, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.Country, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.BapCountryListFor(model => model.BillingAddress.Country, new { @class = "form-control", onchange = "fillStates('#BillingAddress_Country', '#BillingAddress_State')" })
+        @Html.ValidationMessageFor(model => model.BillingAddress.Country, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.State, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.BapStateListFor(model => model.BillingAddress.State, Model.BillingAddress.Country, new { @class = "form-control", @style="width: 200px" })
+        @Html.ValidationMessageFor(model => model.BillingAddress.State, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.PhoneExtension, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.PhoneExtension, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.PhoneExtension, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.CellNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.CellNumber, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.CellNumber, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.FaxNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.BillingAddress.FaxNumber, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BillingAddress.FaxNumber, "", new { @class = "text-danger" })
+    </div>
+</div>

@@ -1,0 +1,136 @@
+﻿@using BAP.eCommerce.Resources;
+
+@model IList<BAP.Web.Areas.eCommerce.Models.CategoryModel>
+@{
+    var currentCurrency = (string)ViewBag.CurrencySymbol;
+    ViewBag.Title = "ProductsByCategories";
+    Layout = null;
+    var firstManufacturer = "";
+}
+
+@if (Model.Count > 0)
+{
+    foreach (var m in Model)
+    {
+        <div id="mobile-list" class="section-container bg-silver p-t-0">
+            <!-- BEGIN container -->
+            <div class="container">
+                <!-- BEGIN section-title -->
+                <h4 class="section-title clearfix">
+                    <!--Category Expand with link-->
+                    <a href="@Url.Action("Index", "Products", new { area = "eCommerce", @category=m.PCID})" class="pull-right">@ResObject.UIText_ShowAll</a>
+                    <!--Category.Name-->
+                    @m.Name
+                    <!--Category Description-->
+                    <small>@Html.Raw(m.Description)</small>
+                </h4>
+                <!-- END section-title -->
+                <!-- BEGIN category-container -->
+                <div class="category-container @m.Name.Replace(' ','-')">
+                    <!-- BEGIN category-sidebar -->
+                    <!-- Manufacturer.Name-->
+                    <div class="category-sidebar">
+                        <ul class="category-list" id="category-@m.CategoryId">
+                            <li class="list-header">@ResObject.FieldLabel_ProductCategory_Name</li>
+
+                            <li class="detail-first">
+                                <a href="#@m.Name.Replace(' ', '-')-@m.Manufacturers.First().Name"
+                                   id="@m.CategoryId-@m.Manufacturers.First().ManufacturerId">@m.Manufacturers.First().Name</a>
+                            </li>
+
+                            @foreach (var item in m.Manufacturers.Skip(1))
+                            {
+                                <li><a href="#@m.Name.Replace(' ', '-')-@item.Name" id="@m.CategoryId-@item.ManufacturerId">@item.Name</a></li>
+                            }
+                        </ul>
+                    </div>
+
+                    @foreach (var temp in m.Manufacturers)
+                    {
+                        if (m.Manufacturers.First() == temp)
+                        {
+                            firstManufacturer = "first-in-category";
+                        }
+                        else { firstManufacturer = ""; }
+                        <div class="category-detail @firstManufacturer" id="category-detail-@m.CategoryId-@temp.ManufacturerId">
+                            <a href="@Url.Action("Details", "Products", new { pid = temp.ProductByCategory.First().PublicId })" class="category-item full">
+                                <div class="item">
+                                    <div class="item-cover">
+                                        <img src="@temp.ProductByCategory.First().ImagePath" alt="" />
+                                    </div>
+                                    <div class="item-info bottom">
+                                        <h4 class="item-title">@temp.ProductByCategory.First().Name</h4>
+                                        <p class="item-desc">@Html.Raw(temp.ProductByCategory.First().Description)</p>
+                                        <div class="item-price">@currentCurrency@temp.ProductByCategory.First().RegularPrice</div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="category-item list">
+                                <!-- BEGIN item-row -->
+                                <div class="item-row clearfix">
+                                    @foreach (var item in temp.ProductByCategory.Skip(1))
+                                    {
+                                        <!-- BEGIN item -->
+                                        <div class="item item-thumbnail">
+                                            <a href="@Url.Action("Details", "Products", new { pid = item.PublicId })" class="item-image">
+                                                <img src="@item.ImagePath" alt="" />
+                                                <div class="discount">@item.GetDiscount()@ResObject.UIText_PercentOff.ToUpper()</div>
+                                            </a>
+                                            <div class="item-info">
+                                                <h4 class="item-title">
+                                                    <a href="@Url.Action("Details", "Products", new { pid = item.PublicId })">@item.Name</a>
+                                                </h4>
+                                                <p class="item-desc">@Helpers.StripHtml(item.ShortDescription)</p>
+                                                @if (item.SalesPrice > 0)
+                                                {
+                                                    <div class="item-price">@currentCurrency@item.SalesPrice</div>
+                                                    <div class="item-discount-price">@currentCurrency@item.RegularPrice</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="item-price">@currentCurrency@item.RegularPrice</div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<script>
+    var activeManufacturer = [];
+    $(function () {
+        $(".category-list li a").ready(function () {
+            $(".category-detail").hide();
+
+            $(".first-in-category").each(function () {
+                activeManufacturer[$(this).parent().attr('class')] = '#' + $(this).attr('id');
+            });
+            for (var key in activeManufacturer) {
+                $(activeManufacturer[key]).show();
+            }
+        });
+    });
+
+</script>
+
+<script>
+    $(function () {
+
+        $(".category-list li a").click(function () {
+
+            activeManufacturer[$(this).parent().parent().parent().
+                parent().attr('class')] = "#category-detail-" + $(this).attr('id');
+            $(".category-detail").hide();
+            for (var key in activeManufacturer) {
+                $(activeManufacturer[key]).show();
+            }
+        });
+    });
+</script>

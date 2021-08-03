@@ -1,0 +1,22 @@
+﻿@using System.Text.RegularExpressions;
+
+@helper StripHtml(string input, int size = 10000)
+{
+    if (!string.IsNullOrEmpty(input))
+    {
+        input = Regex.Replace(input, "<.*?>", String.Empty).Replace("&nbsp;", "");
+        @(input.Length > size ? string.Concat(input.Substring(0, size), "...") : input)
+    }
+}
+
+@helper ProductSortingLink(string fieldName, string fieldDir, string label, string currentField, string currentDirection, Dictionary<string, string> sortData)
+{
+    if (!string.IsNullOrWhiteSpace(currentField) && sortData.ContainsKey(currentField) && (currentField == fieldName))
+    {
+        <a href="/eCommerce/Products?sortOrder=@($"{currentField}-{sortData[currentField]}")">@label <i class="fa fa-sort-@currentDirection"></i></a>
+    }
+    else
+    {
+        <a href="/eCommerce/Products?sortOrder=@($"{fieldName}-{fieldDir}")">@label <i class="fa fa-sort"></i></a>
+    }
+}

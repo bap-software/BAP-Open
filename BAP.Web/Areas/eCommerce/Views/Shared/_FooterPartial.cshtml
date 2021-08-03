@@ -1,0 +1,99 @@
+﻿@using BAP.Common;
+@using BAP.eCommerce.Resources;
+@using BAP.Resources;
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@{
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = null;
+    if (authContext != null)
+    {
+        currOrg = authContext.GetCurrentOrganization(config);
+    }
+
+    var facebookUrl = "";
+    var twitterUrl = "";
+    var linkedinUrl = "";
+
+    if (currOrg != null)
+    {
+
+        facebookUrl = currOrg.FacebookUrl;
+        twitterUrl = currOrg.TwitterUrl;
+        linkedinUrl = currOrg.LinkedinUrl;
+    }
+}
+<!-- BEGIN #footer -->
+<div id="footer" class="footer">
+    <!-- BEGIN container -->
+    <div class="container">
+        <!-- BEGIN row -->
+        <div class="row">
+            <!-- BEGIN col-3 -->
+            <div class="col-md-3">
+                <h4 class="footer-header">@ResObject.UIText_AboutUs</h4>
+                @Html.Raw(currOrg.Description)
+            </div>
+            <!-- END col-3 -->
+            <!-- BEGIN col-3 -->
+            <div class="col-md-3">
+                <h4 class="footer-header">@Resources.UIText_QuickLinks</h4>
+                <ul class="fa-ul">                   
+                    <li><i class="fa fa-li fa-angle-right"></i> <a href="#">@ResObject.UIText_TermsOfUse</a></li>
+                    <li><i class="fa fa-li fa-angle-right"></i> <a href="@Url.Action("Contact", "eShop", new { area = "eCommerce"})">@ResObject.UIText_ContactUs</a></li>                    
+                    <li><i class="fa fa-li fa-angle-right"></i> <a href="#">@ResObject.UIText_PaymentMethod</a></li>
+                    <li><i class="fa fa-li fa-angle-right"></i> <a href="#">@ResObject.UIText_SalesAdnRefund</a></li>
+                    <li><i class="fa fa-li fa-angle-right"></i> <a href="#">@ResObject.UIText_Sitemap</a></li>
+                    <li><i class="fa fa-li fa-angle-right"></i> <a href="#">@ResObject.UIText_PrivacyPolicy</a></li>
+                </ul>
+            </div>
+            <!-- END col-3 -->
+            <!-- BEGIN col-3 -->
+            <div class="col-md-3">
+                @{ Html.RenderAction("LatestProductsForFooter", "Products", new { Area = "eCommerce"});}
+            </div>
+            <!-- END col-3 -->
+            <!-- BEGIN col-3 -->
+            <div class="col-md-3">
+                <h4 class="footer-header">@Resources.UIText_Menu_Contact</h4>
+                <address>
+                    <strong>@currOrg.AddressLine1</strong><br />
+                    @if (!string.IsNullOrEmpty(currOrg.AddressLine2))
+                    {
+                    @currOrg.AddressLine2<br />
+                    }
+                    @currOrg.City, @currOrg.State @currOrg.Zip<br />
+                    <abbr title="Phone">@Resources.FieldLabel_Organization_PhoneNumber:</abbr> @currOrg.PhoneNumber @currOrg.PhoneExtension<br />
+                    @if (!string.IsNullOrEmpty(currOrg.FaxNumber))
+                    {
+                        <abbr title="Fax">@Resources.FieldLabel_Organization_FaxNumber:</abbr> @currOrg.FaxNumber<br />
+                    }
+                    <abbr title="Email">@Resources.FieldLabel_Organization_ContactEmail:</abbr> <a href="mailto:@currOrg.ContactEmail">@currOrg.ContactEmail</a><br />
+                </address>
+            </div>
+            <!-- END col-3 -->
+        </div>
+        <!-- END row -->
+    </div>
+    <!-- END container -->
+</div>
+<!-- END #footer -->
+<!-- BEGIN #footer-copyright -->
+<div id="footer-copyright" class="footer-copyright">
+    <!-- BEGIN container -->
+    <div class="container">
+        <div class="payment-method">
+            <ul class="list-inline">
+                <li><img src="~/Areas/eCommerce/Content/Themes/Base/assets/img/payment/card1.png"></li>
+                <li><img src="~/Areas/eCommerce/Content/Themes/Base/assets/img/payment/card2.png"></li>
+                <li><img src="~/Areas/eCommerce/Content/Themes/Base/assets/img/payment/card3.png"></li>
+            </ul>            
+        </div>
+        <div class="copyright">
+            @ResObject.UIText_Copyright &copy; @DateTime.Now.Year <a href="http://bap-software.com">BAP-Software.</a> @ResObject.UIText_AllRightReserved.
+        </div>
+    </div>
+    <!-- END container -->
+</div>
+<!-- END #footer-copyright -->

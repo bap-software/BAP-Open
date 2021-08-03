@@ -1,0 +1,369 @@
+/************	User Profile and Order Info	*****************/
+.login_information,
+.billing_address,
+.personal_details,
+.cardholder_details,
+.delivery_details,
+.additional_details {}
+
+.account-container.my-order .col-md-12 h4 {font-size: 18px;}
+.account-container.my-order .col-md-12 .nav-list{margin-bottom:2em;}
+.account-container.my-order .col-md-12  .nav > li > a {padding: 10px 8px;}
+
+/**** user pages forms ****/
+.form.user-home .form-title {display: none;}
+.form.user-home .form-title + .form-note {background: #f5f5f5; border: 1px solid #dfdfdf; border-width: 1px 0; margin: 50px -50px; padding: 20px 50px;}
+.form.user-home .form-title + .form-note br {display: none;}
+.form.user-home .form-line {border: 1px solid #dfdfdf; margin: 12px 0; overflow: hidden;}
+.form.user-home .form-line > label {border: 1px solid #dfdfdf; border-width: 0 1px 0 0; color: #888; margin: 0; padding: 1em; width: 20%;}
+.form.user-home .form-line > span {border: 1px solid #dfdfdf; border-width: 0 0 0 1px; float: left; margin: 0 0 0 -1px; padding: .5em; width: 80%;}
+.form.user-home .form-line select,
+.form.user-home .form-line textarea,
+.form.user-home .form-line input[type="text"],
+.form.user-home .form-line input[type="password"],
+.form.user-home .form-line input[type="datetime"],
+.form.user-home .form-line input[type="datetime-local"],
+.form.user-home .form-line input[type="date"],
+.form.user-home .form-line input[type="month"],
+.form.user-home .form-line input[type="time"],
+.form.user-home .form-line input[type="week"],
+.form.user-home .form-line input[type="number"],
+.form.user-home .form-line input[type="email"],
+.form.user-home .form-line input[type="url"],
+.form.user-home .form-line input[type="search"],
+.form.user-home .form-line input[type="tel"],
+.form.user-home .form-line input[type="color"] {border: 0; max-width: 100%; min-width: 100%}
+
+.form.user-home .form-submit {border: 1px solid #dfdfdf; border-color: #dfdfdf #fff #fff; margin: 50px -51px -26px; padding: 50px; text-align: left;}
+.form.user-home .form-submit input[type="submit"] {min-width: 200px; padding: .8em;}
+.form.user-home .form-submit a {text-decoration: underline;}
+
+.form.user-home .form-line.newsletter {border: 0;}
+.form.user-home .form-line.newsletter > label {border: 0;}
+.form.user-home .form-line.newsletter > span {border: 0; padding: 0;}
+.form.user-home .form-line.newsletter > span label {padding: 0 0 0 1.4em; width: auto;}
+.newsletter.check label input + span::before {font: 12px/1.4 FontAwesome; height: 1.4em; width: 1.4em;}
+
+/**** form user-profile ****/
+.form.user-profile {}
+
+/**** form user-change-password ****/
+.form.user-change-password {}
+.form.user-change-password .form-line > label {width: 30%;}
+.form.user-change-password .form-line > span {width: 70%;}
+
+/**** block-login-advanced ****/
+.block-login-advanced {background: #f6f6f6; border: 1px solid #e0e0e0; box-sizing: border-box; margin: 5% 0; padding: 5% 1%;}
+.block-login-advanced .block-title {display: none;}
+.block-login-advanced .block-content {background: #fff; border: 1px solid #e0e0e0; box-sizing: border-box; margin: 0 auto; max-width: 980px; overflow: hidden;}
+
+.block-login {box-sizing: border-box; font-weight: 500; padding: 4%;}
+.block-login.existing {float: left; padding: 4% 8%; width: 55%;}
+.block-login.new {float: right; width: 45%;}
+.block-login-title {font-size: 2em; font-weight: 500; letter-spacing: .02em; margin: .5em 0;}
+.block-login .form-note {font-size: .9em; margin: 1em 0;}
+.form.log-in .form-line {margin: 1.4em 0; overflow: hidden;}
+.form.log-in .form-line > label {color: #2a2a2a; display: block; float: none; margin: 0 0 .5em 0; padding: 0; width: 100%;}
+.form.log-in .form-line > span {display: block;}
+.form.log-in .form-line input[type="text"],
+.form.log-in .form-line input[type="email"],
+.form.log-in .form-line input[type="password"] {max-width: none; min-width: 0; padding: 1em; width: 100%;}
+.form.log-in .form-line.check > label {cursor: pointer; float: left; margin: 0; overflow: hidden; width: auto;}
+.form.log-in .form-line.check a {float: right; line-height: 1.8; text-decoration: underline;}
+.form.log-in .form-submit {margin: 1em 0; text-align: right;}
+.form.log-in .form-submit input[type="submit"] {min-width: 160px; padding: .8em; text-transform: uppercase;}
+.block-login ul {margin: 1.6em 0 2.4em; padding: 0;}
+.block-login li {list-style: none; margin: .8em 0;}
+.block-login li:before {content: "\f105"; display: inline-block; font: normal normal normal 14px/1 FontAwesome; font-size: inherit; margin-right: 1em; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+.block-login-buttons {}
+.block-login-user {margin: 0 0 1em;}
+.block-login-user a.button {margin: 0 0 0.6em; min-width: 280px; padding: .8em 1.6em;}
+
+.block-logout {box-sizing: border-box; font-weight: 500;  margin: 0 auto; max-width: 480px; padding: 4%;}
+.block-logout .form.log-in .form-line,
+.block-logout .form.log-in .form-submit {text-align: center;}
+
+/**** block forgot password ****/
+.block-password-forgot {background: #fff; border: 1px solid #e0e0e0; box-sizing: border-box; margin: 10% auto; max-width: 980px; overflow: hidden; padding: 4% 8%;}
+.block-password-forgot .block-title {font-size: 2em; font-weight: 500; letter-spacing: .02em; margin: .5em 0; padding: 0;}
+.block-password-forgot .block-content {margin: 0;}
+.password-forgot-note { margin: 2em 0 1em; padding: 0;}
+.password-forgot-line {display: flex; justify-content: space-between;}
+.password-forgot-line input[type="email"] {width: 70%;}
+.password-forgot-line input[type="submit"] {width:28%;}
+.password-forgot-line input[type="email"], 
+.password-forgot-line input[type="submit"]{font-size: 1rem ;}
+/**** block forgot password ****/
+
+/**** user .account-body****/
+.userHomes {display: none;}
+
+.block-userhome-breadcrumb {margin: 1em 0 0;}
+
+.user-account-intro div {margin: .5em 0;}
+.user-account-intro div a {color: #008a8a; display: inline-block; margin: 1em 0 0; text-decoration: underline;}
+.user-account-intro div b {font-weight: 500;}
+.user-account-intro div span {color: #888; display: inline-block; min-width: 80px;}
+
+.user-account-rewards:empty {margin: 0;}
+.user-account-rewards {margin: 2em 0 0;}
+.user-account-rewards div {margin: .5em 0;}
+.user-account-rewards div b {display: block; font-size: 22px; font-weight: 500;}
+.user-account-rewards div span {display: block;}
+
+.account-body .block-navigation {border: 1px solid #dadada; float: left; margin: 0; width: 20%;}
+.account-body .block-navigation .block-title {background: #f5f5f5; font-size: 15px; margin: 0; padding: 1em 1.4em;}
+.account-body .block-navigation .block-content {margin: 0;}
+.account-body .block-navigation .cat-item {border: 1px solid #dadada; border-width: 1px 0 0; font-size: 15px; padding: 1em 1.4em;}
+.account-body .block-navigation .cat-item .item-title {font-size: 15px; text-transform: capitalize;}
+.account-body .block-navigation .cat-item .item-title:before {content: "\f105"; display: inline-block; float: right; font: normal normal normal 14px/1.4 FontAwesome; font-size: inherit;  text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+.account-body .block-navigation .cat-item.a .item-title {text-decoration: none;}
+
+.account-body .user-home-pages {}
+.account-body .user-home-logout {line-height: 1em; padding: 0 0 1em; text-align: right;}
+.account-body .user-home-logout b {font-style: italic;}
+.account-body .user-home-block {border-bottom: 1px solid #ddd; padding: 1em 0;}
+.account-body .user-home-block:last-child {border-bottom: none;}
+.account-body .user-home-block + .user-home-block {border-width: 0 1px 1px;}
+.account-body .user-home-title { font-size: 20px; font-weight: 600; line-height: 1em; margin:0 0 1em; }
+.account-body .navigator {margin: 1.5em 0; text-align: right;}
+.account-body .navigator .current,
+.account-body .navigator .link {display: inline-block; font-size: 13px; font-weight: 400; vertical-align: middle;}
+.account-body .navigator .current:before {border: 1px solid #d8d8d8; box-sizing: border-box; content: "Page"; display: inline-block; float: left; height: 2em; padding: .2em; text-align: center; width: 4em;}
+.account-body .navigator .current input[type="text"] {border: 1px solid #d8d8d8; border-width: 1px 1px 1px 0; font-size: 13px; height: 2em; margin: 0 .6em 0 0; padding: .2em; text-align: center; width: 4em;}
+.account-body .navigator .first,
+.account-body .navigator .prev,
+.account-body .navigator .next,
+.account-body .navigator .last {border: 1px solid #d8d8d8; box-sizing: border-box; height: 2em; line-height: 2; margin: 0 0 0 .6em; text-align: center; width: 2em;}
+.account-body .navigator .first,
+.account-body .navigator .prev {margin: 0 .6em 0 0;}
+.account-body .navigator .first i,
+.account-body .navigator .prev i,
+.account-body .navigator .next i,
+.account-body .navigator .last i {line-height: 1.8;}
+
+.not-logged-menu .block-navigation {display: none;}
+.not-logged-menu .user-home-pages {float: none; margin: 2em 0 0; width: 100%;}
+
+.user-profile-page .user-home-title:before {content: "Edit Your Details";}
+.user-profile-page.not-logged-menu .user-home-title:before {content: "Profile";}
+
+.user-item-wrapper {border: 1px solid #dedede; border-width: 0 0 1px; margin: 0 0 3em;}
+.navigator ~ .user-item-wrapper {margin-bottom: 0;}
+.user-item-titles {background: #707478; display: flex; color: #fff; }
+.user-item + .user-item{border: 1px solid #dedede; border-width: 1px 0 0;}
+.user-item { display: flex; flex-wrap: wrap;}
+.user-item:hover {background: #f0f3f4;;}
+.user-item-line {box-sizing: border-box; display: inline-block; text-align: center; vertical-align: middle; width: 15%;}
+.user-item-titles .user-item-line {font-size: 14px; padding: 12px 6px;}
+.user-item .user-item-line {font-size: 14px; padding: 16px 6px;}
+.user-item-line b {display: none;}
+.user-item-line img {height: auto; max-width: 100%;}
+.user-item-actions a {box-sizing: border-box; display: inline-block; font-size: 14px; padding: .8em; text-align: center; text-decoration: none; vertical-align: middle;}
+.user-item-actions a.lnk {color: #008a8a;; font-size: 12px; text-decoration: underline;}
+
+
+.user-item-wrapper.user-support {}
+.user-support .support-summary {width: 40%;}
+.user-support .user-item .support-summary {text-align: left;}
+
+
+.user-orders .order-invoice {display: none;}
+.user-orders .order-actions {text-align: left; width: 25%;}
+.user-orders .order-actions a {width: 49%;}
+.user-orders .order-actions a + a {margin-left: -.4em;}
+.user-orders .order-actions .button.primary {background: #00acac; color:#fff; border:1px solid #00acac; }
+.user-orders .order-actions .button.primary:hover {background: transparent; color:#00acac;}
+.user-orders .hidden-status {display: none;}
+.user-orders .visible-status {display: inline-block;}
+
+
+.user-order .user-item-line {width: 15%; text-align: right;}
+
+.user-order .user-item-line.item-name {width: 55%; text-align: left; display:flex; align-items: center;}
+.user-order .user-item-line .product-name {margin-left:2em;}
+.user-order .user-item .goods-total-title,
+.user-order .user-item .shipping-title,
+.user-order .user-item .vat-title,
+.user-order .user-item .total-order-cost-title {width: 85%;text-align: right; padding: 8px; }
+.user-order .user-item .goods-total-price,
+.user-order .user-item .shipping-price,
+.user-order .user-item .vat-price,
+.user-order .user-item .total-order-cost-price  {width: 15%;text-align: right; padding: 8px; }
+.user-order .user-item.goods-total,
+.user-order .user-item.total-order-cost {background: #f0f3f4;}
+
+
+.user-carts .cart-actions a {width: 99%;}
+
+.user-item-view {margin: -1.5em 0 0; text-align: right;}
+.user-item-view a {box-sizing: border-box; color:#fff;  background: #707478;  display: inline-block; font-size: 14px; padding: .8em 2.4em; text-align: center; text-decoration: none; vertical-align: middle;}
+.user-item-view a:hover {background: #00acac; }
+
+.padding6px + .user-item-view {margin: 1.5em 0 0;}
+
+.user-home-block a.back {border-width: 0; line-height: 0; padding: 0; color: #008a8a;}
+.user-home-block a.back i {line-height: 0;}
+
+.order-add { margin: 0 0 1em;}
+.order-add div {font-size: 1.1em; font-weight: 600; line-height: 1.5em;}
+.order-add label {}
+.order-add strong {font-weight: 600;}
+.order-add i {font-style: normal;}
+.order-invoice {text-align: right; margin: 0 0 1em;}
+.order-invoice a {background: #f5f5f5; border: 1px solid #dadada; display: inline-block; padding: .6em .5em .4em; text-align: center; width: 2.5em;}
+.order-invoice a:hover {background: #dadada; text-decoration: none;}
+.order-invoice i {font-size: 21px;}
+.order-invoice span {display: block; font-size: 10px; font-weight: 700; line-height: 1em; margin: .4em 0 0;}
+
+.user-home-pages .padding6px {border: 1px solid #dedede; border-collapse: collapse;}
+.user-home-pages .padding6px td {border: 1px solid #dedede; border-width: 0 0 1px; font-size: 16px; padding: 8px; vertical-align: middle;}
+.user-home-pages .padding6px td:last-child {padding-right: 38px;}
+.user-home-pages .middlebg {background: #f5f5f5;}
+.user-home-pages .middlebg td {background: #f5f5f5; font-weight: 600;}
+.user-home-pages .middlebg td b {font-weight: 600;}
+.user-home-pages .middlebg.header td {background: #fff; font-size: 14px;}
+.user-home-pages .middlebg.header td b {font-weight: 400;}
+.user-home-pages .usualbg td td {padding: 0;}
+.user-home-pages .usualbg.item td {font-size: 14px;}
+.user-home-pages .usualbg.item .order-item-image {width: 10%;}
+.user-home-pages .usualbg.item .order-item-name {font-size: 16px; width: 50%;}
+.user-home-pages .usualbg.item .order-item-name .properties {font-size: 14px;}
+.user-home-pages .usualbg.item .order-item-name .properties br:first-child {display: none;}
+
+.user-home-pages .personal-details {overflow: hidden; display:flex; justify-content: space-between;  flex-wrap: wrap;}
+.user-home-pages .personal-details > div {width: 48%;}
+.user-home-pages .personal-details div {font-size: 14px; margin: .6em 0;}
+.user-home-pages .personal-details div a {display: inline-block; margin: 1em 0 0; text-decoration: underline; }
+
+.user-home-pages .personal-details div span {color: #888;     margin-right: 4px;}
+.user-home-pages .personal-details div b {font-weight: 400;}
+.user-home-pages .personal-details div.title {font-size: 18px; line-height: 2em; margin: 0;}
+.user-home-pages .personal-details div.title strong {font-weight: 400;}
+
+.user-wishlist .wishlist-name {text-align: left; width: 25%;}
+.user-wishlist .wishlist-actions a {width: 99%;}
+
+.user-carts .cart-name {text-align: left; width: 25%;}
+
+@media (max-width: 1024px) {
+	.block-login-advanced {background: #fff; border: 0; margin: 2% 0 4%; padding: 0;}
+  .block-login-advanced .block-content {margin: 0; max-width: none;}
+  .block-login.existing {float: right; padding: 4%; width: 50%;}
+  .block-login.new {float: left; width: 50%;}
+  .form.log-in .form-submit input[type="submit"] {width: 100%;}
+
+  .block-userhome-breadcrumb {margin: 1em 0;}
+  .account-body .block-breadcrumb {display: none;}
+  .account-body .block-navigation {border-width: 1px 0; float: none; margin: 0; width: auto;}
+  .account-body .block-navigation .block-title {cursor: pointer;}
+  .account-body .user-home-logout {float: none; padding: 1em 2em; text-align: right;}
+  .account-body .user-home-pages {float: none; margin: 0; width: auto;}
+  .account-body .user-home-block {border-width: 0 0 1px;}
+  .account-body .user-home-block + .user-home-block {border-width: 0 0 1px;}
+  .user-home-block a.back {line-height: normal;}
+
+  .form.user-home .form-title + .form-note {margin: 20px -20px; padding: 20px;}
+  .form.user-home .form-title + .form-note.check label span {line-height: 2em; padding-left: 4em;}
+  .form.user-home .form-title + .form-note.check label input + span:before {margin-left: -3em; margin-right: 1.1em;}
+  .form.user-home .form-submit {margin: 20px -20px; padding: 20px;}
+}
+@media (max-width: 980px) {
+	.block-login-advanced .blockLogin {float: none; width: 98%;}
+
+	.login_information,
+	.billing_address,
+	.personal_details,
+	.cardholder_details,
+	.delivery_details {float: none; width: 100%;}
+	.userProfile .padding6px td input.text,
+	.userProfile .padding6px td select,
+	.userProfile .padding6px td textarea {-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; width: 100%;}
+	.userProfile .p-title {height: auto;}
+}
+@media (max-width: 768px) {
+    .account-container.my-order .col-md-12 {padding:0;}
+    .account-container.my-order .col-md-12 h4 {font-size: 16px;}
+    .account-container.my-order .col-md-12 * + h4 {margin-top: 1.4em;}
+    .account-container.my-order .account-sidebar .account-sidebar-cover img {max-width: none;}
+    .account-container.my-order .col-md-12 h4::after {content:"\f107"; float: right; font: normal normal normal 14px/1 FontAwesome; font-size: inherit; text-rendering: auto;}
+    .account-container.my-order .col-md-12 h4 + ul {display: none;}
+    .account-container.my-order .col-md-12 h4.active::after {content:"\f106";}
+    .account-container.my-order .col-md-12 h4.active + ul {display: block;}
+    .user-orders .order-no {border: none;}
+    .user-item + .user-item{}
+    .user-item-actions a.lnk {text-decoration: none;}
+
+	.password-forgot-line input[type="email"] {width: 60%;}
+	.password-forgot-line input[type="submit"] {width: 38%;}
+
+  .user-orders .order-actions a {width: 34%;}
+  .user-orders .order-actions a.secondary,
+  .user-orders .order-actions a.primary {width: 64%;}
+
+  .user-home-pages .usualbg.item .order-item-name {width: 30%;}
+
+}
+@media (max-width: 640px) {
+	.block-login-advanced .block-content {border: 0;/* margin: 0 -5%;*/}
+  .block-login.new,
+  .block-login.existing {border: 1px solid #e0e0e0; border-width: 0 0 1px; float: none; padding: 5% 5% 10%; width: auto;}
+  .form.log-in .form-submit input[type="submit"],
+  .block-login-user a {width: 100%;}
+  .account-body .user-home-logout {text-align: center;}
+  .user-item-wrapper {border-width: 0; margin: 0 -20px; width: auto;}
+  .user-item:hover {background: #fff;}
+  .user-item-titles {display: none;}
+  .user-item-line {display: block; text-align: left; width: auto;}
+  .user-item-line + .user-item-line {margin-left: 0;}
+  .user-item .user-item-line {order: 3; padding: .2em 1.5em; width: 100%;}
+  .user-item-line b {display: inline; font-weight: inherit;}
+  .user-item-line b:after {content: " : ";}
+  .user-item-view {margin: 1.5em 0 0; text-align: center;} 
+  .user-home-pages .personal-details div {width: 100%;}
+  .user-orders .order-no {background: #f5f5f5;  margin: 0 0 1.6em; padding: 1em; order: 2; width: 50%;}
+  .user-orders .order-no b:after {content: "";}
+  .user-orders .order-status {background: #f5f5f5; float: right; margin: 0 0 1.6em; width: 50%; overflow: hidden; padding: 1em; text-align: right; order: 3;}
+  .user-orders .order-status b {display: none;}
+  .user-orders .order-actions {padding: 1.6em 1em; width: 100%;}
+  .user-orders .order-actions a {width: 49%;}
+  .user-orders .order-actions a.secondary,
+  .user-orders .order-actions a.primary {width: 49%;}
+  .user-orders .order-actions a.lnk {background: #f5f5f5; border: 1px solid #ddd; padding: 1em;}
+  .user-orders .order-actions a + a {margin-left: 0;}
+  .user-orders .hidden-status {display: inline-block;}
+  .user-orders .visible-status {display: none;}
+
+  .user-carts .cart-id {margin: 1em 0 0;}
+  .user-carts .cart-name {width: auto;}
+  .user-carts .cart-actions + .cart-actions {padding: 1.6em 1em;}
+
+  .user-wishlist .user-item {overflow: hidden; padding: 1em 0 0;}
+  .user-wishlist .user-item-line {margin-left: 50%;}
+  .user-wishlist .wishlist-image {float: left; margin: 0; width: 30%;}
+  .user-wishlist .wishlist-name {width: auto;}
+  .user-wishlist .wishlist-name {margin-top: 1em;}
+  .user-wishlist .wishlist-actions {padding: 1.6em 1em;}
+  .user-wishlist .wishlist-actions:first-child {float: left; margin: 0; width: 20%;}
+
+  .form.user-home .form-line {border-width: 0;}
+  .form.user-home .form-line > label {border-width: 0; margin: 0; padding: .5em 0; width: 100%;}
+  .form.user-home .form-line > span {border-width: 1px; margin: 0; padding: .25em; width: 100%;}
+  .form.user-home .form-submit input[type="submit"] {width: 100%;}
+  .form.user-home .form-submit input[type="submit"] + input[type="submit"] {margin: 1em 0 0;}
+
+}
+@media (max-width: 500px) {
+  .block-password-forgot .block-title {font-size: 1.3125rem;}
+  .password-forgot-line {flex-wrap: wrap;}
+  .password-forgot-line input[type="email"],
+  .password-forgot-line input[type="submit"] {width: 100%;}
+  .password-forgot-line input[type="email"] {margin-bottom: 2%;}
+}
+@media (max-width: 480px) {
+  .order-add {float: none;}
+  .order-invoice {text-align: left;}
+  .user-home-pages .padding6px {border-width: 1px 0;  margin: 0 -20px; width: auto;}
+}
+
+/************	User Profile and Order Info	*****************/

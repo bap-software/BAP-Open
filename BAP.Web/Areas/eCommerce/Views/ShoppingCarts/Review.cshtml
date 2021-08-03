@@ -1,0 +1,255 @@
+﻿@using BAP.eCommerce.Resources
+@model BAP.eCommerce.DAL.Entities.ShoppingCart
+@{
+    ViewBag.Title = ResObject.FieldLabel_ShoppingCart_Checkout;
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+}
+
+<!-- BEGIN #checkout-cart -->
+<div class="section-container" id="checkout-cart">
+    <!-- BEGIN container -->
+    <div class="container">
+        <!-- BEGIN checkout -->
+        <div class="checkout">
+            <form action="@Url.Action("Review")" class="form-horizontal" method="POST" name="form_checkout" role="form" id="ReviewForm">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                <!-- BEGIN checkout-header -->
+                @Html.Partial("_CheckoutHeader", 4)
+                <!-- END checkout-header -->
+                <!-- BEGIN checkout-body -->
+                <div class="checkout-body">
+                    <!-- BEGIN checkout-message -->
+                    <div class="form-group col-xs-12">
+                        <div class="page-header">
+                            <h4>@ResObject.FieldLabel_ShoppingCart_OrderReview</h4>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">@ResObject.FieldLabel_ShoppingCart_BillingAddress</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <address>
+                                        @if (Model.BillingAddress != null)
+                                        {
+                                            <strong>@Model.BillingAddress.FirstName @Model.BillingAddress.LastName</strong><br>
+                                            @Model.BillingAddress.AddressLine1<span> </span> @Model.BillingAddress.AddressLine2<br>
+                                            @Model.BillingAddress.City<span>, </span> @Model.BillingAddress.State<br>
+                                            @Model.BillingAddress.Country<span>, </span> @Model.BillingAddress.Zip
+                                            <span></span>
+                                        }
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">@ResObject.FieldLabel_ShoppingCart_ShippingAddress</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <address>
+                                        @if (Model.ShippingAddress != null)
+                                        {
+                                            <strong>@Model.ShippingAddress.FirstName @Model.ShippingAddress.LastName</strong><br>
+                                            @Model.ShippingAddress.AddressLine1<span> </span>@Model.ShippingAddress.AddressLine2<br>
+                                            @Model.ShippingAddress.City<span>, </span>@Model.ShippingAddress.State<br>
+                                            @Model.ShippingAddress.Country<span>, </span> @Model.ShippingAddress.Zip
+                                            <span></span>
+                                        }
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">@ResObject.FieldLabel_ShoppingCart_PaymentMethod</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <address>
+                                        <div>@(Model.PaymentOption?.Name ?? ResObject.FieldLabel_NA)</div>
+                                        <div>@(Model.PaymentOption?.ShortDescription ?? ResObject.FieldLabel_NA)</div>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">@ResObject.FieldLabel_ShoppingCart_ShippingMethod</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <address>
+                                        <span>@(Model.ShippingOption != null ? Model.ShippingOption.Name : ResObject.FieldLabel_NA)</span>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">@ResObject.FieldLabel_ShoppingCart_OrderDetails</h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-4 col-xs-12">
+                                            <address>
+                                                @if (Model.BillingAddress != null)
+                                                {
+                                                    <a href="mailto:@Model.BillingAddress.ContactEmail">Email: @Model.BillingAddress.ContactEmail</a>
+                                                    if (!string.IsNullOrEmpty(Model.BillingAddress.PhoneNumber))
+                                                    {
+                                                        <br /><span>
+                                                            @ResObject.FieldLabel_Customer_PhoneNumber: @Model.BillingAddress.PhoneNumber
+                                                            @if (!string.IsNullOrEmpty(Model.BillingAddress.PhoneExtension))
+                                                            {
+                                                                <i>@ResObject.FieldLabel_Address_PhoneExtension @Model.BillingAddress.PhoneExtension</i>
+                                                            }
+                                                        </span>
+                                                    }
+                                                    if (!string.IsNullOrEmpty(Model.BillingAddress.CellNumber))
+                                                    {
+                                                        <br /><span>@ResObject.FieldLabel_Customer_CellNumber: @Model.BillingAddress.CellNumber</span>
+                                                    }
+                                                    if (!string.IsNullOrEmpty(Model.BillingAddress.FaxNumber))
+                                                    {
+                                                        <br /><span>@ResObject.FieldLabel_Address_FaxNumber: @Model.BillingAddress.FaxNumber</span>
+                                                    }
+                                                }
+                                            </address>
+                                        </div>
+                                        <div class="col-sm-8 col-xs-12">
+                                            <address>
+                                                @if (!string.IsNullOrEmpty(Model.Notes))
+                                                {
+                                                    <span>@ResObject.FieldLabel_ShoppingCart_AdditionalInformation: </span><br>
+                                                    <p>@Model.Notes</p>
+                                                }
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="cartListInner">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().Product.Name)</th>
+                                                <th>@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().Product.Price)</th>
+                                                <th>@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().Count)</th>
+                                                <th>@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().DiscountCoupon)</th>
+                                                <th>@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().Subtotal)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ShoppingCartProducts)
+                                            {
+                                                <tr>
+                                                    <td class="col-xs-2">
+                                                        <span class="cartImage"><img src="@item.Product.ImagePath" alt="@item.Product.ShortDescription" style="height:80px;"></span>
+                                                    </td>
+                                                    <td class="col-xs-4">
+                                                        @item.Product.Name
+                                                        @if (!string.IsNullOrEmpty(item.OptionsData))
+                                                        {
+                                                            <br />
+                                                            <span style="font-weight:normal;font-size:smaller;">
+                                                                <label>@ResObject.UIText_ProductOptionsInCart</label>
+                                                                <i>@item.OptionsData</i>
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                    <td class="col-xs-2">@Model.Currency.Symbol @item.Product.Price</td>
+                                                    <td class="col-xs-2"><input type="text" placeholder="@item.Count"></td>
+                                                    <td class="col-xs-1">@Model.Currency.Symbol @item.TotalDiscount</td>
+                                                    <td class="col-xs-1">@Model.Currency.Symbol @item.Subtotal</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="totalAmountArea">
+                                    <div class="col-sm-4 col-sm-offset-8 col-xs-12">
+                                        <ul class="list-unstyled">
+                                            @if (Model.TotalDiscounts > 0)
+                                            {
+                                                <li>@Html.DisplayNameFor(model => model.TotalDiscounts) <span>@Model.Currency.Symbol @Html.DisplayFor(m => m.TotalDiscounts)</span></li>
+                                            }
+                                            <li>@Html.DisplayNameFor(model => model.Subtotal) <span>@Model.Currency.Symbol @Html.DisplayFor(m => m.Subtotal)</span></li>
+                                            <li>@Html.DisplayNameFor(model => model.TaxTotal) <span>@Model.Currency.Symbol @Html.DisplayFor(m => m.TaxTotal)</span></li>
+                                            @if (Model.ShippingCost > 0)
+                                            {
+                                                <li>@Html.DisplayNameFor(model => model.ShippingCost) <span>@Model.Currency.Symbol @Html.DisplayFor(m => m.ShippingCost)</span></li>
+                                            }
+                                            <li>@Html.DisplayNameFor(model => model.Total) <span class="grandTotal">@Model.Currency.Symbol @Html.DisplayFor(m => m.Total)</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="page-header">
+                                <h4>@ResObject.FieldLabel_ShoppingCart_TermsAndConditions</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 checkboxArea">
+                            <input id="TermsAndConditions" type="checkbox" name="TermsAndConditions" @(Model.TermsAndConditions ? "checked='checked'" : "")>
+                            <label for="TermsAndConditions"><span></span>@ResObject.FieldLabel_ShoppingCart_IAgreeToThe<a class="link-dark" href="~/Content/Terms.pdf">@ResObject.FieldLabel_ShoppingCart_TermsAndConditions</a></label>
+                        </div>
+                    </div>
+                    <!-- END checkout-message -->
+                </div>
+                <!-- END checkout-body -->
+                <!-- BEGIN checkout-footer -->
+                <div class="checkout-footer">
+                    <a href="@Url.Action("ShippingAndPayment", "ShoppingCarts")" class="btn btn-white btn-lg pull-left">@ResObject.FieldLabel_ShoppingCart_Back</a>
+                    <button type="submit" class="btn btn-inverse btn-lg p-l-30 p-r-30 m-l-10">@ResObject.FieldLabel_ShoppingCart_Confirm</button>
+                </div>
+                <!-- END checkout-footer -->
+            </form>
+        </div>
+        <!-- END checkout -->
+    </div>
+    <!-- END container -->
+</div>
+<!-- END #checkout-cart -->
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#TermsAndConditions').change(function () {
+                UpdateTermsAndConditions(this.checked);
+            });
+        });
+
+        function UpdateTermsAndConditions(checked) {
+            if (checked) {
+                $('#TermsAndConditions').val(true);
+            } else {
+                $('#TermsAndConditions').val(false);
+            }
+        }
+
+    </script>
+}

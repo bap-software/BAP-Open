@@ -1,0 +1,43 @@
+﻿@using BAP.UI.HtmlHelpers
+@using DisplayOptions = BAP.UI.HtmlHelpers.DisplayOptions
+@model BAP.DAL.Entities.State
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name" } })
+    </div>
+    @Html.LabelFor(model => model.ShortName, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.ShortName, new { htmlAttributes = new { @class = "form-control", placeholder = "Short name" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TwoLetterCode, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.TwoLetterCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter two letter code" } })
+    </div>
+    @Html.LabelFor(model => model.ThreeLetterCode, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.ThreeLetterCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter three letter code" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-8">
+        @Html.Raw(Model.Description)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CreateDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.LastModifiedDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>

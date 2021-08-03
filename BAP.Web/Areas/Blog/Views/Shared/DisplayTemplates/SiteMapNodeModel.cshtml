@@ -1,0 +1,34 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapNodeModel
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+
+@if (Model.IsCurrentNode && Model.SourceMetadata["HtmlHelper"].ToString() != "MvcSiteMapProvider.Web.Html.MenuHelper")
+{
+    <text>@Model.Title</text>
+}
+else if (Model.IsClickable)
+{
+    if (string.IsNullOrEmpty(Model.Description))
+    {
+        <a href="@Model.Url">@Model.Title.ToUpperInvariant()</a>
+    }
+    else
+    {
+        if (Model.Children.Any() && Model.Ancestors.Count() == 1)
+        {
+            <a href="@Model.Url" title="@Model.Description" data-toggle="dropdown">@Model.Title.ToUpperInvariant() <b class="caret"></b></a>
+        }
+        else if (Model.Children.Any() && Model.Ancestors.Count() > 1)
+        {
+            <a href="@Model.Url" title="@Model.Description">@Model.Title</a>
+        }
+        else
+        {
+            <a href="@Model.Url" title="@Model.Description">@Model.Title.ToUpperInvariant()</a>
+        }
+    }
+}
+else
+{
+    <text>@Model.Title.ToUpperInvariant()</text>
+}

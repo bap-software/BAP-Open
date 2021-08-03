@@ -1,0 +1,60 @@
+﻿@model BAP.eCommerce.DAL.Entities.Supplier
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ExecutionConfig, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.EditorFor(model => model.ExecutionConfig, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.SupplierActionClasses, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.EditorFor(model => model.SupplierActionClassesDbValue, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>
+     
+<div class="form-group">
+    @Html.LabelFor(model => model.CreatedByUserName, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.CreatedByUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+    @Html.LabelFor(model => model.CreateDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LastModifiedByUserName, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.LastModifiedByUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+    @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-">
+        @Html.EditorFor(model => model.LastModifiedDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>

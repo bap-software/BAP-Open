@@ -1,0 +1,47 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@model BAP.Web.Models.RegisterViewModel
+
+@using (Html.BeginForm("Register", "eCommerceAccount", new { Area = "", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @role = "form" }))
+{
+    var showExtraLiks = true;
+    if (ViewBag.ShortLoginForms != null && !(bool)ViewBag.ShortLoginForms)
+    {
+        showExtraLiks = false;
+    }
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName)
+        @Html.BapTextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName)
+        @Html.BapTextBoxFor(m => m.LastName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.BapTextBoxFor(m => m.Email, new { @class = "form-control", @type = "email" })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @type = "password" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword)
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @type = "password" })
+        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">@Resources.UIText_Submit</button>
+        @if (showExtraLiks)
+        {
+            <a href="@Url.Action("Login", "eCommerceAccount", new { Area = "" })" class="btn btn-link btn-block"><span>Already have an account?</span> Log in</a>
+        }        
+    </div>    
+}

@@ -1,0 +1,289 @@
+@using BAP.Resources
+@using BAP.eCommerce.Resources
+@using PagedList.Mvc;
+@using BAP.BL;
+@using BAP.Lookups
+@using BAP.eCommerce.DAL.Entities;
+@using Newtonsoft.Json;
+@model PagedList.IPagedList<BAP.Web.Areas.eCommerce.Models.ProductModel>
+@{
+    ViewBag.Title = ResObject.UIText_Menu_Shop;
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+    Dictionary<string, string> sortData = (Dictionary<string, string>)ViewBag.SortData;
+    string currentFilter = ViewBag.CurrentFilter ?? "";
+    string currentSort = ViewBag.CurrentSort;
+    string field = string.Empty;
+    string dir = string.Empty;
+    if (!string.IsNullOrWhiteSpace(currentSort))
+    {
+        var exts = currentSort.Split("-".ToCharArray());
+        if (exts.Length > 1)
+        {
+            field = exts[0];
+            dir = exts[1];
+        }
+    }
+    bool isListView = (ViewBag.IsListView != null && ViewBag.IsListView == true);
+
+    var categoriesWithCounts = (IList<KeyValuePair<ProductCategory, int>>)ViewBag.CategoriesWithCount;
+    var manufacturesWithCounts = (IList<KeyValuePair<Manufacturer, int>>)ViewBag.ManufacturesWithCounts;
+    var categories = categoriesWithCounts.Select(c => c.Key).ToList();
+    var selectedCategory = 0;
+
+    var parentSelectedCat = categories.FirstOrDefault(a => a.Selected || (a.ChildCategories != null && a.ChildCategories.Any(b => b.Selected)));
+    ProductCategory selectedCat = null;
+    if (parentSelectedCat != null && parentSelectedCat.ChildCategories != null)
+    {
+        selectedCat = parentSelectedCat.ChildCategories.FirstOrDefault(a => a.Selected);
+    }
+    var currencySymbol = (string)ViewBag.CurrencySymbol;
+    var arr = JsonConvert.DeserializeObject<List<SearchStruct>>(currentFilter);
+    var priceMin = arr != null ? arr.FirstOrDefault(x => x.field == "Price-min") : null;
+    var priceMax = arr != null ? arr.FirstOrDefault(x => x.field == "Price-max") : null;
+    string valueMin = priceMin != null ? currencySymbol + priceMin.value : currencySymbol + "50";
+    string valueMax = priceMax != null ? currencySymbol + priceMax.value : currencySymbol + "500";
+
+    bool quickAddToCart = (bool)ViewBag.QuickAddToCart;
+}
+
+<!-- BEGIN #page-header -->
+<div id="page-header" class="section-container page-header-container bg-black">
+    <!-- BEGIN page-header-cover -->
+    <div class="page-header-cover">
+        <img src="~/Content/Themes/Base/assets/img/cover/cover-13.jpg" alt="" />
+    </div>
+    <!-- END page-header-cover -->
+    <!-- BEGIN container -->
+    <div class="container">
+        <h1 class="page-header">@(string.IsNullOrWhiteSpace(ViewBag.FilterBy) ? ResObject.UIText_ListOfProducts : string.Format(ResObject.UIText_Product_SearchResultsFor, ViewBag.FilterBy))</h1>
+    </div>
+    <!-- END container -->
+</div>
+<!-- BEGIN #page-header -->
+<!-- BEGIN search-results -->
+<div id="search-results" class="section-container bg-silver">
+    <!-- BEGIN container -->
+    <div class="container">
+        <!-- BEGIN search-container -->
+        <div class="search-container">
+            <!-- BEGIN search-content -->
+            <div class="search-content">
+                <!-- BEGIN search-toolbar -->
+                <div class="search-toolbar">
+                    <!-- BEGIN row -->
+                    <div class="row">
+                        <!-- BEGIN col-4 -->
+                        <div class="col-md-4">
+                            <h4>@(string.IsNullOrWhiteSpace(ViewBag.FilterBy) ? ResObject.UIText_AllProducts : string.Format(ResObject.UIText_Product_WeFoundItemsFor, @Model.Count, ViewBag.FilterBy))</h4>
+                        </div>
+                        <!-- END col-4 -->
+                        <!-- BEGIN col-8 -->
+                        <div class="col-md-8 text-right">
+                            <ul class="sort-list">
+                                <li class="text"><i class="fa fa-filter"></i> @Resources.UIText_SortBy:</li>
+                                <li class="active">
+                                    @Helpers.ProductSortingLink("Sales", "desc", ResObject.FieldLabel_Product_Popular, field, dir, sortData)
+                                </li>
+                                <li>
+                                    @Helpers.ProductSortingLink("LastModifiedDate", "desc", ResObject.FieldLabel_Product_NewArrival, field, dir, sortData)
+                                </li>
+                                <li>
+                                    @Helpers.ProductSortingLink("Discount", "desc", ResObject.FieldLabel_Product_Discount, field, dir, sortData)
+                                </li>
+                                <li>
+                                    @Helpers.ProductSortingLink("Price", "asc", ResObject.FieldLabel_Product_Price, field, dir, sortData)
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- END col-8 -->
+                    </div>
+                    <!-- END row -->
+                </div>
+                <!-- END search-toolbar -->
+                <!-- BEGIN search-item-container -->
+                <div class="search-item-container">
+                    @if (Model.Any())
+                    {
+                        var index = 1;
+                        @Html.Raw("<div class=\"item-row\">");
+                        foreach (var item in Model)
+                        {
+
+                            @Html.Partial("_ProductListItem", item);
+                            if ((index % 3) == 0)
+                            {
+                                @Html.Raw("</div><div class=\"item-row\">");
+                            }
+                            index++;
+                        }
+                        @Html.Raw("</div>");
+                    }
+                </div>
+                <!-- END search-item-container -->
+                <!-- BEGIN pagination -->
+                @if (Model.PageCount > 1)
+                {
+                    <div class="text-center">
+                        <ul class="pagination m-t-0">
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, pageSize = Model.PageSize, listView = isListView, categoryId = selectedCategory }))
+                        </ul>
+                    </div>
+                }
+                <!-- END pagination -->
+            </div>
+            <!-- END search-content -->
+            <!-- BEGIN search-sidebar -->
+            <div class="search-sidebar">
+                <h4 class="title active"><b>@ResObject.UIText_Product_FilterBy</b></h4>
+                <div>
+                    <form action="@Url.Action("Index", "Products")" id="FullTextSearchLocal" name="FullTextSearchLocal" method="post">
+                        <div class="form-group">
+                            <label class="control-label">@ResObject.UIText_Product_Keywords</label>
+                            <input type="text" class="form-control input-sm search-control local-control" id="fulltext" name="fulltext" placeholder="Enter Keywords" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">@ResObject.FieldLabel_Product_Price</label>
+                            <div class="row row-space-0">
+                                <div class="col-md-5">
+                                    <input type="number" class="form-control input-sm search-control local-control" id="price-min" name="price-min" value="10" placeholder="Price From" />
+                                </div>
+                                <div class="col-md-2 text-center p-t-5 f-s-12 text-muted">@ResObject.UIText_Product_To</div>
+                                <div class="col-md-5">
+                                    <input type="number" class="form-control input-sm search-control local-control" id="price-max" name="price-max" value="10000" placeholder="Price To" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-b-30">
+                            <button type="submit" class="btn btn-sm btn-inverse"><i class="fa fa-search"></i> @ResObject.UIText_Product_Filter</button>
+                        </div>
+                        <input type="hidden" name="currentFilter" id="currentFilter" class="local-control" value="@ViewBag.CurrentFilter">
+                    </form>
+                </div>
+                <h4 class="title m-b-0 active"><b>@ResObject.UIText_Product_Categories</b></h4>
+                <ul class="search-category-list">
+
+
+                    <li><a href="@Url.Action("Index", "Products")">@ResObject.UIText_AllProducts </a></li>
+
+                    @foreach (var categoryWithCount in categoriesWithCounts)
+                    {
+                        var category = categoryWithCount.Key;
+                        <li><a href="@Url.Action("Index", "Products", new { category = category.GetPublicId() })">@category.Name <span class="pull-right">(@categoryWithCount.Value)</span></a></li>
+                    }
+                </ul>
+                <br /><br />
+                <h4 class="title m-b-0"><b>@ResObject.UIText_Product_Manufactures</b></h4>
+                <ul class="search-category-list">
+                    @foreach (var manufacturerWithCount in manufacturesWithCounts)
+                    {
+                        var manufacturer = manufacturerWithCount.Key;
+                        <li><a href="@Url.Action("Index", "Products", new { manufacturer = manufacturer.Name })">@manufacturer.Name <span class="pull-right">(@manufacturerWithCount.Value)</span></a></li>
+                    }
+                </ul>
+            </div>
+            <!-- END search-sidebar -->
+        </div>
+        <!-- END search-container -->
+    </div>
+    <!-- END container -->
+</div>
+<style>
+    .search-sidebar h4.title + ul, .search-sidebar h4.title + div {
+        display: none;
+    }
+
+    .search-sidebar h4.title.active + ul, .search-sidebar h4.title.active + div {
+        display: block;
+    }
+
+    .search-sidebar h4.title::after {
+        content: "\f107";
+        float: right;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: 14px;
+        font-size: inherit;
+        text-rendering: auto;
+    }
+
+    .search-sidebar h4.title.active::after {
+        content: "\f106";
+    }
+
+    .search-item-container .productMasking .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+</style>
+<!-- END search-results -->
+
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var filterText = $("#currentFilter.local-control").val();
+            if (filterText != "") {
+                var searchArr = jQuery.parseJSON(filterText);
+                for (i = 0; i < searchArr.length; i++) {
+                    $("#" + searchArr[i].field + ".local-control").val(searchArr[i].value);
+                }
+            }
+
+            $('#FullTextSearchLocal').submit(function () {
+                var filter = "";
+                var arr = [];
+                $(".search-control.local-control").each(function (index) {
+                    var name = $(this).attr("id");
+                    var value = $(this).val();
+                    arr[index] = { field: name, value: value };
+                });
+                filter += JSON.stringify(arr);
+                console.log(filter);
+                $("#currentFilter.local-control").val(filter);
+            });
+        });
+
+        function OnpageSizeChange() {
+            var url = '@Html.Raw(Url.Action("Index", new { page = 1, sortOrder = currentSort, currentFilter = currentFilter, listView = isListView, categoryId = selectedCategory }))';
+            url += "&pageSize=" + $('#data-table-length').val();
+            window.location = url;
+        }
+
+        function OnPageSortChange() {
+            var sort = $('#data-table-sort').val();
+            var url = '@Html.Raw(Url.Action("Index", new { page = 1, currentFilter = currentFilter, pageSize = Model.PageSize, listView = isListView, categoryId = selectedCategory }))';
+            if(sort != null && sort != "")
+            {
+                url += "&sortOrder=" + sort;
+            }
+            window.location = url;
+        }
+
+        function OnFilter() {
+            var price1 = $("#price-amount-1").val();
+            var price2 = $("#price-amount-2").val();
+            var value1 = parseInt(price1.substring(1, price1.length));
+            var value2 = parseInt(price2.substring(1, price2.length));
+            var url = '@Html.Raw(Url.Action("Index", new { page = 1, sortOrder = currentSort, pageSize = Model.PageSize, listView = isListView, categoryId = selectedCategory }))';
+            var filter = [{ field: "Price-min", value: value1 }, { field: "Price-max", value: value2 }];
+            url += "&currentFilter=" + JSON.stringify(filter);
+            window.location = url;
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.search-sidebar h4.title').on('click', function () {
+                $(this).toggleClass('active');
+            });
+        });
+    </script>
+}

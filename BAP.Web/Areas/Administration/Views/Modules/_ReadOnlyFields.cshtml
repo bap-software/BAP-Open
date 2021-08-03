@@ -1,0 +1,41 @@
+﻿@model BAP.DAL.Entities.Module
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.DisplayFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.DisplayFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.DisplayFor(model => model.Enabled, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    @Html.LabelFor(model => model.GlobalId, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.DisplayFor(model => model.GlobalId, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.DisplayFor(model => model.Roles, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    @Html.LabelFor(model => model.BitMask, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.DisplayFor(model => model.BitMask, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.Raw(Model.Description)
+    </div>
+</div>

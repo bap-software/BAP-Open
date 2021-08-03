@@ -1,0 +1,40 @@
+﻿@model BAP.Web.Models.HomeData
+<div class="range">
+    @if (Model != null && Model.Services != null && Model.Services.Count > 0)
+    {
+        for (int i = 0; i < Model.Services.Count; i++)
+        {
+            if (i % 4 == 0 && i > 0)
+            {
+                <div class="range-spacer veil reveal-xl-inline-block offset-top-50 offset-xl-top-50"></div>
+            }
+
+            if (i == 0)
+            {
+                <div class="cell-sm-6 cell-xl-3" id="S@(Model.Services[i].Id)">
+                    <!-- Icon Box Type 2-->
+                    <div class="unit unit-sm unit-sm-horizontal text-sm-left">
+                        <div class="unit-left"><span class="icon text-gray mdi @Model.Services[i].IconClass"></span></div>
+                        <div class="unit-body">
+                            <h4 class="text-bold text-uppercase offset-sm-top-14">@Model.Services[i].Name</h4>
+                            <p>@Model.Services[i].Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="cell-sm-6 cell-xl-3 offset-top-50 offset-xl-top-0" id="S@(Model.Services[i].Id)">
+                    <!-- Icon Box Type 2-->
+                    <div class="unit unit-sm unit-sm-horizontal text-sm-left">
+                        <div class="unit-left"><span class="icon text-gray mdi @Model.Services[i].IconClass"></span></div>
+                        <div class="unit-body">
+                            <h4 class="text-bold text-uppercase offset-sm-top-14">@Model.Services[i].Name</h4>
+                            <p>@Model.Services[i].Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>

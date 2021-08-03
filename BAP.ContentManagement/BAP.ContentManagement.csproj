@@ -1,0 +1,452 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3C714079-9678-4E1E-A6E4-6EB07D02AD33}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BAP.ContentManagement</RootNamespace>
+    <AssemblyName>BAP.ContentManagement</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
+    <OutputPath>bin\Dev\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugCms|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugCms\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.10.0.30320\lib\net40\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.TextTemplating.Interfaces.11.0.11.0.50728\lib\net45\Microsoft.VisualStudio.TextTemplating.Interfaces.11.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BAPVirtualPathProvider.cs" />
+    <Compile Include="CMSAction.cs" />
+    <Compile Include="CMSController.cs" />
+    <Compile Include="CMSEngine.cs" />
+    <Compile Include="CMSNode.cs" />
+    <Compile Include="CMSRoute.cs" />
+    <Compile Include="DesignComponents\CountryDropdownCtrl\CountryDropdown.cs" />
+    <Compile Include="DesignComponents\CountryDropdownCtrl\CountryDropdownJavaScript.cs">
+      <DependentUpon>CountryDropdownJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\CountryDropdownCtrl\CountryDropdownTemplate.cs">
+      <DependentUpon>CountryDropdownTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\GoogleCaptchaCtrl\GoogleCaptcha.cs" />
+    <Compile Include="DesignComponents\GoogleCaptchaCtrl\GoogleCaptchaJavaScript.cs">
+      <DependentUpon>GoogleCaptchaJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\GoogleCaptchaCtrl\GoogleCaptchaTemplate.cs">
+      <DependentUpon>GoogleCaptchaTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\GoogleMapCtrl\GoogleMap.cs" />
+    <Compile Include="DesignComponents\GoogleMapCtrl\GoogleMapTemplate.cs">
+      <DependentUpon>GoogleMapTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\GoogleMapCtrl\GoogleMapJavaScript.cs">
+      <DependentUpon>GoogleMapJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\ImageCtrl\Image.cs" />
+    <Compile Include="DesignComponents\ImageCtrl\ImageJavaScript.cs">
+      <DependentUpon>ImageJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\ImageCtrl\ImageTemplate.cs">
+      <DependentUpon>ImageTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\LookupCtrl\Lookup.cs" />
+    <Compile Include="DesignComponents\LookupCtrl\LookupJavaScript.cs">
+      <DependentUpon>LookupJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\LookupCtrl\LookupTemplate.cs">
+      <DependentUpon>LookupTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\SocialLinksCtrl\SocialLinks.cs" />
+    <Compile Include="DesignComponents\SocialLinksCtrl\SocialLinksJavaScript.cs">
+      <DependentUpon>SocialLinksJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\SocialLinksCtrl\SocialLinksTemplate.cs">
+      <DependentUpon>SocialLinksTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\TableCtrl\Table.cs" />
+    <Compile Include="DesignComponents\TableCtrl\TableJavaScript.cs">
+      <DependentUpon>TableJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\TableCtrl\TableTemplate.cs">
+      <DependentUpon>TableTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\YouTubeCtrl\YouTube.cs" />
+    <Compile Include="DesignComponents\YouTubeCtrl\YouTubeJavaScript.cs">
+      <DependentUpon>YouTubeJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\YouTubeCtrl\YouTubeTemplate.cs">
+      <DependentUpon>YouTubeTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\HyperLinkCtrl\HyperLink.cs" />
+    <Compile Include="DesignComponents\HyperLinkCtrl\HyperLinkJavaScript.cs">
+      <DependentUpon>HyperLinkJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\HyperLinkCtrl\HyperLinkTemplate.cs">
+      <DependentUpon>HyperLinkTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\PageAuthorCtrl\PageAuthor.cs" />
+    <Compile Include="DesignComponents\PageAuthorCtrl\PageAuthorJavaScript.cs">
+      <DependentUpon>PageAuthorJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\PageAuthorCtrl\PageAuthorTemplate.cs">
+      <DependentUpon>PageAuthorTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\PageKeywordsCtrl\PageKeywords.cs" />
+    <Compile Include="DesignComponents\PageKeywordsCtrl\PageKeywordsJavaScript.cs">
+      <DependentUpon>PageKeywordsJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\PageKeywordsCtrl\PageKeywordsTemplate.cs">
+      <DependentUpon>PageKeywordsTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\PageDescriptionCtrl\PageDescription.cs" />
+    <Compile Include="DesignComponents\PageDescriptionCtrl\PageDescriptionJavaScript.cs">
+      <DependentUpon>PageDescriptionJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\PageDescriptionCtrl\PageDescriptionTemplate.cs">
+      <DependentUpon>PageDescriptionTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\PageTitleCtrl\PageTitle.cs" />
+    <Compile Include="DesignComponents\PageTitleCtrl\PageTitleJavaScript.cs">
+      <DependentUpon>PageTitleJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\PageTitleCtrl\PageTitleTemplate.cs">
+      <DependentUpon>PageTitleTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\GoogleAnalyticsCtrl\GoogleAnalyticsJavaScript.cs">
+      <DependentUpon>GoogleAnalyticsJavaScript.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\TrivialControls\Hr.cs" />
+    <Compile Include="DesignComponents\GoogleAnalyticsCtrl\GoogleAnalytics.cs" />
+    <Compile Include="DesignComponents\TrivialControls\Nbsp.cs" />
+    <Compile Include="DesignComponents\EditableHtml\EditableHtmlCtrl.cs" />
+    <Compile Include="DesignComponents\TrivialControls\CSharp.cs" />
+    <Compile Include="DesignComponents\TrivialControls\JavaScript.cs" />
+    <Compile Include="DesignComponents\StaticHtml\StaticHtmlCtrl.cs" />
+    <Compile Include="DesignComponents\GoogleAnalyticsCtrl\GoogleAnalyticsTemplate.cs">
+      <DependentUpon>GoogleAnalyticsTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\TrivialControls\UpperNavigation.cs" />
+    <Compile Include="DesignComponents\DesignComponentGroup.cs" />
+    <Compile Include="DesignComponents\DesignComponents.cs" />
+    <Compile Include="DesignComponents\EditableHtml\EditableHtmlJavaScript.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableHtmlJavaScript.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DesignComponents\StaticHtml\StaticHtmlTemplate.cs">
+      <DependentUpon>StaticHtmlTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DesignComponents\EditableHtml\EditableHtmlTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableHtmlTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerSettings\PageSettings.cs" />
+    <Compile Include="CMSEngineConfig.cs" />
+    <Compile Include="HttpHandlers\BAPAliasRouteHandler.cs" />
+    <Compile Include="HttpHandlers\BAPRouteHandler.cs" />
+    <Compile Include="IContentExtendable.cs" />
+    <Compile Include="IContentManagable.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BAP.BL\BAP.BL.csproj">
+      <Project>{3e43f6ca-8a8b-4944-8f62-0009b2492516}</Project>
+      <Name>BAP.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.Common\BAP.Common.csproj">
+      <Project>{01dcd4d5-fd00-4447-af2e-85b4c5fbd3f6}</Project>
+      <Name>BAP.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.DAL\BAP.DAL.csproj">
+      <Project>{fbbb9694-cf15-427a-9ab9-39cc0b6aea7e}</Project>
+      <Name>BAP.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.FileSystem\BAP.FileSystem.csproj">
+      <Project>{33ba442f-0ef9-4e2f-8424-5dbee4aeab3a}</Project>
+      <Name>BAP.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.Log\BAP.Log.csproj">
+      <Project>{604a4ce4-92dc-4692-b257-b0dda86f38c4}</Project>
+      <Name>BAP.Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.Resources\BAP.Resources.csproj">
+      <Project>{22d6cd05-3ac0-425b-804b-8f94ff448937}</Project>
+      <Name>BAP.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\PagedList.css" />
+    <Content Include="DesignComponents\EditableHtml\EditableHtmlJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EditableHtmlJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\CountryDropdownCtrl\CountryDropdownJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CountryDropdownJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\CountryDropdownCtrl\CountryDropdownTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CountryDropdownTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\GoogleCaptchaCtrl\GoogleCaptchaJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GoogleCaptchaJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\GoogleCaptchaCtrl\GoogleCaptchaTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GoogleCaptchaTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\GoogleMapCtrl\GoogleMapTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GoogleMapTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\GoogleMapCtrl\GoogleMapJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GoogleMapJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\ImageCtrl\ImageJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ImageJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\ImageCtrl\ImageTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ImageTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\LookupCtrl\LookupJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>LookupJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\LookupCtrl\LookupTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>LookupTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\SocialLinksCtrl\SocialLinksJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SocialLinksJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\SocialLinksCtrl\SocialLinksTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SocialLinksTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\TableCtrl\TableJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TableJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\TableCtrl\TableTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TableTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\YouTubeCtrl\YouTubeJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>YouTubeJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\YouTubeCtrl\YouTubeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>YouTubeTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\HyperLinkCtrl\HyperLinkJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>HyperLinkJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\HyperLinkCtrl\HyperLinkTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>HyperLinkTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\PageAuthorCtrl\PageAuthorJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageAuthorJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\PageAuthorCtrl\PageAuthorTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageAuthorTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\PageKeywordsCtrl\PageKeywordsJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageKeywordsJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\PageKeywordsCtrl\PageKeywordsTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageKeywordsTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\PageDescriptionCtrl\PageDescriptionJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageDescriptionJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\PageDescriptionCtrl\PageDescriptionTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageDescriptionTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\PageTitleCtrl\PageTitleJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageTitleJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\PageTitleCtrl\PageTitleTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PageTitleTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\README.txt" />
+    <Content Include="DesignComponents\StaticHtml\StaticHtmlTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StaticHtmlTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\EditableHtml\EditableHtmlTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EditableHtmlTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\GoogleAnalyticsCtrl\GoogleAnalyticsJavaScript.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GoogleAnalyticsJavaScript.cs</LastGenOutput>
+    </Content>
+    <Content Include="DesignComponents\GoogleAnalyticsCtrl\GoogleAnalyticsTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GoogleAnalyticsTemplate.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

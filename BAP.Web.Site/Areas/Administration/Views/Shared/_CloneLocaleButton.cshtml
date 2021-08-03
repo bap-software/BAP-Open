@@ -1,0 +1,48 @@
+﻿@using BAP.Common;
+@using BAP.Resources;
+@model IBapEntity
+@{
+    var entity = Model;
+    var showButton = false;
+    string[] otherCultures = null;
+
+    if (entity != null && entity is ISupportLocalization)
+    {
+        showButton = true;
+
+        BAP.DAL.AuthorizationContext authContext = ViewBag.AuthContextInstance;
+        var organization = authContext.GetCurrentOrganization((IConfigHelper)ViewBag.ConfigHelperInstance);
+        var cultureHelper = new CultureHelper(organization.ImplementedCultures);
+        var currentCulture = cultureHelper.GetCurrentCulture();
+        otherCultures = cultureHelper.CulturesOtherThanCurrent();
+    }
+}
+@if (showButton && otherCultures != null && otherCultures.Length > 0)
+{
+    <div style="float:left;width:1px;">
+        <form method="post" action="@Url.Action("CloneLocale")" id="CloneLocaleForm">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="entity" name="entity" value="@entity.GetType().Name" />
+            <input type="hidden" id="id" name="id" value="@Model.Id" />
+            <input type="hidden" id="to_lng" name="to_lng" value="@otherCultures[0]" />
+        </form>
+    </div>
+    if (otherCultures.Length > 1)
+    {
+        <select name="cmbOtherLng" id="cmbOtherLng" class="btn">
+            @foreach (var lng in otherCultures)
+            {
+                <option value="@lng">@lng</option>
+            }            
+        </select>
+        <script>
+            $('#cmbOtherLng').on('change', function () {
+                $("#to_lng").val((this.value));
+            });
+        </script>
+    }
+
+    <a class="btn btn-default btn-default" title="@Resources.UIText_CloneLocale" onclick="$('#CloneLocaleForm').submit();"><i class="fa fa-language"></i></a>
+}
+
+

@@ -1,0 +1,70 @@
+﻿@using BAP.Resources
+@using BAP.eCommerce.Resources
+@model BAP.DAL.Entities.Organization
+@{
+    ViewBag.Title = Resources.EntityLabel_Organization + " " + Resources.UIText_Details;
+    var currentTab = "details";
+    if (ViewBag.CurrentTab != null)
+    {
+        currentTab = (string)ViewBag.CurrentTab;
+    }
+}
+
+<form action="@Url.Action("AddUser")" method="post" class="form-horizontal form-bordered" novalidate>
+    <div class="form-group">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+    </div>
+    <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                <thead>
+                    <tr>
+                        <th width="10%">@Resources.UIText_Actions</th>
+                        <th>@Html.DisplayNameFor(model => model.Users.First().FullName)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Users != null && Model.Users.Count > 0)
+                    {
+                        foreach (var item in Model.Users)
+                        {
+                            <tr>
+                                <td>
+                                    <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", "OrganizationUsers", new {id=item.Id})">
+                                        <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
+                                    </a>
+                                    <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="@Url.Action("Edit", "OrganizationUsers", new {id=item.Id})">
+                                        <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
+                                    </a>
+                                    @if (ViewBag.CurrentUserId != item.AspNetUserId)
+                                    {
+                                        <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", "OrganizationUsers", new { id = item.Id })">
+                                            <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                        </a>
+                                        <a title="@Resources.UIText_Lock" style="text-decoration: none;" href="@Url.Action("Lock", "OrganizationUsers", new { id = item.Id })">
+                                            <i class="glyphicon glyphicon-lock" aria-hidden="true"></i>
+                                        </a>
+                                        <a title="@Resources.UIText_Unlock" style="text-decoration: none;" href="@Url.Action("Unlock", "OrganizationUsers", new { id = item.Id })">
+                                            <i class="glyphicon glyphicon-leaf" aria-hidden="true"></i>
+                                        </a>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">@ResObject.UIText_Organization_NoUsersSelected</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+

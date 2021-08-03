@@ -1,0 +1,62 @@
+﻿@using BAP.Resources;
+@using System.Web.Mvc.Html
+@model BAP.DAL.Entities.WorkflowStageTransition
+
+@{
+    ViewBag.Title = Model.Workflow.Name + " " + Resources.EntityLabel_WorkflowStageTransitions + " " + Model.Name + " " + Resources.UIText_Details;
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("Index", "WorkflowStageTransitions", new { Area = "Administration"})" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>
+    <a href="@Url.Action("Edit", new { Area = "Administration", Id = Model.Id})" class="btn btn-default btn-default btn-success" title="@Resources.UIText_Edit"><i class="glyphicon glyphicon-edit"></i></a> 
+    @Resources.EntityLabel_WorkflowStageTransitions<small></small>
+</h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-body panel-form">
+                <div class="form-horizontal form-bordered" novalidate>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = @"form-control", @readonly = "readonly" } })
+                        </div>
+
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal form-bordered" novalidate>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FromStage, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.FromStage.Name, new { htmlAttributes = new { @class = @"form-control", @readonly = "readonly" } })
+                        </div>
+
+                        @Html.LabelFor(model => model.ToStage, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.ToStage.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_TransitionActionList")

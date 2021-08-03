@@ -1,0 +1,68 @@
+﻿@using System.Threading
+@using BAP.Common
+@using BAP.Resources
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@using Microsoft.AspNet.Identity
+
+@{ 
+    var fLng = Thread.CurrentThread.CurrentCulture.Name;
+    var country = fLng.Split("-".ToCharArray())[1];
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = authContext.GetCurrentOrganization(config);
+}
+
+<!-- begin navbar-collapse -->
+<div class="collapse navbar-collapse" id="header-navbar">
+    <ul class="nav navbar-nav navbar-right">
+
+        <li class="active dropdown">
+            <a href="#home" data-click="scroll-to-target" data-toggle="dropdown">@Resources.UIText_Menu_Index <b class="caret"></b></a>
+            <ul class="dropdown-menu dropdown-menu-left animated fadeInDown">
+                <li><a href="#about" data-click="scroll-to-target">@Resources.UIText_Menu_About</a></li>
+                <li><a href="#service" data-click="scroll-to-target">@Resources.UIText_Menu_Services</a></li>
+                <li><a href="#pricing" data-click="scroll-to-target">@Resources.UIText_Menu_Pricing</a></li>
+                <li><a href="#contact" data-click="scroll-to-target">@Resources.UIText_Menu_Contact</a></li>
+            </ul>
+        </li>
+        @Html.MvcSiteMap().Menu(false)
+
+        @if (Request.IsAuthenticated)
+        {
+            <li class="dropdown">
+                <a href="#"><i class="fa fa-user"></i> @Resources.UIText_Hello @User.Identity.GetUserName()! <span class="caret selectbox-caret"></span></a>
+                <ul class="dropdown-menu dropdown-menu-left animated fadeInDown">
+                    <li><a href="@Url.Action("Index", "Manage", new { Area = "" })"><i class="fa fa-cog"></i> @Resources.UIText_ManageLink</a></li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i> @(Resources.UIText_LogOffLink)</a></li>
+                </ul>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="#" id="loginModalLink"><i class="fa fa-sign-in"></i> @Resources.UIText_LoginLink</a>
+            </li>
+            <li>
+                <a href="#" id="registerModalLink"><i class="fa fa-user"></i> @Resources.UIText_RegisterLink</a>
+            </li>
+        }
+
+        <li class="dropdown dropdown-hover">
+            <a href="#" data-toggle="dropdown"><span class="flag-icon flag-icon-@country.ToLower()"></span> @country <span class="caret selectbox-caret"></span></a>
+            <ul class="dropdown-menu">
+                @foreach (var cult in currOrg.ImplementedCultures)
+                {
+                    var cultCountry = cult.Split("-".ToCharArray())[1];
+                    <li>
+                        <a href="/Home/ChangeLanguage?lng=@cult"><span class="flag-icon flag-icon-@cultCountry.ToLower()"></span> @cultCountry</a>
+                    </li>
+                }
+            </ul>
+        </li>
+    </ul>
+</div>
+<form id="logoutForm" method="post" action="@Url.Action("LogOff", "Account", new { Area = "", })">
+@Html.AntiForgeryToken()
+</form>
+<!-- end navbar-collapse -->

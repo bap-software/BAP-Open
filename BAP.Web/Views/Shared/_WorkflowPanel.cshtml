@@ -1,0 +1,325 @@
+﻿@using BAP.Workflow
+@using BAP.DAL.Entities
+@using BAP.Resources;
+@using BAP.eCommerce.Resources
+@model BAP.Common.IBapEntity
+@{
+    List<WorkflowClass> availableFlows = (List<WorkflowClass>)ViewBag.AvailableWorkflows;
+    IWorkflowView currentWorkflow = (IWorkflowView)ViewBag.CurrentWorkflow;
+}
+
+<style>
+    .workflow-panel {
+        background-color: antiquewhite;
+    }
+
+        .workflow-panel hr {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .workflow-panel .form-bordered {
+            padding: 10px;
+        }
+
+        .workflow-panel p4 {
+            font-weight: bolder;
+        }
+
+        .workflow-panel ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px 0 0 0;
+        }
+
+            .workflow-panel ul li.workflow-stage {
+                display: inline;
+            }
+
+        .workflow-panel a:hover {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    .panel-inverse > .panel-heading-flow {
+        background-color: #49b6d6;
+    }
+
+        .panel-inverse > .panel-heading-flow:hover {
+            background-color: #3a92ab;
+        }
+
+    .panel-inverse > .panel-heading-flow-active {
+        background-color: #f0ad4e;
+    }
+
+        .panel-inverse > .panel-heading-flow-active:hover {
+            background-color: #ec971f;
+        }
+
+    .btn-action {
+        font-size: xx-small;
+        height: 21px;
+        padding-top: 4px;
+    }
+</style>
+
+@if (currentWorkflow != null)
+{
+    @Html.Partial("_AttachDocument", new Attachment() { Object = currentWorkflow.EntityClassName, ObjectId = currentWorkflow.EntityId })
+}
+
+<div class="workflow-panel">
+    <div class="panel panel-inverse">
+        <div class="panel-heading">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+            </div>
+            <h4 class="panel-title">@Resources.UIText_WFBusProcessTitle</h4>
+        </div>
+        <div class="panel-body panel-form">
+            <div class="form-horizontal form-bordered" novalidate>
+                @if (availableFlows != null && availableFlows.Any())
+                {
+                    <div class="col-md-4">
+                        <form action="@Url.Action("ChooseWorkflow")" method="POST" role="form" id="WorkflowChooseForm">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+                            <label>@Resources.UIText_ChooseBusinessFlow</label>
+                            <select id="WorkflowClassId" name="WorkflowClassId" class="form-control">
+                                <option>@Resources.UIText_DropDown_SelectOption</option>
+                                @foreach (var wf in availableFlows)
+                                {
+                                    <option value="@wf.Id">@wf.Name</option>
+                                }
+                            </select>
+                            <button class="btn btn-default btn-success" type="submit">@Resources.UIText_Submit</button>
+                        </form>
+                    </div>                    
+                }
+                else if (currentWorkflow != null)
+                {
+                    var index = 1;
+                    <form action="@Url.Action("Workflow")" method="POST" role="form" id="WorkflowForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="Id" name="Id" value="@currentWorkflow.EntityId" />
+                        <input type="hidden" id="actionId" name="actionId" value="" />
+                        <input type="hidden" id="transitionId" name="transitionId" value="" />
+                        <input type="hidden" id="transitionComment" name="transitionComment" value="" />
+                        <input type="hidden" id="attribsJson" name="attribsJson" value="" />
+                        <div class="panel-group" id="accordion">
+                            @if (currentWorkflow.StageViews.Any(a => a.State == StageState.Passed))
+                            {
+                                foreach (var stage in currentWorkflow.StageViews.Where(a => a.State == StageState.Passed).OrderBy(a => a.CompletedAt))
+                                {
+                                    var isAnyContent = currentWorkflow.TransitionViews.Any(a => a.State == TransitionState.Done && a.ToStageName == stage.Name);
+                                    index++;
+                                    <div class="panel panel-inverse overflow-hidden">
+                                        <div class="panel-heading panel-heading-flow">
+                                            <h5 class="panel-title">
+                                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="@(isAnyContent ? "collapse" : "")" data-parent="#accordion" href="#collapse@(index)" aria-expanded="false">
+                                                    <i class="fa fa-plus-circle pull-right"></i>
+                                                    @stage.Name <span class="pull-right">@stage.CompletedAt.ToString("dd.MM.yyyy hh:mm")</span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        @if (isAnyContent)
+                                        {
+                                            <div id="collapse@(index)" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    @foreach (var trans in currentWorkflow.TransitionViews.Where(a => a.State == TransitionState.Done && a.ToStageName == stage.Name).OrderBy(a => a.TransitionedAt))
+                                                    {
+                                                        if (trans.Actions != null && trans.Actions.Any())
+                                                        {
+                                                            <h5>@Resources.UIText_WFActionsRRequiredTitle</h5>
+                                                            <ul>
+                                                                @foreach (var action in trans.Actions.Where(a => a.State == ActionState.Completed))
+                                                                {
+                                                                    <li>
+                                                                        @action.Name (@action.State)
+                                                                        <span class="pull-right">
+                                                                            <a href="javascript:ShowActionParameters(@action.MetaId, '@action.AttributesJson', true)">@action.LastCompletedAt.ToString("dd.MM.yyyy hh:mm")</a>
+                                                                        </span>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                            <hr />
+                                                        }
+
+                                                        <div class="row" style="margin-bottom: 10px;">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <h5>Comments on transition:</h5>
+                                                                @trans.Comments
+                                                            </div>
+                                                        </div>
+                                                        if (trans.Attachments != null)
+                                                        {
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <h5>@Resources.UIText_Attachments:</h5>
+                                                                    <ul style="padding-top:0px;">
+                                                                        @foreach (var item in trans.Attachments)
+                                                                        {
+                                                                            <li>
+                                                                                <span class="pull-left" style="margin-right:5px;">
+                                                                                    <a title="@ResObject.FieldLabel_Download" style="text-decoration: none;" href="/file/@item.DownloadUrl" target="_blank">
+                                                                                        <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
+                                                                                    </a>
+                                                                                </span>
+                                                                                <span class="pull-left">@item.Title</span>
+                                                                                <span class="pull-right">@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                                                                                <br />
+                                                                                <hr />
+                                                                            </li>
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                }
+                            }
+
+                            @if (currentWorkflow.CurrentTransitionViews != null && currentWorkflow.CurrentTransitionViews.Count > 0)
+                            {
+                                foreach (var transUId in currentWorkflow.CurrentTransitionViews)
+                                {
+                                    var trans = currentWorkflow.TransitionViews.FirstOrDefault(a => a.UniqueId == transUId);
+                                    index++;
+                                    <div class="panel panel-inverse overflow-hidden">
+                                        <div class="panel-heading panel-heading-flow-active">
+                                            <h5 class="panel-title">
+                                                <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapse@(index)" aria-expanded="false">
+                                                    <i class="fa fa-plus-circle pull-right"></i>
+                                                    @trans.ToStageName
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapse@(index)" class="panel-collapse collapse in" aria-expanded="false">
+                                            <div class="panel-body">
+                                                @if (trans.Actions != null && trans.Actions.Any())
+                                                {
+                                                    <h5>@Resources.UIText_WFActionsRRequiredTitle</h5>
+                                                    <ul>
+                                                        @foreach (var action in trans.Actions)
+                                                        {
+                                                            <li>
+                                                                @action.Name (@action.State)
+                                                                <span class="pull-right">
+                                                                    @if (action.State == ActionState.Completed)
+                                                                    {
+                                                                        <a href="javascript:ShowActionParameters(@action.MetaId, '@action.AttributesJson', true)">@action.LastCompletedAt.ToString("dd.MM.yyyy hh:mm")</a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a href="javascript:DoAction(@action.MetaId, '@action.AttributesJson');" class="btn btn-success btn-small btn-action">@Resources.UIText_WFActionDoIt</a>
+                                                                    }
+                                                                </span>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                    <hr />
+                                                }
+                                                <h5>@Resources.UIText_WFPutCommentsTitle</h5>
+                                                <textarea id="TransitionComment@(index)" name="TransitionComment@(index)" rows="3" placeholder="@Resources.UIText_WFCommentsHere" class="form-control"></textarea>
+                                                <br />
+
+                                                @if (trans.Attachments != null && trans.Attachments.Any())
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <h5>@Resources.UIText_Attachments:</h5>
+                                                            <ul style="padding-top:0px;">
+                                                                @foreach (var item in trans.Attachments)
+                                                                {
+                                                                    <li>
+                                                                        <span class="pull-left" style="margin-right:5px;">
+                                                                            <a title="@ResObject.FieldLabel_Download" style="text-decoration: none;" href="/file/@item.DownloadUrl" target="_blank">
+                                                                                <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="#" onclick="deleteWorkflowAttachment('@item.AttachmentId')">
+                                                                                <i class="glyphicon glyphicon-remove"></i>
+                                                                            </a>
+                                                                        </span>
+                                                                        <span class="pull-left">@item.Title</span>
+                                                                        <span class="pull-right">@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                                                                        <br />
+                                                                        <hr />
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                @if (trans.State == TransitionState.Ready)
+                                                {
+                                                    <a href="javascript:ChooseTransition('@trans.MetaId', '@index');" class="btn btn-info">@Resources.UIText_WFChooseTrans</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="javascript:alert('@Resources.UIText_WFTransIsNotPossible');" class="btn btn-info">@Resources.UIText_WFChooseTrans</a>
+                                                }
+                                                <a href="javascript:AttachDocument('@trans.MetaId');" class="btn btn-info">@Resources.UIText_WFAttachDocument</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <span>@Resources.UIText_NoWorkflow</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_WorkflowActionParams")
+
+<script>
+    function ChooseTransition(transitionId, index) {
+        $("#transitionId").val(transitionId);
+        $("#transitionComment").val($("#TransitionComment" + index).val());
+        document.getElementById("WorkflowForm").submit();
+    }
+
+    function DoAction(actionId, attribsJson) {
+        if (attribsJson) {
+            ShowActionParameters(actionId, attribsJson, false);
+        }
+        else {
+            $("#actionId").val(actionId);
+            document.getElementById("WorkflowForm").submit();
+        }
+    }
+
+    function AttachDocument(transitionId) {
+        //We assume that modal has such field and this way we pass data to it
+        $("#childObjectId").val(transitionId);
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttachDocumentModal").modal(opt);
+    }
+
+    function deleteWorkflowAttachment(id) {
+        BapConfirm('@Resources.UIText_SureToDelete','@Resources.UIText_PleaseConfirm', null,
+            function () {
+                $.post('@(Url.Action("Delete", "Attachments", new { Area = "Administration" }))', { id }, function () {
+                    location.reload();
+                });
+            });
+    }
+</script>

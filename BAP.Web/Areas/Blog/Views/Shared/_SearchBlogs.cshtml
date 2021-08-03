@@ -1,0 +1,14 @@
+﻿@using BAP.Resources
+
+@using (Html.BeginForm("SearchBlogs", "Blogs", FormMethod.Post, new { id = "frmSearchBlogs", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="section-container">
+        <div class="input-group sidebar-search">
+            <input id="searchString" name="searchString" type="text" class="form-control" placeholder="@Resources.FieldLabel_Blog_Search" value="@ViewBag.BlogSearchResults" />
+            <span class="input-group-btn">
+                <button class="btn btn-inverse" type="submit"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+}

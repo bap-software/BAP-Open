@@ -1,0 +1,19 @@
+﻿@using BAP.Resources
+@using BAP.Web.Areas.BlogsArea.Models
+@{
+    var blogCategories = new List<BlogCategory>();
+    if (ViewBag.Categories != null)
+    {
+        blogCategories = (List<BlogCategory>)ViewBag.Categories;
+    }
+}
+
+<div class="section-container">
+    <h4 class="footer-title">@Resources.FieldLabel_Blog_Categories</h4>
+    <ul class="categories">
+        @foreach (var blogCategory in blogCategories)
+        {
+            <li><a href="~/blogs?searchString=@blogCategory.Category.Key">@blogCategory.Category.Text (@blogCategory.BlogNumber)</a></li>
+        }
+    </ul>
+</div>

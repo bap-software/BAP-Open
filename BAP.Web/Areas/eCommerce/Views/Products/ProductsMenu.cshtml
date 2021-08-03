@@ -1,0 +1,179 @@
+﻿@using BAP.Common;
+@using BAP.DAL;
+@using BAP.eCommerce.Resources
+@using BAP.Web.Areas.eCommerce.Models
+@using BAP.UI.HtmlHelpers
+@using MvcSiteMapProvider.Web.Html.Models;
+@model ProductsMenuModel
+@{
+    Layout = null;
+    var products1 = new List<ProductModel>();
+    var products2 = new List<ProductModel>();
+    var products3 = new List<ProductModel>();
+    var products4 = new List<ProductModel>();
+    for (int i = 0; i < Model.Products.Take(20).Count(); i++)
+    {
+        if (i % 4 == 0)
+        {
+            products1.Add(Model.Products[i]);
+        }
+        if (i % 4 == 1)
+        {
+            products2.Add(Model.Products[i]);
+        }
+        if (i % 4 == 2)
+        {
+            products3.Add(Model.Products[i]);
+        }
+        if (i % 4 == 3)
+        {
+            products4.Add(Model.Products[i]);
+        }
+    }
+
+    IConfigHelper settings = ViewBag.ConfigHelperInstance;
+    IAuthorizationContext authContext = ViewBag.AuthContextInstance;
+
+    SiteMapNodeModelList adminMenus = (SiteMapNodeModelList)ViewBag.eShopAdminMenus;
+    var nodes1 = new List<SiteMapNodeModel>();
+    var nodes2 = new List<SiteMapNodeModel>();
+    var nodes3 = new List<SiteMapNodeModel>();
+    var nodes4 = new List<SiteMapNodeModel>();
+    if(adminMenus != null)
+    {
+        int i = 0;
+        foreach (var menu in adminMenus)
+        {
+            if(!menu.Area.Equals("Administration"))
+            {
+                continue;
+            }
+            if (i % 4 == 0)
+            {
+                nodes1.Add(menu);
+            }
+            if (i % 4 == 1)
+            {
+                nodes2.Add(menu);
+            }
+            if (i % 4 == 2)
+            {
+                nodes3.Add(menu);
+            }
+            if (i % 4 == 3)
+            {
+                nodes4.Add(menu);
+            }
+            i++;
+        }
+    }
+}
+<!-- BEGIN dropdown-menu -->
+<div class="dropdown-menu p-0">
+    <!-- BEGIN dropdown-menu-container -->
+    <div class="dropdown-menu-container">
+        <!-- BEGIN dropdown-menu-sidebar -->
+        <div class="dropdown-menu-sidebar">
+            <h4 class="title">@ResObject.UIText_ShopByCategories</h4>
+            <ul class="dropdown-menu-list">
+                <li><a href="@Url.Action("Index", "Products")">@ResObject.UIText_AllProducts <i class="fa fa-angle-right pull-right"></i></a></li>
+                @foreach (var category in Model.Categories)
+                {
+                    <li><a href="@Url.Action("Index", "Products", new { category = category.GetPublicId() })">@category.Name <i class="fa fa-angle-right pull-right"></i></a></li>
+                }
+            </ul>
+        </div>
+        <!-- END dropdown-menu-sidebar -->
+        <!-- BEGIN dropdown-menu-content -->
+        <div class="dropdown-menu-content">
+            @if (Html.IsAdmin(settings, authContext) || Html.IsContentManager(settings, authContext))
+            {
+                <h4 class="title">@ResObject.UIText_Administration</h4>
+                <div class="row">
+                    <div class="col-md-3">
+                        <ul class="dropdown-menu-list">
+                            @foreach (var contentNode in nodes1)
+                            {
+                                <li><a href="@contentNode.Url">@contentNode.Title</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <ul class="dropdown-menu-list">
+                            @foreach (var contentNode in nodes2)
+                            {
+                                <li><a href="@contentNode.Url">@contentNode.Title</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <ul class="dropdown-menu-list">
+                            @foreach (var contentNode in nodes3)
+                            {
+                                <li><a href="@contentNode.Url">@contentNode.Title</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <ul class="dropdown-menu-list">
+                            @foreach (var contentNode in nodes4)
+                            {
+                                <li><a href="@contentNode.Url">@contentNode.Title</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+            <h4 class="title">@ResObject.UIText_ShopByPopularProducts</h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="dropdown-menu-list">
+                        @foreach (var product in products1)
+                        {
+                            <li><a href="@Url.Action("Details", new {pid=product.PID})">@product.Name</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <ul class="dropdown-menu-list">
+                        @foreach (var product in products2)
+                        {
+                            <li><a href="@Url.Action("Details", new {pid=product.PID})">@product.Name</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <ul class="dropdown-menu-list">
+                        @foreach (var product in products3)
+                        {
+                            <li><a href="@Url.Action("Details", new {pid=product.PID})">@product.Name</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <ul class="dropdown-menu-list">
+                        @foreach (var product in products4)
+                        {
+                            <li><a href="@Url.Action("Details", new {pid=product.PID})">@product.Name</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <h4 class="title">@ResObject.UIText_ShopByBrand</h4>
+            <ul class="dropdown-brand-list m-b-0">
+                @foreach (var manufacturer in Model.Manufacturers)
+                {
+                    var brand = manufacturer.Name.ToLowerInvariant();
+                    <li>
+                        <a href="@Url.Action("Index", "Products", new { manufacturer = brand })">
+                            <img src="@manufacturer.LogoImage" alt="@manufacturer.ShortDescription" />
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <!-- END dropdown-menu-content -->
+    </div>
+    <!-- END dropdown-menu-container -->
+</div>
+<!-- END dropdown-menu -->

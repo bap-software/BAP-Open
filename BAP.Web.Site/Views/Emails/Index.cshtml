@@ -1,0 +1,76 @@
+﻿@model IEnumerable<BAP.DAL.Entities.Message>
+
+@{
+    ViewBag.Title = "Emails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.News.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subscriber.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FromAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ToAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CopyAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BlackCopyAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Body)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.News.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subscriber.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FromAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ToAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CopyAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BlackCopyAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subject)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Body)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

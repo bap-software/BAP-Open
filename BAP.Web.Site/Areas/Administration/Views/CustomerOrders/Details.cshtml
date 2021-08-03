@@ -1,0 +1,42 @@
+﻿@using BAP.Resources
+@using BAP.eCommerce.Resources
+@{    
+	ViewBag.Title = @ResObject.EntityLabel_CustomerOrder + " " + @Resources.UIText_Details;
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>@Model.Name</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })">Home</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "CustomerOrders")">@ResObject.EntityLabel_CustomerOrder</a>
+                    </li>
+                    <li class="active">@Model.Name</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix">
+    <div class="container">
+        <div class="row singleProduct">
+            <div class="col-xs-12">    
+                <dl>
+	            @Html.Partial("_ReadOnlyFields")
+                </dl>
+            </div>
+        </div>
+    </div>
+</section>

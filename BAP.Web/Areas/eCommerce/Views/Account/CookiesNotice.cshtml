@@ -1,0 +1,30 @@
+﻿@using BAP.Resources;
+@model bool?
+
+@if (Model != null && Model.Value)
+{
+    <div class="footer clearfix">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-xs-12">
+                    <div class="footerLink">
+                        <h5>@Resources.UIText_Cookies_Header</h5>
+                        <ul class="list-unstyled">
+                            <li>@Resources.UIText_Cookies_Text_Start <a href="http://bap-software.com/Home/PrivacyPolicy" target="_blank">@Resources.UIText_Privacy_Policy</a> @Resources.UIText_Cookies_Text_End  <a href="~/Content/Cookies.pdf" target="_blank">@Resources.UIText_Cookies_Link</a>
+                            </li>                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="newsletter clearfix">
+                        <form action="@Url.Action("ConfirmCookies", "Account", new { Area = "eCommerce", ReturnUrl = Request.Url })" role="form">
+                            <div class="input-group">
+                                <button type="submit" class="pull-right btn btn-default">@Resources.UIText_Cookies_Button</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

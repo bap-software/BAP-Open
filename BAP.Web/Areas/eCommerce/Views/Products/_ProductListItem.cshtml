@@ -1,0 +1,104 @@
+﻿@using BAP.eCommerce.Resources
+@model BAP.Web.Areas.eCommerce.Models.ProductModel
+@{
+    var discount = 0;
+    var mainPrice = Model.Price;
+    var productUrl = Url.Action("Details", new { pid = Model.PID });
+    if (Model.ListPrice > 0 && Model.ListPrice < Model.Price)
+    {
+        discount = (int)(Model.Discount / Model.Price * 100);
+        mainPrice = Model.ListPrice;
+    }
+    if (!string.IsNullOrEmpty(Model.CustomDetailsUrl))
+    {
+        productUrl = Model.CustomDetailsUrl;
+    }
+}
+<div class="item item-thumbnail">
+    <a href="@productUrl" class="item-image">
+        <img src="@Model.ImagePath" alt="" />
+        @if (discount > 0)
+        {
+            <div class="discount">@discount@ResObject.UIText_PercentOff.ToUpper() (@Model.Currency.Symbol@Model.Discount)</div>
+        }
+        @if (Model.IsOutOfStock)
+        {
+            <div class="public-status">@ResObject.UIText_OutOfStock</div>
+        }
+    </a>
+    <div class="item-info">
+        <h4 class="item-title">
+            <a href="@productUrl">@Model.Name @Model.PublicStatus</a>
+        </h4>
+        <p class="item-desc" style="height:auto;">@Html.Raw(Helpers.StripHtml(Model.ShortDescription, 20))</p>
+        <div class="item-price">@Model.Currency.Symbol@mainPrice</div>
+        @if (discount > 0)
+        {
+            <div class="item-discount-price">@Model.Currency.Symbol@Model.Price</div>
+        }
+        else
+        {
+            <div class="item-discount-price" style="text-decoration:none;">&nbsp;</div>
+        }
+    </div>
+    <div class="productMasking">
+        <ul class="list-inline btn-group" role="group">
+            <li><a href="javascript:addToWishlist(@Model.Id, '@Url.Action("AddToWishlist", "Products")', '@ResObject.UIText_ProductAddedToWhishList');" class="btn btn-default"><i class="fa fa-heart"></i></a></li>
+            <li>
+                @if (Model.IsOutOfStock)
+                {
+                    <a disabled class="btn btn-default"><i class="fa fa-shopping-cart"></i></a>
+                }
+                else
+                {
+                    <a onclick="quickAddToCart(event, @Model.Id, 1, '@Guid.NewGuid()', '@Url.Action("QuickAddToCart", "ShoppingCarts")')" class="btn btn-default"><i class="fa fa-shopping-cart"></i></a>
+                }
+            </li>
+            <li><a class="btn btn-default" data-toggle="modal" href=".product@(Model.Id)"><i class="fa fa-eye"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="modal fade quick-view product@(Model.Id)" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="media">
+                    <div class="pull-media">
+                        <img class="media-object" src="@Model.ImagePath" alt="Image">
+                    </div>
+                    <div class="media-body">
+                        <h2>@Model.Name @(Model.IsOutOfStock ? "(" + ResObject.UIText_OutOfStock + ")" : Model.PublicStatus)</h2>
+                        <h3>@Model.Currency.Symbol@Model.Price</h3>
+                        <p>@Html.Raw(Model.ShortDescription)</p>
+                        @if (!Model.IsOutOfStock)
+                        {
+                            <span class="quick-drop resizeWidth">
+                                <input type="number" min="1" max="1000" step="1" id="ProductCount@(Model.Id)" name="ProductCount@(Model.Id)" class="form-control" placeholder="Quantity" value="1" />
+                            </span>
+                        }
+                        <div class="btn-area">
+                            @if (!string.IsNullOrEmpty(Model.CustomDetailsUrl))
+                            {
+                                <a href="@Model.CustomDetailsUrl" class="btn btn-primary btn-block">@BAP.Resources.Resources.UIText_MoreDetails <i class="fa fa-list" aria-hidden="true"></i></a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Details", new { pid=Model.PID })" class="btn btn-primary btn-block">More details <i class="fa fa-list" aria-hidden="true"></i></a>
+                            }
+                            @if (Model.IsOutOfStock)
+                            {
+                                <a disabled class="btn btn-primary btn-block" style="margin-top:0px!important;">Add to cart <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                            }
+                            else
+                            {
+                                <a onclick="quickAddToCart(event, @Model.Id, $('#ProductCount@(Model.Id)').val().IsNullOrEmpty('1'), '@Guid.NewGuid()', '@Url.Action("QuickAddToCart", "ShoppingCarts")')" class="btn btn-primary btn-block" style="margin-top:0px!important;">Add to cart <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

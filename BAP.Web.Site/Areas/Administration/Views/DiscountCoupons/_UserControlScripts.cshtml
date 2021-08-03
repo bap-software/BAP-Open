@@ -1,0 +1,40 @@
+﻿<script>
+        $(document).ready(function () {
+            $(".criteria-operator").change(function () {
+                var thisVal = $(this).val();
+                var fieldId = $(this).attr("data-field-id");
+                if (thisVal == "Between")
+                {
+                    $("div[id='divSecond" + fieldId + "']").show();
+                }
+                else
+                {
+                    $("div[id='divSecond" + fieldId + "']").hide();
+                }
+
+				if(thisVal == "")
+				{
+					$("button[id='btnClean" + fieldId + "']").hide();
+				}
+				else
+				{
+					$("button[id='btnClean" + fieldId + "']").show();
+					$("div[id='row" + fieldId + "']").addClass('values-in-placeholder');
+				}
+            });
+
+			$(".btn-clean-field").click(function (){
+				var fieldId = $(this).attr("data-field-id");
+				$("select[id='oper" + fieldId + "']").val(null);
+				$("input[id='val" + fieldId + "']").val(null);
+				$("select[id='val" + fieldId + "']").val(null).trigger('change');
+                $("div[id='row" + fieldId + "']").removeClass('values-in-placeholder');
+                $("div[id='divSecond" + fieldId + "']").hide();
+				$(this).hide();
+			});
+
+			$(".criteria-field-data").change(function() {
+
+			});
+        });
+</script>

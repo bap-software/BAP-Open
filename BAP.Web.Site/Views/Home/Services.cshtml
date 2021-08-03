@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Services";
+    ViewBag.TitleIcon = "mdi-folder-outline";
+    ViewBag.Description = "BAP Software, business process management software, services supplied by company.";
+}
+
+
+<section class="section-98 section-sm-110">
+    <div class="shell">
+        <h1>What BAP does</h1>
+        <hr class="divider bg-mantis">
+        <p class="inset-left-11p inset-right-11p">Here are list of <a href="@Url.Action("Index","Services")">services</a> provided by Business Automation Plantform. These are out of the box a features of the application wich can be built using BAP. </p>
+        <div class="range offset-top-14">
+            @Html.Partial("_SelfServicesPartial")
+        </div>        
+    </div>
+</section>

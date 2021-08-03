@@ -1,0 +1,65 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.OrganizationService
+@{
+}
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.ImageUrl, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.ImageUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ImageUrl, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.IconClass, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.IconClass, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.IconClass, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">    
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Order, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Order, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-4">        
+        @Html.CheckBoxFor(model => model.Enabled, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })        
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.TextAreaFor(model => model.Description, new { @class = "form-control ckeditor" } )
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>

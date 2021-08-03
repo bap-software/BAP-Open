@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Easy (corporate)</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .container {
+            padding: 20px;
+            width: 800px;
+        }
+
+        .table {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .center {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .right {
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table class="table">
+            <tr>
+                <td colspan="2">
+                    <div class="center">Invoice {CustomerOrder.Id} from {CustomerOrder.CreateDate}</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <th>Bill To:</th>
+                        </tr>
+                        <tr>
+                            <td>{BillingAddress.CompanyName}</td>
+                        </tr>
+                        <tr>
+                            <td>{BillingAddress.FirstName} {BillingAddress.LastName}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {BillingAddress.AddressLine1} {BillingAddress.AddressLine2}
+                                {BillingAddress.Country} {BillingAddress.City} {BillingAddress.State} {BillingAddress.County} {BillingAddress.Zip}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{BillingAddress.Email}</td>
+                        </tr>
+                        <tr>
+                            <td>{BillingAddress.PhoneExtension} {BillingAddress.PhoneNumber}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <th>Ship To:</th>
+                        </tr>
+                        <tr>
+                            <td>{ShippingAddress.CompanyName}</td>
+                        </tr>
+                        <tr>
+                            <td>{ShippingAddress.FirstName} {ShippingAddress.LastName}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {ShippingAddress.AddressLine1} {ShippingAddress.AddressLine2}
+                                {ShippingAddress.Country} {ShippingAddress.City} {ShippingAddress.State} {ShippingAddress.County} {ShippingAddress.Zip}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{ShippingAddress.Email}</td>
+                        </tr>
+                        <tr>
+                            <td>{ShippingAddress.PhoneExtension} {ShippingAddress.PhoneNumber}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <br />
+                    <table class="table" border="1">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Count</th>
+                            <th>Total</th>
+                        </tr>
+                        {ROWS}
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="right">Total: {Total}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

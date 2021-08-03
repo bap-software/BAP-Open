@@ -1,0 +1,65 @@
+﻿@using BAP.DAL
+@using BAP.Resources
+@using BAP.DAL.Entities
+@model List<BlogComment>
+@{
+    var allBlogComments = new List<BlogComment>();
+    if (ViewBag.AllBlogComments != null)
+    {
+        allBlogComments = (List<BlogComment>)ViewBag.AllBlogComments;
+    }
+    var authContext = (IAuthorizationContext)ViewBag.AuthContextInstance;
+    var isAuthenticated = authContext.IsAuthenticated;
+}
+
+@if (Model.Any())
+{
+    <ul id="commentList_@Model.First().ParentCommentId.GetValueOrDefault()" class="comment-list collapse" aria-expanded="false">
+        @foreach (var comment in Model)
+        {
+            var children = allBlogComments.Where(c => c.ParentCommentId == comment.Id).ToList();
+            <li>
+                <!-- begin comment-avatar -->
+                <div class="comment-avatar">
+                    <i class="fa fa-user"></i>
+                </div>
+                <!-- end comment-avatar -->
+                <!-- begin comment-container -->
+                <div class="comment-container">
+                    <div class="comment-author">
+                        @if (children.Any())
+                        {
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#commentList_@comment.Id" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                            <i class="fa fa-chevron-down"></i>
+                            @comment.Author (@comment.Title)
+                        </a>
+                        }
+                        else
+                        {
+                            <span>@comment.Author (@comment.Title)</span>
+                        }
+                        <span class="comment-date">
+                            on <span class="underline">@comment.CreateDate.GetValueOrDefault().ToString("MMMM dd, yyyy")</span> at <span class="underline">@comment.CreateDate.GetValueOrDefault().ToString("hh:mm tt")</span>
+                        </span>
+                    </div>
+                    <div class="comment-content">
+                        @Html.Raw(comment.Text)
+                    </div>
+                    <div class="comment-btn pull-left">
+                        <a href="javascript:void(0)" onclick="onReply(@comment.Id)"><i class="fa fa-reply"></i> @Resources.FieldLabel_Blog_Comment_Reply</a>
+                    </div>
+                    @if (isAuthenticated)
+                    {
+                        <div class="comment-rating">
+                            @Resources.FieldLabel_Blog_Comment_LikeOrDislike:
+                            <a href="javascript:void(0)" class="m-l-10 text-inverse" onclick="likeBlogComment(@comment.Id)"><i class="fa fa-thumbs-up text-success"></i><span id="likeComment_@comment.Id">@comment.LikeNumber</span></a>
+                            <a href="javascript:void(0)" class="m-l-10 text-inverse" onclick="dislikeBlogComment(@comment.Id)"><i class="fa fa-thumbs-down text-danger"></i><span id="dislikeComment_@comment.Id">@comment.DislikeNumber</span></a>
+                        </div>
+                    }
+                    @Html.Partial("_BlogCommentsList", children)
+                </div>
+                <!-- end comment-container -->
+            </li>
+        }
+    </ul>
+}

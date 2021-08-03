@@ -1,0 +1,380 @@
+﻿@using BAP.DAL;
+@using BAP.Common;
+@using BAP.Lookups
+@using BAP.Resources;
+@using BAP.UI.HtmlHelpers;
+@using BAP.ContentManagement.DesignerSettings;
+@model BAP.Web.Areas.Administration.Models.BAPContentManagementData
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+    IConfigHelper configHelper = ViewBag.ConfigHelperInstance;
+    IAuthorizationContext authContext = ViewBag.AuthContextInstance;
+    bool isFullExpand = (Model != null && Model.CurrentNode != null && Model.CurrentNode.Content != null && Model.CurrentNode.Content.Id == 0) || (!ViewData.ModelState.IsValid);
+    var disabledInput = false;
+    PageSettings settings = null;
+    var currentContentNodeId = 0;
+    if (Model != null && Model.CurrentNode != null && Model.CurrentNode.Content != null && Model.CurrentNode.Content.Id > 0)
+    {
+        disabledInput = true;
+        settings = Model.CurrentNode.PageSettings;
+        if (settings == null)
+        {
+            settings = (new PageSettings()).Init();
+        }
+        currentContentNodeId = Model.CurrentNode.Content.Id;
+    }
+    else
+    {
+        settings = (new PageSettings()).Init();
+    }
+    bool isContentManager = Html.IsContentManager(configHelper, authContext);
+}
+<form action="@Url.Action("SavePageSettings")" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="currentUrl" id="currentUrl" value="@Model.CurrentNode.Url" />
+    <input type="hidden" name="currentTab" id="currentTab" value="settings" />
+
+    @Html.HiddenFor(model => model.CurrentNode.Content.Id)
+    @Html.HiddenFor(model => model.CurrentNode.Content.ParentNodeId)
+    @Html.HiddenFor(model => model.CurrentNode.Content.IsHome)
+    @Html.HiddenFor(model => model.CurrentNode.Content.CreateDate)
+    @Html.HiddenFor(model => model.CurrentNode.Content.CreatedBy)
+    @Html.HiddenFor(model => model.CurrentNode.Content.LastModifiedDate)
+    @Html.HiddenFor(model => model.CurrentNode.Content.LastModifiedBy)
+    @Html.HiddenFor(model => model.CurrentNode.Content.TenantUnit)
+    @Html.HiddenFor(model => model.CurrentNode.Content.TenantUnitId)
+    @Html.HiddenFor(model => model.CurrentNode.Content.OwnerGroup)
+    @Html.HiddenFor(model => model.CurrentNode.Content.OwnerPermissions)
+    @Html.HiddenFor(model => model.CurrentNode.Content.RouteUrl)
+    @Html.HiddenFor(model => model.CurrentNode.Content.ActionParams)
+    @Html.HiddenFor(model => model.CurrentNode.Content.CultureCode)
+    @Html.HiddenFor(model => model.CurrentNode.Content.LocalizationId)
+
+    @Html.HiddenFor(model => model.CurrentNode.Expanded)
+    @Html.HiddenFor(model => model.CurrentNode.IsAssembly)
+    @Html.HiddenFor(model => model.CurrentNode.IsController)
+    @Html.HiddenFor(model => model.CurrentNode.IsHome)
+    @Html.HiddenFor(model => model.CurrentNode.IsLeaf)
+    @Html.HiddenFor(model => model.CurrentNode.IsRoot)
+    @Html.HiddenFor(model => model.CurrentNode.IsSerialized)
+    @Html.HiddenFor(model => model.CurrentNode.Title)
+    @Html.HiddenFor(model => model.CurrentNode.Url)
+    @Html.HiddenFor(model => model.CurrentNode.ViewPath)
+
+    <div class="input-group">
+        <button id="btnSaveSettings" type="submit" class="btn btn-success" style="margin-bottom: 10px"><i class="fa fa-save"></i> <span>Save</span></button>
+    </div>
+    <div class="panel-group" id="settingsAccordion">
+        <div class="panel panel-inverse overflow-hidden">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a class="accordion-toggle accordion-toggle-styled setting-pane-click-header @(isFullExpand || settings.CurrentSettingsPane == "General" ? "" : "collapsed")" data-toggle="collapse" data-parent="#settingsAccordion" href="#collapseOne" data-pane-name="General">
+                        <i class="fa fa-plus-circle pull-right"></i>
+                        General
+                    </a>
+                </h3>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse @(isFullExpand || settings.CurrentSettingsPane == "General" ? "in" : "")">
+                <div class="panel-body panel-form">
+                    <div class="form-horizontal form-bordered" data-parsley-validate="true" name="demo-form" novalidate>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.Name, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.Name, new { htmlAttributes = disabledInput ? (object)new { @class = "form-control", @readonly = "readonly" } : (object)new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.Name, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.ShortDescription, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.ShortDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.Description, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-8 col-sm-8">
+                                @Html.TextAreaFor(model => model.CurrentNode.Content.Description, new { @class = "form-control", @rows = 2 })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.LayoutPath, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-8 col-sm-8">
+                                @Html.EditorFor(model => model.CurrentNode.Content.LayoutPath, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.LayoutPath, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.Rating, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.Rating, new { htmlAttributes = new { @class = "form-control", @min = 0 } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.Rating, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.Culture, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.Culture, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.Culture, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.DefaultCss, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.DefaultCss, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.DefaultCss, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.Enabled, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.Enabled, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.Enabled, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.Roles, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.Roles, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.Roles, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.AllowChildren, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.AllowChildren, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.AllowChildren, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-inverse overflow-hidden">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a class="accordion-toggle accordion-toggle-styled setting-pane-click-header @(isFullExpand || settings.CurrentSettingsPane == "Navigation" ? "" : "collapsed")" data-toggle="collapse" data-parent="#settingsAccordion" href="#collapseTwo" data-pane-name="Navigation">
+                        <i class="fa fa-plus-circle pull-right"></i>
+                        Navigation
+                    </a>
+                </h3>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse @(isFullExpand || settings.CurrentSettingsPane == "Navigation" ? "in" : "")">
+                <div class="panel-body panel-form">
+                    <div class="form-horizontal form-bordered" data-parsley-validate="true" name="demo-form" novalidate>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.NavigationType, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @if (disabledInput)
+                                {
+                                    <input type="text" readonly value="@Html.DisplayTextFor(model => model.CurrentNode.Content.NavigationType)" class="form-control" />
+                                    @Html.HiddenFor(model => model.CurrentNode.Content.NavigationType)
+                                }
+                                else
+                                {
+                                    @Html.EnumDropDownListFor(model => model.CurrentNode.Content.NavigationType, Resources.UIText_DropDown_SelectOption, new { @class = "form-control" })
+                                }
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.NavigationType, "", new { @class = "text-danger" })
+
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.MenuCaption, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.MenuCaption, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.MenuCaption, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.Alias, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.Alias, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.Alias, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.AliasPath, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.AliasPath, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.AliasPath, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.ShowInMenu, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.ShowInMenu, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.ShowInMenu, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.ShowInSitemap, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.ShowInSitemap, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.ShowInSitemap, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        @if (!isContentManager || Model.CurrentNode.NodeId < 1)
+                        {
+                            <div class="mvc-route form-group">
+                                @Html.LabelFor(model => model.CurrentNode.Content.Area, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @if (disabledInput)
+                                    {
+                                        @Html.EditorFor(model => model.CurrentNode.Content.Area, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    }
+                                    else
+                                    {
+                                        <select name="CurrentNode.Content.Area" id="CurrentNode_Content_Area" class="form-control"></select>
+                                    }
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.Area, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.LabelFor(model => model.CurrentNode.Content.Controller, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @if (disabledInput)
+                                    {
+                                        @Html.EditorFor(model => model.CurrentNode.Content.Controller, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    }
+                                    else
+                                    {
+                                        <select name="CurrentNode.Content.Controller" id="CurrentNode_Content_Controller" class="form-control"></select>
+                                    }
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.Controller, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="mvc-route form-group">
+                                @Html.LabelFor(model => model.CurrentNode.Content.Action, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @if (disabledInput)
+                                    {
+                                        @Html.EditorFor(model => model.CurrentNode.Content.Action, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    }
+                                    else
+                                    {
+                                        <select name="CurrentNode.Content.Action" id="CurrentNode_Content_Action" class="form-control"></select>
+                                    }
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.Action, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.LabelFor(model => model.CurrentNode.Content.ActionParams, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    <button class="btn btn-default" onclick="ShowActionParametersValues('@(Model.CurrentNode != null && Model.CurrentNode.Content != null ? Model.CurrentNode.Content.Action : "")', '@(Model.CurrentNode != null && Model.CurrentNode.Content != null && !string.IsNullOrEmpty(Model.CurrentNode.Content.ActionParams) ? Model.CurrentNode.Content.ActionParams : "None assigned yet or none to asign.")');" type="button"><i class="fa fa-list"></i> <span>Display</span></button>
+                                    <button class="btn btn-default" onclick="GetActionParametersValues('@(Model.CurrentNode != null && Model.CurrentNode.Content != null ? Model.CurrentNode.Content.Action : "")', '@currentContentNodeId');" type="button"><i class="fa fa-pencil-square-o"></i> <span>Modify</span></button>
+                                </div>
+                            </div>
+                            <div class="mvc-route form-group">
+                                @Html.LabelFor(model => model.CurrentNode.Content.View, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @Html.EditorFor(model => model.CurrentNode.Content.View, new { htmlAttributes = disabledInput ? (object)new { @class = "form-control", @readonly = "readonly" } : (object)new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.View, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.LabelFor(model => model.CurrentNode.Content.NameSpaces, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @Html.TextAreaFor(model => model.CurrentNode.Content.NameSpaces, new { @class = "form-control", @rows = 1, @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.NameSpaces, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.UrlAliases, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-8 col-sm-8">
+                                @Html.TextAreaFor(model => model.CurrentNode.Content.UrlAliases, new { @class = "form-control", @rows = 2 })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.UrlAliases, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.MenuClicable, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.MenuClicable, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.MenuClicable, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.MenuIcon, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.MenuIcon, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.MenuIcon, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.UrlTarget, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.UrlTarget, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.UrlTarget, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.HttpMethod, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.HttpMethod, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.HttpMethod, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CurrentNode.Content.MenuSortOrder, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.MenuSortOrder, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.MenuSortOrder, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.CurrentNode.Content.MenuExtraAttributes, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                            <div class="col-md-3 col-sm-3">
+                                @Html.EditorFor(model => model.CurrentNode.Content.MenuExtraAttributes, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CurrentNode.Content.MenuExtraAttributes, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.CurrentNode.Content != null && Model.CurrentNode.Content.NavigationType == BAP.DAL.Entities.NavigationType.MvcRoute)
+        {
+            <div class="panel panel-inverse overflow-hidden">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a class="accordion-toggle accordion-toggle-styled setting-pane-click-header @(isFullExpand || settings.CurrentSettingsPane == "SEO" ? "" : "collapsed")" data-toggle="collapse" data-parent="#settingsAccordion" href="#collapseThree" data-pane-name="SEO">
+                            <i class="fa fa-plus-circle pull-right"></i>
+                            SEO
+                        </a>
+                    </h3>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse @(isFullExpand || settings.CurrentSettingsPane == "SEO" ? "in" : "")">
+                    <div class="panel-body panel-form">
+                        <div class="form-horizontal form-bordered" data-parsley-validate="true" name="demo-form" novalidate>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CurrentNode.Content.ContentAuthor, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @Html.EditorFor(model => model.CurrentNode.Content.ContentAuthor, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.ContentAuthor, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.LabelFor(model => model.CurrentNode.Content.ContentTitle, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @Html.EditorFor(model => model.CurrentNode.Content.ContentTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.ContentTitle, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CurrentNode.Content.ContentKeywords, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-8 col-sm-8">
+                                    @Html.TextAreaFor(model => model.CurrentNode.Content.ContentKeywords, new { @class = "form-control", @rows = 2 })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.ContentKeywords, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CurrentNode.Content.ContentDescription, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-8 col-sm-8">
+                                    @Html.TextAreaFor(model => model.CurrentNode.Content.ContentDescription, new { @class = "form-control", @rows = 5 })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.ContentDescription, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CurrentNode.Content.ContentTagGroup, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @Html.BapDropDownFor(model => model.CurrentNode.Content.ContentTagGroup, engine, "ContentTagGroup", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.ContentTagGroup, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.LabelFor(model => model.CurrentNode.Content.ContentTags, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @Html.EditorFor(model => model.CurrentNode.Content.ContentTags, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.ContentTags, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CurrentNode.Content.SitemapPriority, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @Html.EnumDropDownListFor(model => model.CurrentNode.Content.SitemapPriority, Resources.UIText_DropDown_SelectOption, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.SitemapPriority, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.LabelFor(model => model.CurrentNode.Content.SitemapChangeFrequency, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                <div class="col-md-3 col-sm-3">
+                                    @Html.EnumDropDownListFor(model => model.CurrentNode.Content.SitemapChangeFrequency, Resources.UIText_DropDown_SelectOption, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.CurrentNode.Content.SitemapChangeFrequency, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</form>

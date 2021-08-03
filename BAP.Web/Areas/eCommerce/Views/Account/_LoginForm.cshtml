@@ -1,0 +1,43 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@using BAP.Web.Models
+@model LoginViewModel
+
+@using (Html.BeginForm("Login", "Account", new { Area = "eCommerce", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @role = "form" }))
+{
+    var loginText = ViewBag.Title;
+    var showExtraLiks = true;
+    if(ViewBag.ShortLoginForms != null && !(bool)ViewBag.ShortLoginForms)
+    {
+        showExtraLiks = false;
+    }
+    if(string.IsNullOrWhiteSpace(loginText))
+    {
+        loginText = Resources.UIText_LoginLink;
+    }
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, Resources.UIText_Review_ValidationErrors, new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.BapTextBoxFor(m => m.Email, new { @class = "form-control", @type = "email" })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+    </div>
+    <div class="checkbox">
+        <label>
+            @Html.EditorFor(m => m.RememberMe) @Html.LabelFor(m => m.RememberMe)
+        </label>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">@loginText</button>
+        @if (showExtraLiks)
+        {
+            @Html.ActionLink("Forgot password?", "ForgotPassword", new { Area = "eCommerce", ReturnUrl = ViewBag.ReturnUrl }, new { @class = "btn btn-link pull-left" })
+            @Html.ActionLink("Register as a new user", "Register", new { Area = "eCommerce", ReturnUrl = ViewBag.ReturnUrl }, new { @class = "btn btn-link pull-right" })
+        }        
+    </div>
+}

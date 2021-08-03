@@ -1,0 +1,98 @@
+﻿@using BAP.Resources
+@using PagedList.Mvc;
+@using BAP.eCommerce.Resources
+@using PagedList.Mvc;
+@using BAP.UI.HtmlHelpers;
+@model PagedList.IPagedList<BAP.eCommerce.DAL.Entities.Supplier>
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = ResObject.EntityLabel_Supplier;
+    Dictionary<string, string> sortData = (Dictionary<string, string>)ViewBag.SortData;
+    string currentFilter = ViewBag.CurrentFilter;
+    string currentSort = ViewBag.CurrentSort;
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("Create", "Suppliers")" class="btn btn-icon btn-success" title="@Resources.UIText_Create @ResObject.EntityLabel_Supplier"><i class="fa fa-plus"></i></a>
+    @ViewBag.Title<small></small>
+</h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">@Resources.UIText_SearchResults</h4>
+            </div>
+            <div class="panel-body">
+                <table id="data-table" class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                    <thead>
+                        <tr>
+                            <th onclick="window.location = '@Url.Action("AdminIndex", new { page = 1, sortOrder = "", currentFilter = currentFilter, pageSize = Model.PageSize })';" title="Default Sort Order" style="cursor:pointer;">
+                                @Resources.UIText_Actions
+                            </th>
+                            @Html.BapSortingHeaderFor(model => model.First().Name, sortData, currentSort, "AdminIndex", "Suppliers", "", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+                            @Html.BapSortingHeaderFor(model => model.First().ShortDescription, sortData, currentSort, "AdminIndex", "Suppliers", "", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+                            @Html.BapSortingHeaderFor(model => model.First().Description, sortData, currentSort, "AdminIndex", "Suppliers", "", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("AdminDetails", new {id=item.Id})">
+                                    <i class="glyphicon glyphicon-th-list"></i>
+                                </a>
+                                <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="@Url.Action("Edit", new {id=item.Id})">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                                <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", new {id=item.Id})">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </a>
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShortDescription)
+                            </td>
+
+                            <td>
+                                @Html.Raw(item.Description)
+                            </td>
+                        </tr>
+                    }
+                </table>
+                @if (Model.PageCount > 1)
+                {
+                    <hr />
+                    <span>Page </span>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)<span> of </span>@Model.PageCount
+                    @Html.PagedListPager(Model, page => Url.Action("AdminIndex", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                }
+            </div>
+        </div>
+        <!-- end panel -->
+    </div>
+    <!-- end col-12 -->
+</div>
+<!-- end row -->
+
+<script>
+function OnpageSizeChange()
+{
+    var url = '@Url.Action("AdminIndex", new { page = 1, sortOrder = currentSort, currentFilter = currentFilter })';
+    url = url.replace('&amp;', '&');
+    url += "&pageSize=" + $('#data-table-length').val();
+    window.location = url;
+}
+</script>

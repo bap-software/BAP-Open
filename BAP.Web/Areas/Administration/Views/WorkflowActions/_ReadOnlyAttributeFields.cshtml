@@ -1,0 +1,62 @@
+﻿@model BAP.DAL.Entities.WorkflowActionAttribute
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.AtributeType, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.DisplayFor(model => model.AtributeType)
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.AtributeDirection, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.DisplayFor(model => model.AtributeDirection)
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(model => model.ShortDescription)
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.DefaultValue, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.Raw(Model.DefaultValue)
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.IsPublic, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.DisplayFor(model => model.IsPublic)
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.IsVisible, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.DisplayFor(model => model.IsVisible)
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.IsReadonly, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.DisplayFor(model => model.IsReadonly)
+    </div>
+</div>
+

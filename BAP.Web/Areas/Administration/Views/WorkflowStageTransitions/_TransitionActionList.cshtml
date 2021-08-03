@@ -1,0 +1,65 @@
+﻿@using BAP.DAL.Entities
+@using BAP.Lookups
+@using BAP.Resources;
+@using BAP.UI.HtmlHelpers
+@model BAP.DAL.Entities.WorkflowStageTransition
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Stage Actions</h4>
+        <form action="@Url.Action("AddAction")" class="row" method="POST" role="form" id="AddActionForm">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            <div class="form-group">
+                <div class="col-md-2">
+                    @Html.BapParentDropDownFor(typeof(WorkflowAction), engine, "Id", "Name", "Description", new { @class = "form-control" }, "ActionToTransition")
+                </div>
+                <div class="col-md-10">
+                    <a href="javascript:document.getElementById('AddActionForm').submit();" class="btn btn-icon btn-success" title="Add action"><i class="fa fa-plus"></i></a>
+                </div>
+            </div>
+            <div class="form-group" id="LookupOptionList">
+                <div class="col-md-12">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>@Resources.UIText_Actions</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Actions.First().Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Actions.First().ShortDescription)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Actions.First().ActionClass)
+                                </th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model.Actions)
+                        {
+                            <tr>
+                                <td>
+                                    <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("DeleteAction", "WorkflowStageTransitions", new { id = Model.Id, actionToDelete = item.Id })">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ShortDescription)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ActionClass)
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

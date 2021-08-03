@@ -1,0 +1,10 @@
+﻿@{
+    Layout = null;
+}
+
+@if (ViewBag.WishlistCount > 0)
+{
+    <a data-toggle="modal" href="#wishlistpopup" class="dropdown-toggle">
+        <i class="fa fa-heart"></i>@ViewBag.WishlistCount
+    </a>
+}

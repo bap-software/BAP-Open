@@ -1,0 +1,79 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.Organization
+
+<form action="@Url.Action("AddOrganizationModule")" method="post" class="form-horizontal form-bordered" novalidate>
+    <div class="form-group">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        <label class="control-label col-md-2 col-sm-2">@Resources.UIText_Organization_ChooseOrganizationModules</label>
+        <div class="col-md-3 col-sm-3">
+            @Html.DropDownList("ModuleId", null, htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="col-md-7 col-sm-7">
+            <button type="submit" class="btn btn-sm btn-success">@Resources.UIText_Organization_AddOrganizationModule</button>
+        </div>
+    </div>
+</form>
+<div class="form-group">
+    <div class="col-md-12 col-sm-12">
+        <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+            <thead>
+                <tr>
+                    <th width="5%">@Resources.UIText_Actions</th>
+                    <th>@Html.DisplayNameFor(model => model.OrganizationModules.First().Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.OrganizationModules.First().Order)</th>
+                    <th>@Html.DisplayNameFor(model => model.OrganizationModules.First().Enabled)</th>
+                    <th>@Html.DisplayNameFor(model => model.OrganizationModules.First().UrlAlias)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.OrganizationModules != null && Model.OrganizationModules.Count > 0)
+                {
+                    foreach (var item in Model.OrganizationModules)
+                    {
+                        <tr>
+                            <td>
+                                <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("RemoveOrganizationModule", new {id = item.Id, organizationId = item.OrganizationId})">
+                                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                </a>
+                                <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="#" onclick="editModule('@item.Id')">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                                @Html.Partial("_EditModule", item)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Order)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Enabled)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UrlAlias)
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2">@Resources.UIText_Organization_NoOrganizationModulesSelected</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+function editModule(id) {
+    var opt = {
+        show: true,
+        keyboard: true
+    };
+    $("#ModuleEditModal" + id).modal(opt);
+}    
+</script>

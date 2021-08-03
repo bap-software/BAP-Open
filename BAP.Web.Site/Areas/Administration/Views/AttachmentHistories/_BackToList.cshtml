@@ -1,0 +1,14 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.AttachmentHistory
+@{
+    var parentId = ((Model != null && Model.Attachment != null) ? Model.Attachment.Id.ToString() : "");
+}
+
+@if (!string.IsNullOrEmpty(parentId))
+{
+    <a href="@Url.Action("Details", "Attachments", new { id = parentId }, null)" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>
+}
+else
+{
+    <a href="@Url.Action("Index")"><i class="glyphicon glyphicon-hand-left"></i>@Resources.UIText_Back</a>
+}

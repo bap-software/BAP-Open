@@ -1,0 +1,63 @@
+﻿@using BAP.Resources
+@using BAP.Lookups
+@using BAP.UI.HtmlHelpers
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+<section class="search-box">
+    <h3 class="search-heading">
+        <i class="fa fa-search"></i>Find Event Log
+    </h3>
+    <div class="as-form-wrap">
+        @using (Html.BeginForm("Index", "EventLogs", FormMethod.Post, new { @class = "search-box-form clearfix", @id = "EventLogAdvancedSearch", @name = "EventLogAdvancedSearch" }))
+        {
+            <div class="option-bar large">
+                <label for="fulltext" class="control-label"><b>Keyword</b></label>
+                <input class="form-control search-control" type="text" name="fulltext" id="fulltext" value="" placeholder="Any" />
+            </div>
+            <div class="option-bar large">
+                <label for="status" class="control-label"><b>Event Type</b></label>
+                <span class="selectwrap">
+                    <select id="EventType" name="EventType" class="form-control search-control">
+                        <option value="">Choose Option</option>
+                        <option value="I">Information</option>
+                        <option value="W">Warning</option>
+                        <option value="E">Exception</option>
+                    </select>                    
+                </span>
+            </div>
+
+            <input type="hidden" value="@ViewBag.CurrentFilter" name="currentFilter" id="currentFilter" />
+
+            <div class="option-bar search">
+                <input type="submit" value="@Resources.UIText_Search" class="btn btn-primary">
+            </div>
+            <div class="clearfix"></div>
+        }
+    </div>
+</section>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        var filterText = $("#currentFilter").val();
+        if (filterText != "")
+        {
+            var searchArr = jQuery.parseJSON(filterText);
+            for(i = 0; i < searchArr.length; i++)
+            {
+                $("#" + searchArr[i].field).val(searchArr[i].value);
+            }
+        }
+
+        $('#EventLogAdvancedSearch').submit(function () {
+            var filter = "";
+            var arr = [];
+            $(".search-control").each(function (index) {
+                var name = $(this).attr("id");
+                var value = $(this).val();
+                arr[index] = {field: name, value: value};
+            });
+            filter += JSON.stringify(arr);
+            $("#currentFilter").val(filter);
+        });
+    });
+</script>

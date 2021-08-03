@@ -1,0 +1,87 @@
+﻿@using BAP.Lookups
+@using BAP.UI.HtmlHelpers
+@using BAP.Resources
+@model BAP.DAL.Entities.Blog
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter name" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShortDescription, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MainImageUrl, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.TextBoxFor(model => model.File, new { @type = "file", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+        @if (Model != null)
+        {
+            <a href="@Url.Action("File", "Home", new {area = "", path = Model.MainImageUrl})" target="_blank">
+                @Html.DisplayFor(model => model.MainImageUrl)
+            </a>
+        }
+    </div>
+    @Html.LabelFor(model => model.CategoryCode, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.BapDropDownFor(model => model.CategoryCode, engine, @"CategoryCode", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CategoryCode, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.FacebookUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.FacebookUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.FacebookUrl, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.TwitterUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.TwitterUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TwitterUrl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LinkedinUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.LinkedinUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.LinkedinUrl, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.GoogleplusUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.GoogleplusUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.GoogleplusUrl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.InstagramUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.InstagramUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.InstagramUrl, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.Tags, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "ckeditor", placeholder = "Description", maxlength = "50" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        <span>@Resources.FieldLabel_Blog_Description_MaxCharacters</span>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿.back-to-top {
+    display: none;
+    position: fixed;
+    right: 30px;
+    bottom: 40px;
+    height: 42px;
+    width: 42px;
+    line-height: 42px;
+    text-align: center;    
+    z-index: 10000;   
+    background: #00acac;
+    border-color: #00acac;
+    color: #fff;
+    border-radius: 10%;
+}
+
+.back-to-top:hover {
+    background: #008a8a;
+    border-color: #008a8a;
+    color: #fff;
+}

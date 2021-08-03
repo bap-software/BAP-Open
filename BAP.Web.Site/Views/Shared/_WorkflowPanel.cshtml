@@ -1,0 +1,119 @@
+﻿@using BAP.Workflow
+
+@{ 
+    IWorkflowView currentWorkflow = (IWorkflowView)ViewBag.CurrentWorkflow;
+}
+
+<style>
+    .workflow-panel
+    {
+        background-color: antiquewhite;
+    }
+
+    .workflow-panel hr{
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .workflow-panel .form-bordered
+    {
+        padding: 10px;
+    }
+
+    .workflow-panel p4
+    {
+        font-weight: bolder;
+    }
+
+    .workflow-panel ul
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 10px 0 0 0;
+    }
+    
+    .workflow-panel ul li.workflow-stage {
+        display: inline;
+        margin-right: 5px;
+        border: 1px solid gray;
+        padding: 5px;
+    }
+
+    .workflow-panel a:hover
+    {
+        text-decoration: none;
+        cursor: pointer;
+        color: darkblue;
+    }
+
+</style>
+<div class="workflow-panel">
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <div class="panel-heading">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+            </div>
+            <h4 class="panel-title">Workflow</h4>
+        </div>
+        <div class="panel-body panel-form">
+            <div class="form-horizontal form-bordered" novalidate>                                    
+                @if (currentWorkflow != null)
+                {
+                    <form action="@Url.Action("Workflow")" method="POST" role="form" id="WorkflowForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="Id" name="Id" value="@currentWorkflow.EntityId" />
+                        <input type="hidden" id="actionId" name="actionId" value="" />
+                        <input type="hidden" id="stageId" name="stageId" value="" />
+                        <input type="hidden" id="transitionId" name="transitionId" value="" />
+
+                        <p4>We are on "@currentWorkflow.CurrentStageName" stage</p4>
+
+                        @if (currentWorkflow.CurrentActionViews != null && currentWorkflow.CurrentActionViews.Count > 0)
+                        {
+                        <br/><p4>Actions required:</p4>
+                        <ul>
+                            @foreach (var action in currentWorkflow.CurrentActionViews)
+                            {
+                                <li>@action.Name</li>
+                            }
+                        </ul>
+                        }
+                        <hr />
+                        @if (currentWorkflow.CurrentTransitionViews != null && currentWorkflow.CurrentTransitionViews.Count > 0)
+                        {
+                        <p4>Next step:</p4>
+                        <ul>
+                            @foreach (var trans in currentWorkflow.CurrentTransitionViews)
+                            {
+                                if (currentWorkflow.CurrentStageState == StageState.Passed)
+                                {
+                                    <li class="workflow-stage"><a href="javascript:ChooseTransition(@trans.MetaId);">@trans.ToStageName</a></li>
+                                }
+                                else
+                                {
+                                    <li class="workflow-stage"><a href="javascript:alert('Actions are required to complete before moving to this stage!');">@trans.ToStageName</a></li>
+                                }
+
+                            }
+                        </ul>
+                        }
+                    </form>
+                }
+                else
+                {
+                    <span>No workflow found for the object</span>
+                }                        
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ChooseTransition(transitionId)
+    {
+        $("#transitionId").val(transitionId);
+        document.getElementById("WorkflowForm").submit();
+    }
+</script>

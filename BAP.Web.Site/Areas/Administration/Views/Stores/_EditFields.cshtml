@@ -1,0 +1,65 @@
+﻿@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@using BAP.DAL.Entities
+@model BAP.eCommerce.DAL.Entities.Store
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-2">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        @Html.LabelFor(model => model.IsDefault, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-1 col-sm-1" })
+        <div class="col-md-1">
+            @Html.EditorFor(model => model.IsDefault, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.IsDefault, "", new { @class = "text-danger" })
+        </div>
+        @Html.LabelFor(model => model.QuickShoppingCart, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-1">
+            @Html.EditorFor(model => model.QuickShoppingCart, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.QuickShoppingCart, "", new { @class = "text-danger" })
+        </div>
+        @Html.LabelFor(model => model.IsUnregisteredCheckoutAllowed, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-1">
+            @Html.EditorFor(model => model.IsUnregisteredCheckoutAllowed, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.IsUnregisteredCheckoutAllowed, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ShortDescription, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.InvoiceTemplate, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.BapParentDropDownFor(typeof(DocumentTemplate), engine, "Name", "Name", "ShortDescription", new { @class = "form-control" }, "InvoiceTemplate", Model.InvoiceTemplate)
+        @Html.ValidationMessageFor(model => model.InvoiceTemplate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "ckeditor" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Organization, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.BapParentDropDownFor(model => model.Organization, engine, "Id", "Name", "Description", new { @class = "form-control" }, "OrganizationId")
+        @Html.ValidationMessageFor(model => model.OrganizationId, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.AdminUser, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.BapOrgUserDropDownFor(model => model.AdminUser, engine, "Id", "FullName", "", new { @class = "form-control" }, "AdminUserId", new List<string>() { "Administrator" })
+        @Html.ValidationMessageFor(model => model.AdminUserId, "", new { @class = "text-danger" })
+    </div>
+</div>
+

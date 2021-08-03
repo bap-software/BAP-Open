@@ -1,0 +1,105 @@
+﻿@using BAP.DAL
+@using BAP.Resources
+@model BAP.eCommerce.DAL.Entities.ShoppingCart
+@{
+    ViewBag.Title = "Checkout";
+    IAuthorizationContext authContext = ViewBag.AuthContextInstance;
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Payment Method</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })">@Resources.UIText_HomePage</a>
+                    </li>
+                    <li class="active">Payment method</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix stepsWrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="innerWrapper clearfix stepsPage">
+                    <div class="row progress-wizard" style="border-bottom:0;">
+
+                        <div class="col-xs-3 progress-wizard-step complete fullBar">
+                            <div class="text-center progress-wizard-stepnum">Billing &amp; Shipping Address</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Checkout", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step complete fullBar">
+                            <div class="text-center progress-wizard-stepnum">Shipping Method</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Shipping", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step active">
+                            <div class="text-center progress-wizard-stepnum">Payment Method</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Payment", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step disabled">
+                            <div class="text-center progress-wizard-stepnum">Review</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Review", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+                    </div>
+
+                    <form action="@Url.Action("Payment")" class="row" method="POST" role="form" id="PaymentForm">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="col-xs-12">
+                            <div class="page-header">
+                                <h4>Payment Information</h4>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4 col-xs-12"  ng-app="eCommerce" ng-controller="commPaymentCtrl">
+                            <label for="">Payment By</label>
+                            <span class="step-drop">
+                                <select name="PaymentOptionId" id="PaymentOptionId" class="form-control">
+                                    <option ng-repeat="o in paymentOptions" value="{{o.Id}}" title="{{o.ShortDescription}}" ng-selected="{{o.Selected}}">{{o.Name}} {{o.CustomerPaymentDescription}}</option>                                    
+                                </select>
+                            </span>
+
+                            <script>
+                                var app = angular.module('eCommerce', []);
+                                app.controller('commPaymentCtrl', function ($scope, $http) {
+                                    var paymentOptionsJSON = '@Html.Raw(ViewBag.PaymentOptions)';
+                                    if (paymentOptionsJSON != '')
+                                    {
+                                        $scope.paymentOptions = JSON.parse(paymentOptionsJSON);
+                                    }
+                                });
+                            </script>
+                        </div>                       
+                        <div class="col-xs-12">
+                            <div class="well well-lg clearfix">
+                                <ul class="pager">
+                                    <li class="previous"><a href="@Url.Action("Shipping", "ShoppingCarts")">back</a></li>
+                                    <li class="next"><a href="javascript:document.getElementById('PaymentForm').submit();">Continue</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

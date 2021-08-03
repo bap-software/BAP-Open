@@ -1,0 +1,95 @@
+﻿.modal-dialog {
+    width: 360px;
+    position: absolute;
+    left: 50%;
+    margin: 0;
+    top: 50%;
+}
+
+.modal.in .modal-dialog {
+    left: 50%;
+    margin: 0;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.modal-dialog .media-body {
+    text-align: center;
+}
+
+.modal-dialog button.close {
+    position: absolute;
+    right: 0;
+    padding-right: 18px;
+}
+
+    .modal-dialog button.close .close {
+        font-size: 23px;
+    }
+
+.modal-dialog .media-body p {
+}
+
+.modal-dialog .media-body h2 {
+    font-size: 24px;
+}
+
+.modal-dialog .media-body h3 {
+    color: #00acac;
+}
+
+.modal-dialog .media-body p {
+    margin-bottom: 3rem;
+}
+
+.modal-dialog .pull-media {
+    height: 0;
+    margin-bottom: 1em;
+    padding: 40% 0 0;
+    position: relative;
+    overflow: hidden;
+    display: block;
+    z-index: 1;
+}
+
+.modal-dialog .media-object {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: auto;
+    max-height: 100%;
+}
+
+.modal-content .btn.btn-primary {
+    background: #2d353c;
+    border-color: #2d353c;
+    padding: 10px 12px;
+}
+
+.modal-content .btn-primary:hover,
+.modal-content .btn-primary:focus,
+.modal-content .btn-primary:active,
+.modal-content .btn-primary.active {
+    background: #008a8a;
+    border-color: #008a8a;
+}
+
+.modal-dialog .form-control {
+    width: 5em;
+    padding: 20px 12px;
+}
+
+.modal-content .btn-area {
+    display: flex;
+    justify-content: space-between;
+    margin: 2% 0;
+}
+
+.modal-content .btn.btn-primary {
+    width: 49%;
+}
+
+    .modal-content .btn.btn-primary i {
+        margin-left: 1em;
+    }

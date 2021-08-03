@@ -1,0 +1,64 @@
+﻿@using BAP.Resources;
+@using BAP.BL;
+@model IEnumerable<BAP.DAL.Entities.Organization>
+
+@{
+    ViewBag.Title = Resources.UIText_Menu_Index;
+    IOrganizationBL bl = ViewBag.BL;
+}
+
+<section class="featured-section index">
+    <!-- category image -->
+    <div class="container">
+        <div class="clearfix">
+            <h1 class="page-title"><span>@Resources.EntityLabel_Organization @ViewBag.Title</span></h1> <!-- category title -->
+            <p>
+                <a href="javascript:window.print()"><i class="fa fa-print"></i> @Resources.UIText_Print</a> |
+                <span class="add-to-fav"><a href="#"><i class="fa fa-star"></i> @Resources.UIText_AddToFavorites</a></span> <!-- go to add to favorites page, if not logged go to login page -->
+            </p>
+        </div>
+    </div>
+</section>
+
+<table class="table">
+    <tr>
+        <th>@Resources.UIText_Actions</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedByUserName)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", new {id=item.Id})">
+                    <i class="glyphicon glyphicon-th-list"></i>
+                </a>
+                @if (bl.CanWrite(item))
+                {
+                    <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="@Url.Action("Edit", new { id = item.Id })">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                }
+            </td>
+            <td>
+                <img src="@item.LogoPathUrl" width="16px" height="16px" />
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModifiedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModifiedByUserName)
+            </td>
+        </tr>
+    }
+
+</table>

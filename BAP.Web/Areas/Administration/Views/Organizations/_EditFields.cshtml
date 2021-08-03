@@ -1,0 +1,345 @@
+﻿@using BAP.UI.HtmlHelpers
+@model BAP.DAL.Entities.Organization
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter name" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BlogUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.BlogUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BlogUrl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-8 col-sm-8">
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "ckeditor" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TaxId, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.TaxId, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TaxId, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.Status, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.StatusDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.StatusDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.StatusDate, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.OrganizationType, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.OrganizationType, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.OrganizationType, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.AddressLine1, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.AddressLine1, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.AddressLine2, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.City, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.County, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.County, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.County, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Country, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.BapCountryListFor(model => model.Country, new { @class = "form-control", onchange = "fillStates()" })
+        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.State, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.BapStateListFor(model => model.State, Model.Country, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Zip, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.PhoneNumber, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PhoneExtension, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.PhoneExtension, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PhoneExtension, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.FaxNumber, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.FaxNumber, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.FaxNumber, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LogoPathUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-8 col-sm-8">
+        @Html.EditorFor(model => model.LogoPathUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.LogoPathUrl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.FacebookUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.FacebookUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.FacebookUrl, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.TwitterUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.TwitterUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TwitterUrl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LinkedinUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.LinkedinUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.LinkedinUrl, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.GoogleplusUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.GoogleplusUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.GoogleplusUrl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Url, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+    </div>    
+    @Html.LabelFor(model => model.InstagramUrl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.InstagramUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.InstagramUrl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContactEmail, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.ContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ContactEmail, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.SupportEmail, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.SupportEmail, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SupportEmail, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ImplementedCulturesText, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.ImplementedCulturesText, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ImplementedCulturesText, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.HostName, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.HostName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.HostName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.HostNameAliasesText, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.HostNameAliasesText, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.HostNameAliasesText, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BapDefaultFromEmail, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.BapDefaultFromEmail, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BapDefaultContactEmail, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BapDefaultContactEmail, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.BapDefaultContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BapDefaultContactEmail, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.SmtpUserName, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.SmtpUserName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SmtpUserName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.SmtpUserPassword, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.SmtpUserPassword, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SmtpUserPassword, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.SmtpHostName, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.SmtpHostName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SmtpHostName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.SmtpPort, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.SmtpPort, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SmtpPort, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.SmtpUseSsl, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.SmtpUseSsl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SmtpUseSsl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.reCaptchaSiteKey, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.reCaptchaSiteKey, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.reCaptchaSiteKey, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.reCaptchaSecretKey, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.reCaptchaSecretKey, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.reCaptchaSecretKey, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.GetBearrerTokenDuringLogin, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.GetBearrerTokenDuringLogin, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.GetBearrerTokenDuringLogin, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.AuthCookieName, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.AuthCookieName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AuthCookieName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.AuthCookieExpirationTime, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.AuthCookieExpirationTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AuthCookieExpirationTime, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.WebApiPublicClientId, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.WebApiPublicClientId, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.WebApiPublicClientId, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BearerTokenExpirationTime, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.BearerTokenExpirationTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BearerTokenExpirationTime, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.WebApiAllowInsecureHttp, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.WebApiAllowInsecureHttp, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.WebApiAllowInsecureHttp, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PublicFolderText, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.PublicFolderText, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PublicFolderText, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.BaseFolderText, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.BaseFolderText, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BaseFolderText, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CookiesPopupEnabled, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.CookiesPopupEnabled, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CookiesPopupEnabled, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.GdprPopupEnabled, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.GdprPopupEnabled, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.GdprPopupEnabled, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CreatedByUserName, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.CreatedByUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CreatedByUserName, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.CreateDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CreateDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LastModifiedByUserName, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.LastModifiedByUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.LastModifiedByUserName, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.LastModifiedDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.LastModifiedDate, "", new { @class = "text-danger" })
+    </div>
+</div>

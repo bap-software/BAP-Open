@@ -1,0 +1,71 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@using BAP.Web.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = Resources.UIText_LoginLink;
+}
+
+    <div class="content" data-scrollview="true">        
+        <div class="container" data-animation="true" data-animation-type="fadeInDown">
+            <!-- BEGIN breadcrumb -->
+            <h2 class="content-title"><a href="@Url.Action("Index", "Home", new { Area = "" })">@Resources.UIText_HomePage</a> / @Resources.UIText_LoginLink</h2>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h4 class="modal-title">@Resources.UIText_UseLocalAccount <a href="/">@Resources.UIText_ApplicationTitle</a></h4></div>
+                        <hr />
+                        <div class="panel-body">
+                            @using (Html.BeginForm("Login", "Account", new { Area = "", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @role = "form" }))
+                            {
+                                var loginText = ViewBag.Title;
+                                var showExtraLiks = true;
+                                if (ViewBag.ShortLoginForms != null && !(bool)ViewBag.ShortLoginForms)
+                                {
+                                    showExtraLiks = false;
+                                }
+                                if (string.IsNullOrWhiteSpace(loginText))
+                                {
+                                    loginText = Resources.UIText_LoginLink;
+                                }
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, Resources.UIText_Review_ValidationErrors, new { @class = "text-danger" })
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email)
+                                    @Html.BapTextBoxFor(m => m.Email, new { @class = "form-control", @type = "email" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Password)
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+                                if (showExtraLiks)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="@Url.Action("ForgotPassword", new { Area = "", ReturnUrl = ViewBag.ReturnUrl })" id="showForgotPasswordModal">@Resources.UIText_ForgotYourPassword</a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="@Url.Action("Register", new { Area = "", ReturnUrl = ViewBag.ReturnUrl })" id="showRegisterModal" class=" pull-right">@Resources.UIText_RegisterNewUser</a>
+                                        </div>
+                                    </div>
+                                }
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-6 checkbox">
+                                        <label>
+                                            @Html.EditorFor(m => m.RememberMe) @Html.LabelFor(m => m.RememberMe)
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-theme pull-right">@loginText</button><br />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

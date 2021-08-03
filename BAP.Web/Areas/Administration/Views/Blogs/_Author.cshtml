@@ -1,0 +1,28 @@
+﻿@model BAP.DAL.Entities.Blog
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BlogAuthor.NickName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BlogAuthor.NickName)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BlogAuthor.FirstName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BlogAuthor.FirstName)
+    </div>
+    @Html.LabelFor(model => model.BlogAuthor.LastName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BlogAuthor.LastName)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BlogAuthor.Email, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BlogAuthor.Email)
+    </div>
+    @Html.LabelFor(model => model.BlogAuthor.WebSite, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BlogAuthor.WebSite)
+    </div>
+</div>

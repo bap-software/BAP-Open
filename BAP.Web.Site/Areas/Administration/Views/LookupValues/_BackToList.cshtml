@@ -1,0 +1,19 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.LookupValue
+
+@{
+    var parentId = ((Model != null && Model.Parent != null) ? Model.Parent.Id.ToString() : "");
+    if (string.IsNullOrEmpty(parentId) && TempData["LookupId"] != null && !string.IsNullOrEmpty(TempData["LookupId"].ToString()))
+    {
+        parentId = TempData["LookupId"].ToString();
+    }
+}
+
+@if (string.IsNullOrEmpty(parentId))
+{
+    <a href="@Url.Action("Index", "LookupValues", new { Area = "Administration"})" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>
+}
+else
+{
+    <a href="@Url.Action("Details", "Lookups", new { id = parentId })" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>    
+}

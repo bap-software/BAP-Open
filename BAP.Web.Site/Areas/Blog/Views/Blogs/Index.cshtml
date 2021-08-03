@@ -1,0 +1,91 @@
+﻿@using BAP.Resources
+@using PagedList.Mvc;
+@using BAP.Common;
+@using BAP.Lookups
+@model PagedList.IPagedList<BAP.DAL.Entities.Blog>
+
+@{
+    ViewBag.Title = Resources.UIText_Menu_Index;
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Our Blogs</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })">Home</a>
+                    </li>
+                    <li class="active">Blogs</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix blogPage">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-xs-12">
+                    <div class="thumbnail">
+                        <img src="@item.MainImageUrl" alt="blog-image">
+                        <div class="caption">
+                            <div class="row">
+                                <div class="col-md-2 col-md-push-10 col-sm-3 col-sm-push-9 col-xs-12">
+                                    <h5>@Resources.UIText_Details</h5>
+                                    <ul class="list-unstyled">
+                                        <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i>@item.BlogAuthor.NickName</a></li>
+                                        <li><i class="fa fa-calendar" aria-hidden="true"></i>@item.CreateDate.Value.ToString("MMM") @item.CreateDate.Value.Day, @item.CreateDate.Value.Year</li>
+                                        <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>@item.Tags</a></li>
+                                        <li><a href="@Url.Action("Details", new {id=item.Id})"><i class="fa fa-envelope" aria-hidden="true"></i>8 comments</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-10 col-md-pull-2 col-sm-9 col-sm-pull-3 col-xs-12">
+                                    <h3><a href="@Url.Action("Details", new {id=item.Id})">@item.Name</a> </h3>
+                                    <p>@item.ShortDescription</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="text-center">
+                    <ul class="pagination">
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*if (Model.PageCount > 1)
+{
+<hr />
+    <span>Page </span>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)<span> of </span>@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+}*@
+

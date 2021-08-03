@@ -1,0 +1,79 @@
+﻿@using BAP.eCommerce.Resources
+@model BAP.eCommerce.DAL.Entities.CustomerOrder
+
+@if (Model.Items != null && Model.Items.Count > 0)
+{
+    <h4>@ResObject.FieldLabel_CustomerOrder_Items</h4>
+    <table id="data-table" class="table table-striped table-bordered">
+        <tr>            
+            <th>                
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Items.First().Product.Name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Items.First().Price)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Items.First().Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Items.First().TotalDiscounts)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Items.First().Subtotal)
+            </th>            
+
+        </tr>
+        @foreach (var item in Model.Items)
+        {
+            <tr>                
+                <td>
+                    <span class="cartImage"><img src="@item.Product.ImagePath" alt="@item.Product.ShortDescription" style="height:80px;"></span>
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                    @if (!string.IsNullOrEmpty(item.DownloadUrl))
+                    {
+                        <br />
+                        <a href="/file/@item.DownloadUrl" target="_blank">@ResObject.FieldLabel_Download</a>
+                    }
+                    @if (!string.IsNullOrEmpty(item.OnlineProductUrl))
+                    {
+                        <br />
+                        <a href="/file/@item.OnlineProductUrl"  target="_blank">@ResObject.FieldLabel_OrderItem_OnlineProductUrl</a>
+                    }
+                    @if (!string.IsNullOrEmpty(item.OptionsData))
+                    {
+                        <br />
+                        <span style="font-weight:normal;font-size:smaller;">
+                            <label>@ResObject.UIText_ProductOptionsInCart</label>
+                            <i>@item.OptionsData</i>
+                        </span>
+                    }
+                </td>
+
+                <td>
+                    @Model.Currency.Symbol@Html.DisplayFor(modelItem => item.Price)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+
+                <td>`
+                    @Html.DisplayFor(modelItem => item.TotalDiscounts)
+                </td>
+
+                <td>
+                    @Model.Currency.Symbol@Html.DisplayFor(modelItem => item.Subtotal)
+                </td>                
+            </tr>
+        }
+    </table>
+}

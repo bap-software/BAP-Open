@@ -1,0 +1,19 @@
+﻿@using BAP.Resources
+@using BAP.Web.Areas.BlogsArea.Models
+@{
+    var blogArchives = new List<BlogArchive>();
+    if (ViewBag.Archives != null)
+    {
+        blogArchives = (List<BlogArchive>)ViewBag.Archives;
+    }
+}
+
+<div class="section-container">
+    <h4 class="footer-title">@Resources.FieldLabel_Blog_Archives</h4>
+    <ul class="archives">
+        @foreach (var blogArchive in blogArchives)
+        {
+            <li><a href="~/blogs?currentFilter=@string.Format("{0}_{1}", blogArchive.Month, blogArchive.Year)">@blogArchive.MonthName @blogArchive.Year</a><span class="total">(@blogArchive.BlogNumber)</span></li>
+        }
+    </ul>
+</div>

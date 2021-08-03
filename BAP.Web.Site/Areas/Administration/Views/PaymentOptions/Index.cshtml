@@ -1,0 +1,118 @@
+﻿@using BAP.Resources
+@using PagedList.Mvc;
+@using BAP.Common;
+@using BAP.Lookups
+@using BAP.eCommerce.Resources
+@model PagedList.IPagedList<BAP.eCommerce.DAL.Entities.PaymentOption>
+@{        
+	ViewBag.Title = ResObject.EntityLabel_PaymentOption;	        
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>@ViewBag.Title</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">@Resources.UIText_HomePage</a>
+                    </li>
+                    <li class="active">@ViewBag.Title</li>                    
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION-->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div>
+                    <table class="table">
+                        <tr>
+		                    <th>@Resources.UIText_Actions</th>
+                        
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().Name)
+                            </th>
+                        
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().ShortDescription)
+                            </th>
+                        
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().Description)
+                            </th>
+                        
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().Enabled)
+                            </th>
+                        
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().AsssemblyName)
+                            </th>
+                        
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().ClassName)
+                            </th>
+                        </tr>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td>
+			                    <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", new {id=item.Id})">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                </a>
+                                <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="@Url.Action("Edit", new {id=item.Id})">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
+                                <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", new {id=item.Id})">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </a>            
+                            </td>
+                        
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                        
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShortDescription)
+                            </td>
+                        
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                        
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Enabled)
+                            </td>
+                        
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AsssemblyName)
+                            </td>
+                        
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassName)
+                            </td>
+                        </tr>
+                    }        
+                    </table>
+                    @if (Model.PageCount > 1)
+                    {
+                        <hr />
+                        <span>Page </span>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)<span> of </span>@Model.PageCount
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                    }  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

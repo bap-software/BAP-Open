@@ -1,0 +1,94 @@
+@using Microsoft.AspNet.Identity
+@using BAP.Resources;
+@model BAP.Web.Models.IndexViewModel
+@{
+    ViewBag.Title = Resources.UIText_MyAccountDetails;
+}
+
+    <div class="content">
+        <section class="lightSection clearfix pageHeader">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="page-title">
+                            <h2>@ViewBag.Title</h2>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <ol class="breadcrumb pull-right">
+                            <li>
+                                <a href="@Url.Action("Index", "Home")">@Resources.UIText_HomePage</a>
+                            </li>
+                            <li class="active">@ViewBag.Title</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mainContent clearfix signUp" style="padding-top:20px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">                            
+                            <div class="panel-body">
+                                <div class="form-group col-md-12">
+                                    <div class="account-settings-container">
+                                        <dl class="dl-horizontal">
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.UserName)</dt>
+                                            <dd>@User.Identity.GetUserName()</dd>
+
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.FullName)</dt>
+                                            <dd>@Html.DisplayFor(model => model.UserDetails.FullName)</dd>
+
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.AddressLine1)</dt>
+                                            <dd>@Html.DisplayFor(model => model.UserDetails.AddressLine1)</dd>
+
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.AddressLine2)</dt>
+                                            <dd>@Html.DisplayFor(model => model.UserDetails.AddressLine2)</dd>
+
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.City)</dt>
+                                            <dd>@Html.DisplayFor(model => model.UserDetails.City)</dd>
+
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.State)</dt>
+                                            <dd>@Html.DisplayFor(model => model.UserDetails.State)</dd>
+
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.Country)</dt>
+                                            <dd>@Html.DisplayFor(model => model.UserDetails.Country)</dd>
+
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.Zip)</dt>
+                                            <dd>@Html.DisplayFor(model => model.UserDetails.Zip)</dd>
+
+                                            <dt>@Html.DisplayNameFor(model => model.UserDetails.PhoneNumber)</dt>
+                                            <dd>@Html.DisplayFor(model => model.UserDetails.PhoneNumber)</dd>
+                                        </dl>
+                                        <hr />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    @if (Model.HasPassword)
+                                    {
+                                        @Html.ActionLink(Resources.UIText_ChangeYourPassword, "ChangePassword", null, new { @class = "btn btn-theme btn-block" })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(Resources.UIText_SetPassword, "SetPassword", null, new { @class = "btn btn-theme btn-block" })
+                                    }
+                                </div>
+                                <div class="form-group col-md-4">
+                                    @if (Model.TwoFactor)
+                                    {
+                                        @Ajax.ActionLink(Resources.UIText_DisableTwoFactorAuth, "DisableTwoFactorAuthentication", "Manage", null, new AjaxOptions { HttpMethod = "POST" }, new { @class = "btn btn-theme btn-block", onclick = "alert('" + Resources.UIText_ChangeTwoFactorAuthQuestion + "')" })
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink(Resources.UIText_EnableTwoFactorAuth, "EnableTwoFactorAuthentication", "Manage", null, new AjaxOptions { HttpMethod = "POST" }, new { @class = "btn btn-theme btn-block", onclick = "alert('" + Resources.UIText_ChangeTwoFactorAuthQuestion + "')" })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>

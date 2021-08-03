@@ -1,0 +1,162 @@
+﻿@using BAP.DAL;
+@using MvcSiteMapProvider.Web.Html
+@{ 
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    var sideBarMinified = (ViewBag.SideBarMinified != null && (bool)ViewBag.SideBarMinified);
+    var isPreviewMode = (Request["previewMode"] != null && Request["previewMode"] == "true");
+    var extraPageCss = "";
+    if (IsSectionDefined("RightSideBar"))
+    {
+        extraPageCss = "page-with-two-sidebar in";
+        ViewBag.IsRightSideBar = true;
+
+        if(ViewBag.RightSideBarMinified != null && (bool)ViewBag.RightSideBarMinified)
+        {
+            extraPageCss += " page-right-sidebar-collapsed";
+        }
+    }
+}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <!-- SITE TITTLE -->
+    <meta charset="utf-8">
+    <title>@ViewBag.Title | @BAP.Resources.Resources.UIText_ApplicationTitle</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="@ViewBag.Description" name="description" />
+    <meta content="BAP Software, Victor Mamray" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    @Styles.Render("~/Admin/Plugins/css")
+    @Styles.Render("~/Admin/Themes/css")
+    <!-- ================== END BASE CSS STYLE ================== -->
+    
+    <!-- ================== BEGIN BASE JS ================== -->
+    @Scripts.Render("~/Admin/top-scripts")
+    <!-- ================== END BASE JS ================== -->
+
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '.ckeditor',
+            menubar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'undo redo code | formatselect | ' +
+                ' bold italic backcolor | alignleft aligncenter ' +
+                ' alignright alignjustify | bullist numlist outdent indent |' +
+                ' removeformat | help',
+            content_css: [
+                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                '//www.tiny.cloud/css/codepen.min.css'
+            ],
+            extended_valid_elements: "script[src|async|defer|type|charset]",
+            /*protect: [
+                /@@\{((.)*\n*(.)*)*\}/g
+            ],
+            forced_root_block: false*/
+        });
+    </script>
+
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }
+
+</head>
+<body>
+    @if (!isPreviewMode)
+    {
+        <!-- begin #page-loader -->
+        <div id="page-loader" class="fade in"><span class="spinner"></span></div>
+        <!-- end #page-loader -->
+    }
+
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade page-sidebar-fixed page-header-fixed @(sideBarMinified ? " page-sidebar-minified " : "") @extraPageCss">
+        @Html.Partial("~/Areas/Administration/Views/Shared/_AdminHeaderPartial.cshtml")
+
+        <!-- begin #sidebar -->
+        <div id="sidebar" class="sidebar">
+            <!-- begin sidebar scrollbar -->
+            <div data-scrollbar="true" data-height="100%">
+                <!-- begin sidebar user -->
+                <ul class="nav">
+                    <li class="nav-profile">
+                        <div class="image">
+                            <a href="javascript:;"><img src="~/Areas/Administration/Content/Themes/assets/img/user-13.jpg" alt="" /></a>
+                        </div>
+                        <div class="info">
+                            @authContext.GetCurrentUserFullName()
+                            <small>Administrator</small>
+                        </div>
+                    </li>
+                </ul>
+                <!-- end sidebar user -->
+                <!-- begin sidebar nav -->
+                <ul class="nav">
+                    <li class="nav-header"><i class="fa fa-cogs"></i> Navigation</li>
+                    @Html.MvcSiteMap().Menu("AdminMenuHelperModel", false)
+                    <!-- begin sidebar minify button -->
+                    <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+                    <!-- end sidebar minify button -->
+                </ul>
+                <!-- end sidebar nav -->
+            </div>
+            <!-- end sidebar scrollbar -->
+        </div>
+        <div class="sidebar-bg"></div>
+        <!-- end #sidebar -->
+        @RenderSection("RightSideBar", false)
+        <!-- begin #content -->
+        <div id="content" class="content">
+            <!-- begin breadcrumb -->
+            <ol class="breadcrumb pull-right">
+                @Html.MvcSiteMap().SiteMapPath("AdminSiteMapPathHelperModel")
+            </ol>
+            <!-- end breadcrumb -->
+            @RenderBody()
+            @Html.Partial("~/Areas/Administration/Views/Shared/_AdminFooterPartial.cshtml")
+        </div>
+        <!-- end #content -->
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- end page container -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    @Scripts.Render("~/Admin/jquery")
+    @Scripts.Render("~/Admin/bootstrap")
+    <!--[if lt IE 9]>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/respond.min.js"></script>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <!-- ================== END BASE JS ================== -->
+    <!-- ================== BEGIN PAGE LEVEL JS - PLUGINS & CUSTOM ================== -->
+    @Scripts.Render("~/Admin/plugins")
+    @Scripts.Render("~/Admin/custom-scripts")
+
+    <script src="/Areas/Administration/Content/Themes/assets/js/dashboard.js"></script>    
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    <script>
+        $(document).ready(function () {
+            App.init();
+            Dashboard.init();
+            TreeView.init();
+            FormPlugins.init();
+        });
+    </script>
+    @Html.Partial("_AlertModal")
+    @Html.Partial("_NotificationPartial")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

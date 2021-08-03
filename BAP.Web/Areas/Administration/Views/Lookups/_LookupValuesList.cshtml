@@ -1,0 +1,60 @@
+﻿@using System.Globalization
+@using BAP.Resources;
+@model BAP.DAL.Entities.Lookup
+<div class="form-group optional" id="LookupOptionList">
+    <h4><a href="@Url.Action("Create", "LookupValues", new { @lookupId = Model.Id })" class="btn btn-icon btn-success" title="@Resources.UIText_Create @Resources.EntityLabel_LookupValue"><i class="fa fa-plus"></i></a> Lookup Values</h4>    
+    @if (Model.Values != null && Model.Values.Count > 0)
+    {
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>@Resources.UIText_Actions</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Values[0].Key)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Values[0].Text)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Values[0].CultureCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Values[0].Order)
+                    </th>                
+                </tr>
+            </thead>
+            @foreach (var item in Model.Values.Where(a => a.CultureCode == CultureInfo.CurrentCulture.Name).OrderBy(i => i.Order))
+            {
+                <tr>
+                    <td>
+                        <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", "LookupValues", new {id=item.Id})">
+                            <i class="glyphicon glyphicon-th-list"></i>
+                        </a>
+                        <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="@Url.Action("Edit", "LookupValues", new {id=item.Id})">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", "LookupValues", new {id=item.Id})">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Key)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Text)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CultureCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Order)
+                    </td>                    
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>No data</p>
+    }
+</div>

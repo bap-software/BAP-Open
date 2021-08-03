@@ -1,0 +1,39 @@
+﻿@using BAP.Resources
+@model BAP.eCommerce.DAL.Entities.Customer
+
+<div class="form-group">
+    <div class="col-md-12 col-sm-12">
+        <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+            <thead>
+                <tr>
+                    <th width="5%">@Resources.UIText_Actions</th>
+                    <th>@Html.DisplayNameFor(model => model.CustomerPayments.First().Name)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.CustomerPayments != null && Model.CustomerPayments.Count > 0)
+                {
+                    foreach (var item in Model.CustomerPayments)
+                    {
+                        <tr>
+                            <td>
+                                <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("RemoveCustomerPayment", new {id=Model.Id, customerPaymentId = item.Id})">
+                                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2">@Resources.UIText_Store_NoPaymentMethodsSelected</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

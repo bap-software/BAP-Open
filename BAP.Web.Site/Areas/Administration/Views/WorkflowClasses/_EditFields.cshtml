@@ -1,0 +1,68 @@
+﻿@using BAP.Common
+@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.DAL.Entities.WorkflowClass
+
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.BapEntityAssembly, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.BapInterfaceAssembliesDropDownFor(model => model.BapEntityAssembly, typeof(IBapEntity), new { @class = "form-control" })        
+        @Html.ValidationMessageFor(model => model.BapEntityAssembly, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.BapEntityClass, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">        
+        @Html.BapInterfaceClassesDropDownFor(model => model.BapEntityClass, typeof(IBapEntity), new { @class = "form-control" }, "BapEntityAssembly")
+        @Html.ValidationMessageFor(model => model.BapEntityClass, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.AllowedRoles, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.AllowedRoles, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AllowedRoles, "", new { @class = "text-danger" })
+    </div>
+</div>

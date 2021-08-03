@@ -1,0 +1,75 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@model BAP.DAL.Entities.OrganizationModule
+@{
+    ViewBag.Title = Resources.UIText_Edit;
+}
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>
+
+<div id="ModuleEditModal@(Model.Id)" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-entity-select">
+        <!-- Modal content-->
+        <div class="modal-content">
+            @using (Html.BeginForm("EditOrganizationModule", "Organizations", FormMethod.Post, new { id = "editModule" + Model.Id, enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="ModalTitle">@Resources.UIText_Edit @Resources.EntityLabel_Module "@Model.Name"</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <!-- begin col-12 -->
+                        <div class="col-md-12">
+                            <div class="panel-body panel-form">
+                                <div class="form-horizontal form-bordered" data-parsley-validate="true" name="post-form" novalidate>
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.Name)
+                                    @Html.HiddenFor(model => model.TenantUnit)
+                                    @Html.HiddenFor(model => model.TenantUnitId)
+                                    @Html.HiddenFor(model => model.OrganizationId)
+                                    @Html.HiddenFor(model => model.CreateDate)
+                                    @Html.HiddenFor(model => model.CreatedBy)
+                                    @Html.HiddenFor(model => model.LastModifiedDate)
+                                    @Html.HiddenFor(model => model.LastModifiedBy)
+                                    @Html.HiddenFor(model => model.TimeStamp)
+                                    @Html.HiddenFor(model => model.OwnerGroup)
+                                    @Html.HiddenFor(model => model.OwnerPermissions)
+                                    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Order, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                        <div class="col-md-3 col-sm-3">
+                                            @Html.EditorFor(model => model.Order, new { htmlAttributes = new { @class = "form-control", } })
+                                            @Html.ValidationMessageFor(model => model.Order, "", new { @class = "text-danger" })
+                                        </div>
+                                        @Html.LabelFor(model => model.Enabled, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                        <div class="col-md-3 col-sm-3">
+                                            @Html.EditorFor(model => model.Enabled, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.UrlAlias, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                                        <div class="col-md-10 col-sm-10">
+                                            @Html.EditorFor(model => model.UrlAlias, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>                                        
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="@Resources.UIText_Save" class="btn btn-default btn-success" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.UIText_Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

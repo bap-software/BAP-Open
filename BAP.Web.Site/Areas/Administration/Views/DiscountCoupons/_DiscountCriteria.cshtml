@@ -1,0 +1,131 @@
+﻿@using BAP.Common;
+@using BAP.Resources;
+@using BAP.UI.HtmlHelpers;
+@using BAP.Web.Models;
+@model BAP.eCommerce.DAL.Entities.DiscountCoupon
+@{
+    var fieldsViewModel = (List<DiscountCriteriaViewModel>)ViewBag.CriteriaFields;
+}
+<style>
+    .row {
+        margin-bottom: 10px;
+    }
+
+    .values-in-placeholder {
+        font-weight: bold;
+    }
+</style>
+<form action="@Url.Action("CriteriaActionForm")" role="row" method="post" id="CriteriaActionForm">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-success" type="submit"><i class="fa fa-floppy-o"></i> @Resources.UIText_Save</button>
+        </div>
+    </div>
+    <hr />
+    @foreach (var field in fieldsViewModel)
+    {
+        var firstValue = "";
+        var secondValue = "";
+        var valuesInPlace = false;
+        if (field.Values != null && field.Values.Count > 0)
+        {
+            firstValue = field.Values[0];
+            valuesInPlace = true;
+            if (field.Values.Count > 1)
+            {
+                secondValue = field.Values[1];
+            }
+        }
+        <div class="row @(valuesInPlace ? "values-in-placeholder" : "")" id="row@(field.Id)">
+            <div class="col-md-2">
+                @for (int i = 0; i < field.Level; i++)
+                {
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                }
+                <i class="glyphicon glyphicon-list"></i>&nbsp;@(field.FieldCaption)
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default btn-default pull-right btn-clean-field" id="btnClean@(field.Id)" data-field-id="@(field.Id)" title="@Resources.UIText_Delete" style="display:@(valuesInPlace ? "block" : "none")"><i class="glyphicon glyphicon-trash"></i></button>
+            </div>
+            <div class="col-md-1">
+                @if (field.AllowedOperators != null && field.AllowedOperators.Count > 0 && !(field.FieldType == CriteriaFieldType.Object && field.ObjectLookup == null))
+                {
+                    <select class="form-control criteria-operator" id="oper@(field.Id)" name="oper@(field.Id)" data-field-id="@(field.Id)">
+                        <option value="">@Resources.UIText_ChooseOperator</option>
+                        @foreach (var oper in field.AllowedOperators)
+                        {
+                            var selectedText = "";
+                            if (oper == field.Operator)
+                            {
+                                selectedText = "selected=\"selected\"";
+                            }
+                            <option value="@oper" @(selectedText)>@Html.BapDisplayEnum(oper, "")</option>
+                        }
+                    </select>
+                }
+            </div>
+
+            @if (field.AllowedOperators != null && field.AllowedOperators.Count > 0)
+            {
+                if (field.FieldType == CriteriaFieldType.Property && field.DataType != CriteriaFieldDataType.Date)
+                {
+                    var inputType = "text";
+                    if (field.DataType == CriteriaFieldDataType.Number)
+                    {
+                        inputType = "number";
+                    }
+
+                    <div class="col-md-4">
+                        <input type="@(inputType)" placeholder="value goes here" value="@(firstValue)" class="form-control field-first-value criteria-field-data" id="val@(field.Id)" name="val@(field.Id)" data-field-id="@(field.Id)" />
+                    </div>
+                    <div id="divSecond@(field.Id)" class="col-md-4" style="display:@(field.Operator == CriteriaCompareOperator.Between ? "block" : "none")">
+                        <input type="@(inputType)" placeholder="value goes here" value="@(secondValue)" class="form-control field-second-value criteria-field-data" id="val@(field.Id)" name="val@(field.Id)" data-field-id="@(field.Id)" />
+                    </div>
+                }
+                else if (field.FieldType == CriteriaFieldType.Property && field.DataType == CriteriaFieldDataType.Date)
+                {
+                    <div class="col-md-4">
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control criteria-field-data" id="val@(field.Id)" name="val@(field.Id)" value="@(firstValue)" data-field-id="@(field.Id)">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="divSecond@(field.Id)" class="col-md-4" style="display:@(field.Operator == CriteriaCompareOperator.Between ? "block" : "none")">
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control criteria-field-data" id="val@(field.Id)" name="val@(field.Id)" value="@(secondValue)" data-field-id="@(field.Id)">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                }
+                else if (field.FieldType == CriteriaFieldType.Object && field.ObjectLookup != null && field.ObjectLookup.Count > 0)
+                {
+                    <div class="col-md-4">
+                        <select class="multiple-select2 form-control criteria-field-data" multiple="multiple" id="val@(field.Id)" name="val@(field.Id)" style="width:100%;" data-field-id="@(field.Id)">
+                            @foreach (var item in field.ObjectLookup)
+                            {
+                                var selectedText = "";
+                                if (field.Values != null && field.Values.Any(a => a == item.Key))
+                                {
+                                    selectedText = "selected=\"selected\"";
+                                }
+                                <option value="@item.Key" @(selectedText)>@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                }
+            }
+        </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-success" type="submit"><i class="fa fa-floppy-o"></i> @Resources.UIText_Save</button>
+        </div>
+    </div>
+</form>

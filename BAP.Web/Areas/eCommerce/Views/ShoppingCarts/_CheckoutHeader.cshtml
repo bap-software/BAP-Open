@@ -1,0 +1,62 @@
+﻿@model int
+@{
+
+}
+<div class="checkout-header">
+    <!-- BEGIN row -->
+    <div class="row">
+        <!-- BEGIN col-3 -->
+        <div class="col-md-3 col-sm-3">
+            <div class="step @(Model == 1 ? "active" : "")">
+                <a href="@Url.Action("Details", "ShoppingCarts")">
+                    <div class="number">1</div>
+                    <div class="info">
+                        <div class="title">Cart Items</div>
+                        <div class="desc">List of items to purchase.</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- END col-3 -->
+        <!-- BEGIN col-3 -->
+        <div class="col-md-3 col-sm-3">
+            <div class="step @(Model == 2 ? "active" : "")">
+                <a href="@Url.Action("Checkout", "ShoppingCarts")">
+                    <div class="number">2</div>
+                    <div class="info">
+                        <div class="title">Billing & Shipping Address</div>
+                        <div class="desc">Where to ship and send bills.</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- END col-3 -->
+        <!-- BEGIN col-3 -->
+        <div class="col-md-3 col-sm-3">
+            <div class="step @(Model == 3 ? "active" : "")">
+                <a href="@Url.Action("ShippingAndPayment", "ShoppingCarts")">
+                    <div class="number">3</div>
+                    <div class="info">
+                        <div class="title">Shipping & Payment Method</div>
+                        <div class="desc">How to pay and ship order.</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- END col-3 -->
+        <!-- BEGIN col-3 -->
+        <div class="col-md-3 col-sm-3">
+            <div class="step  @(Model == 4 ? "active" : "")">
+                <a href="@Url.Action("Review", "ShoppingCarts")">
+                    <div class="number">4</div>
+                    <div class="info">
+                        <div class="title">Review</div>
+                        <div class="desc">Review order details and submit.</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- END col-3 -->
+    </div>
+    <!-- END row -->
+</div>

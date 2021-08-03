@@ -1,0 +1,34 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<script type="text/javascript">
+    var hyperLinkContent = '<#= HyperLinkContent #>';
+	$("#hdnHyperLinkContent").val(hyperLinkContent);
+	setHyperLinkValues();
+
+	function setHyperLinkValues()
+	{
+		var url = $("#hyperLinkUrl").val();
+		var title = $("#hyperLinkTitle").val();
+		var temp = hyperLinkContent;
+		temp = temp.replace(/<%0%>/g, url);
+		temp = temp.replace(/<%1%>/g, title);
+		$("#hdnHyperLinkContent").val(temp);
+	}
+
+    $("#hyperLinkUrl").change(function () {  
+        setHyperLinkValues();
+    });	
+
+	$("#hyperLinkTitle").change(function () {  
+        setHyperLinkValues();
+    });	
+</script>
+
+
+<#+
+public string HyperLinkContent { get; set; }
+#>

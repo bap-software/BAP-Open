@@ -1,0 +1,103 @@
+﻿@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.eCommerce.DAL.Entities.Customer
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.CompanyName, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShortDescription, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.FirstName, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.MiddleName, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.LastName, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Email, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.PhoneNumber, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "15" } })
+        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-1">
+        @Html.EditorFor(model => model.PhoneExtension, new { htmlAttributes = new { @class = "form-control", @maxlength = "5" } })
+        @Html.ValidationMessageFor(model => model.PhoneExtension, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.CellNumber, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-1 col-sm-1" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.CellNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "15" } })
+        @Html.ValidationMessageFor(model => model.CellNumber, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.FaxNumber, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.FaxNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "15" } })
+        @Html.ValidationMessageFor(model => model.FaxNumber, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.PrefferedShippingOption, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-2">
+        @Html.BapOrgUserDropDownFor(model => model.PrefferedShippingOption, engine, "Id", "Name", "Description", new { @class = "form-control" }, "PrefferedShippingOptionId")
+        @Html.ValidationMessageFor(model => model.PrefferedShippingOptionId, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.PrefferedCurrency, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-2">
+        @Html.BapPublicCurrencyListFor(model => model.PrefferedCurrencyId, new { @class = "form-control", @placeholder = "Enter code" })
+        @Html.ValidationMessageFor(model => model.PrefferedCurrencyId, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LoginUser, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-2">
+        @Html.BapOrgUserDropDownFor(model => model.LoginUser, engine, "Id", "FullName", "", new { @class = "form-control" }, "LoginUserId")
+        @Html.ValidationMessageFor(model => model.LoginUserId, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.CustomData, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-6">
+        @Html.EditorFor(model => model.CustomData, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CustomData, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "ckeditor" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>

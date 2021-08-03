@@ -1,0 +1,114 @@
+﻿@using BAP.Resources;
+@using BAP.UI.HtmlHelpers;
+@using BAP.DAL.Entities;
+@using BAP.Web.Areas.Administration.Models;
+@model EntityAttachment
+@{
+    int maxRowsToShow = (int)ViewBag.DefaultPageSize;
+    int rowsToShow = (Model != null && Model.Attachments != null) ? Model.Attachments.Count : 0;
+    if (rowsToShow > maxRowsToShow)
+    {
+        rowsToShow = maxRowsToShow;
+    }
+}
+
+<div class="form-group">
+    <p>
+        <a href="#" onclick="addAttachment()" class="btn btn-icon btn-success btn-add-attachment" title="@Resources.UIText_Create @Resources.EntityLabel_Attachment"><i class="fa fa-plus"></i></a>
+        @Resources.EntityLabel_Attachment
+    </p>
+</div>
+@Html.Partial("_CreateAttachment", new Attachment() { Object = Model.Object, ObjectId = Model.ObjectId })
+
+<div class="form-group">
+    <div class="col-md-12 col-sm-12">
+        <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+            <thead>
+                <tr>
+                    <th>@Resources.UIText_Actions</th>
+                    <th>@Html.LabelFor(model => model.Attachments.First().Name)</th>
+                    <th>@Html.LabelFor(model => model.Attachments.First().AttachmentType)</th>
+                    <th>@Html.LabelFor(model => model.Attachments.First().PathUrl)</th>
+                    <th>@Html.LabelFor(model => model.Attachments.First().CreateDate)</th>
+                    <th>@Html.LabelFor(model => model.Attachments.First().LastModifiedDate)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < rowsToShow; i++)
+                {
+                    var item = Model.Attachments[i];
+                    <tr>
+                        <td>
+                            <a title="@Resources.UIText_Details" style="text-decoration: none;" href="#" onclick="detailsAttachment('@item.Id')">
+                                <i class="glyphicon glyphicon-th-list"></i>
+                            </a>
+                            @Html.Partial("_DetailsAttachment", item)
+                            <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="#" onclick="editAttachment('@item.Id')">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </a>
+                            @Html.Partial("_EditAttachment", item)
+                            <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="#" onclick="deleteAttachment('@item.Id')">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </a>
+                            @Html.Partial("_DeleteAttachment", item)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AttachmentType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PathUrl)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (Model != null && Model.Attachments != null && Model.Attachments.Count > maxRowsToShow)
+        {
+            <hr />
+            <a href="@Url.Action("Index", "Attachments", new { @area = "Administration"})">@Resources.UIText_SeeMoreAttachments</a>
+        }
+    </div>
+</div>
+
+<script>
+    function detailsAttachment(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttachmentDetailsModal" + id).modal(opt);
+    }
+
+    function addAttachment() {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttachmentAddModal").modal(opt);
+    }
+
+    function editAttachment(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttachmentEditModal" + id).modal(opt);
+    }
+
+    function deleteAttachment(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttachmentDeleteModal" + id).modal(opt);
+    }
+</script>

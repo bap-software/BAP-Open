@@ -1,0 +1,74 @@
+﻿@using BAP.Resources
+@using BAP.Common;
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@{
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = authContext.GetCurrentOrganization(config);
+    var addressLine1 = "";
+    var city = "";
+    var state = "";
+    var county = "";
+    var zip = "";
+    var phone = "";
+    var email = "";
+    if (currOrg != null)
+    {
+        addressLine1 = currOrg.AddressLine1;
+        city = currOrg.City;
+        state = currOrg.State;
+        county = currOrg.County;
+        zip = currOrg.Zip;
+        phone = currOrg.PhoneNumber;
+        email = currOrg.ContactEmail;
+    }
+}
+<div id="footer" class="footer">
+    <!-- begin container -->
+    <div class="container">
+        <!-- begin row -->
+        <div class="row">
+            <!-- begin col-3 -->
+            <div class="col-md-3 col-sm-3">
+                <!-- begin section-container -->
+                @Html.Partial("_CategoriesFooter")
+                <!-- end section-container -->
+            </div>
+            <!-- end col-3 -->
+            <!-- begin col-3 -->
+            <div class="col-md-3 col-sm-3">
+                <!-- begin section-container -->
+                @Html.Partial("_FooterArchives")
+                <!-- end section-container -->
+            </div>
+            <!-- end col-3 -->
+            <!-- begin col-3 -->
+            <div class="col-md-3 col-sm-3">
+                <!-- begin section-container -->
+                @Html.Partial("_RecentPostsFooter")
+                <!-- end section-container -->
+            </div>
+            <!-- end col-3 -->
+            <!-- begin col-3 -->
+            <div class="col-md-3 col-sm-3">
+                <div class="section-container">
+                    <h4 class="footer-title">@Resources.FieldLabel_Blog_BAPBlog</h4>
+                    <address>
+                        <strong>@Resources.FieldLabel_Blog_BAPSoftware</strong><br />
+                        @addressLine1, @county<br />
+                        @city, @state @zip<br />
+                        P: @phone<br />
+                        <br />
+                        <strong>@Resources.FieldLabel_Blog_ContactUs</strong><br />
+                        <a href="mailto:@email">@email</a>
+                    </address>
+                </div>
+                <!-- end section-container -->
+            </div>
+            <!-- end col-3 -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>

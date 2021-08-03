@@ -1,0 +1,153 @@
+﻿@using BAP.Resources;
+@using PagedList.Mvc;
+@using BAP.UI.HtmlHelpers;
+@model PagedList.IPagedList<BAP.DAL.Entities.EventLog>
+
+@{      
+    ViewBag.Title = Resources.EntityLabel_EventLog;
+    ViewBag.FullTextSearchAction = "/Administration/EventLogs";
+    Dictionary<string, string> sortData = (Dictionary<string, string>)ViewBag.SortData;
+    string currentFilter = ViewBag.CurrentFilter;
+    string currentSort = ViewBag.CurrentSort;
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">@ViewBag.Title<small></small></h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">                    
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a> 
+                </div>
+                <h4 class="panel-title">@Resources.UIText_SearchResults</h4>
+            </div>
+            <div class="panel-body">
+                <div id="data-table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                    <form action="@Url.Action("MultirowActionForm")" role="row" method="post" id="MultirowActionForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="selectedAction" name="selectedAction" value="delete" />
+                        <input type="hidden" id="page" name="page" value="@Model.PageNumber" />
+                        <input type="hidden" id="pageSize" name="pageSize" value="@Model.PageSize" />
+                        <input type="hidden" id="currentFilter" name="currentFilter" value="@currentFilter" />
+                        <input type="hidden" id="currentSort" name="currentSort" value="@currentSort" />
+
+
+                        <div class="dt-buttons btn-group">
+                            <a href="javascript:document.getElementById('MultirowActionForm').submit();" class="btn btn-default buttons-html5 btn-sm" tabindex="1" aria-controls="data-table"><span>Delete</span></a>
+                            <!--a class="btn btn-default buttons-copy buttons-html5 btn-sm" tabindex="2" aria-controls="data-table"><span>Copy</span></!--a>
+                            <a class="btn btn-default buttons-csv buttons-html5 btn-sm" tabindex="3" aria-controls="data-table"><span>CSV</span></a>
+                            <a class="btn btn-default buttons-excel buttons-html5 btn-sm" tabindex="4" aria-controls="data-table"><span>Excel</span></a>
+                            <a class="btn btn-default buttons-pdf buttons-html5 btn-sm" tabindex="5" aria-controls="data-table"><span>PDF</span></a>
+                            <a class="btn btn-default buttons-print btn-sm" tabindex="6" aria-controls="data-table"><span>Print</span></a-->
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                                    <thead>
+                                        <tr role="row">
+                                            <th style="width:15px;"><input type="checkbox" id="check-all-rows" onchange="CheckAllChanged();" /></th>
+                                            <th onclick="window.location = '@Url.Action("Index", new { page = 1, sortOrder = "", currentFilter = currentFilter, pageSize = Model.PageSize })';" title="Default Sort Order" style="cursor:pointer;">
+                                                @Resources.UIText_Actions
+                                            </th>
+
+                                            @Html.BapSortingHeaderFor(model => model.First().EventType, sortData, currentSort, "Index", "EventLogs", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+
+                                            @Html.BapSortingHeaderFor(model => model.First().EventTime, sortData, currentSort, "Index", "EventLogs", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+
+                                            @Html.BapSortingHeaderFor(model => model.First().EventSource, sortData, currentSort, "Index", "EventLogs", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+
+                                            @Html.BapSortingHeaderFor(model => model.First().EventCode, sortData, currentSort, "Index", "EventLogs", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+
+                                            @Html.BapSortingHeaderFor(model => model.First().EventUrl, sortData, currentSort, "Index", "EventLogs", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td><input type="checkbox" id="checkRow" name="checkRow" class="check-row" value="@item.Id" /></td>
+                                                <td>
+                                                    <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", new {id=item.Id})">
+                                                        <i class="glyphicon glyphicon-th-list"></i>
+                                                    </a>
+                                                    <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", new {id=item.Id})">
+                                                        <i class="glyphicon glyphicon-remove"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.EventType)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.EventTime)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.EventSource)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.EventCode)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.EventUrl)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @if (Model.PageCount > 1)
+                        {
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="dataTables_length" id="data-table_length">
+                                        <label>
+                                            Items per page <select id="data-table-length" name="data-table_length" aria-controls="data-table" class="form-control input-sm" onchange="OnpageSizeChange()">
+                                                <option value="5" @(Model.PageSize == 5 ? "selected" : "")>5</option>
+                                                <option value="10" @(Model.PageSize == 10 ? "selected" : "")>10</option>
+                                                <option value="15" @(Model.PageSize == 15 ? "selected" : "")>15</option>
+                                                <option value="20" @(Model.PageSize == 20 ? "selected" : "")>20</option>
+                                                <option value="50" @(Model.PageSize == 50 ? "selected" : "")>50</option>
+                                                <option value="100" @(Model.PageSize == 100 ? "selected" : "")>100</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="dataTables_info" id="data-table_info" role="status" aria-live="polite">Showing page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>
+                                </div>
+
+                                <div class="col-sm-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="data-table_paginate">
+                                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, pageSize = Model.PageSize }))
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </form>
+                    
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function OnpageSizeChange()
+    {
+        var url = '@Url.Action("Index", new { page = 1, sortOrder = currentSort, currentFilter = currentFilter })';
+        url = url.replace('&amp;', '&');
+        url += "&pageSize=" + $('#data-table-length').val();
+        window.location = url;
+    }
+
+    function CheckAllChanged()
+    {
+        $('.check-row').prop("checked", $('#check-all-rows').is(':checked'));        
+    }
+</script>
+

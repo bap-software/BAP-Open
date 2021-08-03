@@ -1,0 +1,66 @@
+@using BAP.UI.HtmlHelpers
+@{ 
+    var isPreviewMode = (Request["previewMode"] != null && Request["previewMode"] == "true");
+}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title | @BAP.Resources.Resources.UIText_ApplicationTitle</title>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    @Html.Meta()
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->    
+    @Scripts.Render("~/bundles/pace")
+    @if (!isPreviewMode)
+    {        
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+    }        
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }    
+    <!-- ================== END BASE JS ================== -->       
+</head>
+<body data-spy="scroll" data-target="#header-navbar" data-offset="51">
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade">
+        @Html.Partial("_HeaderPartial")
+        @RenderBody()
+        @Html.Partial("_FooterPartial")
+    </div>
+    <!-- end #page-container -->
+    <a id="back-to-top" href="#page-container" class="back-to-top" title="Click to return on the top page"><i class="fa fa-chevron-up"></i></a>
+    <!-- ================== BEGIN BASE JS ================== -->
+    @Scripts.Render("~/bundles/jquery")
+    <!--[if lt IE 9]>
+        <script src="assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="assets/crossbrowserjs/respond.min.js"></script>
+        <script src="assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/bundles/plugins")
+    <!-- ================== END BASE JS ================== -->
+
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>
+
+    @Html.Partial("_AlertModal")
+    @Html.Partial("_NotificationPartial")
+    @Html.Partial("_LoginModal", new BAP.Web.Models.LoginViewModel())
+    @Html.Partial("_RegisterModal", new BAP.Web.Models.RegisterViewModel())
+    @Html.Partial("_ForgotPasswordModal", new BAP.Web.Models.ForgotPasswordViewModel())
+    @RenderSection("scripts", required: false)
+</body>
+</html>

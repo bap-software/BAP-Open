@@ -1,0 +1,11 @@
+﻿@using BAP.Web.Models;
+@model BAP.Web.Models.HomeData
+@{
+    ViewBag.Title = "Contact";
+    ViewBag.TitleIcon = "mdi-map-marker-circle";
+    ViewBag.Description = "BAP Software, business process management software, contact company staff.";
+    ViewBag.SeoKeywords = "bap software,contact";
+}
+
+
+@Html.Partial("_ContactPartial", Model)

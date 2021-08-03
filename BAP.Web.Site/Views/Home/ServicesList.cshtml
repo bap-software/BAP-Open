@@ -1,0 +1,28 @@
+@model BAP.Web.Models.HomeData
+@{
+    Layout = null;
+}
+<h6 class="text-uppercase text-spacing-60">Top Services</h6>
+@if (Model != null && Model != null && Model.Services != null && Model.Services.Count > 2)
+{
+    for (int i = 0; i < 3; i++)
+    {
+                                <!-- Post Widget-->
+        <article class="post widget-post text-left">
+            <a href="/services#S@(Model.Services[i].Id)">
+                <div class="unit unit-horizontal unit-spacing-xs unit-middle">
+                    <div class="unit-body">
+                        <div class="post-meta">
+                            <span class="icon-xxs text-picton-blue mdi mdi-arrow-right"></span>
+                            <time class="text-dark">@Model.Services[i].Name</time>
+                        </div>
+                        <div class="post-title">
+                            <h6 class="text-regular">@Model.Services[i].ShortDescription</h6>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </article>
+    }
+
+}

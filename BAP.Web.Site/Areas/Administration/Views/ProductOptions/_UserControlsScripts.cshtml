@@ -1,0 +1,23 @@
+﻿<script>
+        $(document).ready(function () {
+            $("#Type").change(function () {
+                var thisVal = $(this).val();
+                for (i = 1; i < 8; i++)
+                {
+                    $("#UserControl option[value='" + i + "']").removeAttr("disabled");
+                }
+
+                if (thisVal == "1" || thisVal == "2") //Attribute || Product
+                {
+                    $("#UserControl option[value='1']").attr("disabled", "disabled"); //Text
+                    $("#UserControl option[value='2']").attr("disabled", "disabled"); //Textarea
+                }
+                else if (thisVal == "3") //Text
+                {
+                    for (i = 3; i < 8; i++) {
+                        $("#UserControl option[value='" + i + "']").attr("disabled", "disabled"); //Other dropdowns, checkboxes and radio
+                    }
+                }
+            });
+        });
+</script>

@@ -1,0 +1,103 @@
+﻿@using BAP.Resources;
+@using BAP.DAL.Entities;
+@model Country
+@{
+    int maxRowsToShow = 100;
+    int rowsToShow = Model != null && Model.States != null ? Model.States.Count : 0;
+    if (rowsToShow > maxRowsToShow)
+    {
+        rowsToShow = maxRowsToShow;
+    }
+}
+
+<div class="form-group">
+    <p>
+        <a href="#" onclick="addState()" class="btn btn-icon btn-success btn-add-post" title="@Resources.UIText_Create @Resources.EntityLabel_State"><i class="fa fa-plus"></i></a>
+        @Resources.EntityLabel_State
+    </p>
+</div>
+@Html.Partial("_CreateState", new State { CountryId = Model.Id })
+
+<div class="form-group">
+    <div class="col-md-12 col-sm-12">
+        <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+            <thead>
+                <tr>
+                    <th>@Resources.UIText_Actions</th>
+                    <th>@Html.LabelFor(model => model.States.First().Name)</th>
+                    <th>@Html.LabelFor(model => model.States.First().ShortName)</th>
+                    <th>@Html.LabelFor(model => model.States.First().TwoLetterCode)</th>
+                    <th>@Html.LabelFor(model => model.States.First().ThreeLetterCode)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < rowsToShow; i++)
+                {
+                    var item = Model.States[i];
+                    <tr>
+                        <td>
+                            <a title="@Resources.UIText_Details" style="text-decoration: none;" href="#" onclick="detailsState('@item.Id')">
+                                <i class="glyphicon glyphicon-th-list"></i>
+                            </a>
+                            @Html.Partial("_DetailsState", item)
+                            <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="#" onclick="editState('@item.Id')">
+                                <i class="glyphicon glyphicon-edit"></i>
+                            </a>
+                            @Html.Partial("_EditState", item)
+                            <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="#" onclick="deleteState('@item.Id')">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </a>
+                            @Html.Partial("_DeleteState", item)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShortName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TwoLetterCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ThreeLetterCode)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function addState() {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#StateAddModal").modal(opt);
+    }
+
+    function editState(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#StateEditModal" + id).modal(opt);
+    }
+
+    function detailsState(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#StateDetailsModal" + id).modal(opt);
+    }
+
+    function deleteState(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#StateDeleteModal" + id).modal(opt);
+    }
+</script>

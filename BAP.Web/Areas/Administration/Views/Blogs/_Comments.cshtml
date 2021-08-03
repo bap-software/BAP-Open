@@ -1,0 +1,103 @@
+﻿@using BAP.Resources;
+@using BAP.DAL.Entities;
+@model Blog
+@{
+    int maxRowsToShow = 100;
+    int rowsToShow = Model != null && Model.BlogComments != null ? Model.BlogComments.Count : 0;
+    if (rowsToShow > maxRowsToShow)
+    {
+        rowsToShow = maxRowsToShow;
+    }
+}
+
+<div class="form-group">
+    <p>
+        <a href="#" onclick="addBlogComment()" class="btn btn-icon btn-success btn-add-post" title="@Resources.UIText_Create @Resources.EntityLabel_BlogComment"><i class="fa fa-plus"></i></a>
+        @Resources.EntityLabel_BlogComment
+    </p>
+</div>
+@Html.Partial("_CreateBlogComment", new BlogComment { BlogId = Model.Id })
+
+<div class="form-group">
+    <div class="col-md-12 col-sm-12">
+        <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+            <thead>
+                <tr>
+                    <th>@Resources.UIText_Actions</th>
+                    <th>@Html.LabelFor(model => model.BlogComments.First().Title)</th>
+                    <th>@Html.LabelFor(model => model.BlogComments.First().Author)</th>
+                    <th>@Html.LabelFor(model => model.BlogComments.First().LastModifiedDate)</th>
+                    <th>@Html.LabelFor(model => model.BlogComments.First().Text)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < rowsToShow; i++)
+                {
+                    var item = Model.BlogComments[i];
+                <tr>
+                    <td>
+                        <a title="@Resources.UIText_Details" style="text-decoration: none;" href="#" onclick="detailsBlogComment('@item.Id')">
+                            <i class="glyphicon glyphicon-th-list"></i>
+                        </a>
+                        @Html.Partial("_DetailsBlogComment", item)
+                        <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="#" onclick="editBlogComment('@item.Id')">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        @Html.Partial("_EditBlogComment", item)
+                        <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="#" onclick="deleteBlogComment('@item.Id')">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                        @Html.Partial("_DeleteBlogComment", item)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Author)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                    </td>
+                    <td>
+                        @Html.Raw(item.Text)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function addBlogComment() {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#BlogCommentAddModal").modal(opt);
+    }
+
+    function editBlogComment(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#BlogCommentEditModal" + id).modal(opt);
+    }
+
+    function detailsBlogComment(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#BlogCommentDetailsModal" + id).modal(opt);
+    }
+
+    function deleteBlogComment(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#BlogCommentDeleteModal" + id).modal(opt);
+    }
+</script>

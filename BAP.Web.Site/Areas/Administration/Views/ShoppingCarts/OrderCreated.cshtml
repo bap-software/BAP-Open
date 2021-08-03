@@ -1,0 +1,50 @@
+﻿@using BAP.Resources
+@model BAP.eCommerce.DAL.Entities.CustomerOrder
+@{
+    ViewBag.Title = "Order Created";
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>@ViewBag.Title</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">@Resources.UIText_HomePage</a>
+                    </li>
+                    <li class="active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix logIn">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>@ViewBag.Title</h3></div>
+                    <div class="panel-body">
+                        @if (ViewBag.IsError)
+                        {
+                            <h4 class="text-danger">Your order #@Model.Id has been completed, but payment has failed with the following message: @ViewBag.ErrorMessage</h4>
+                        }
+                        else
+                        {
+                            <h4>Your order #@Model.Id has been processed successfully.</h4>
+                        }                         
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

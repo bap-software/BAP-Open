@@ -1,0 +1,12 @@
+﻿@model IList<BAP.Common.Modules.ModuleMenuNode>
+
+@if(Model != null && Model.Count > 0)
+{        
+    foreach (var node in Model)
+    {
+        <li class="dropdown">
+            @node.Title
+            @Html.DisplayFor(a => node)
+        </li>
+    }    
+}

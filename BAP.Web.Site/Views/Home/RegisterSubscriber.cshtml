@@ -1,0 +1,118 @@
+﻿@using BAP.Common;
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@model BAP.Web.Models.SubscribeEmailModel
+@{
+    ViewBag.Title = "Contact";
+    ViewBag.TitleIcon = "mdi-map-marker-circle";
+    ViewBag.Description = "BAP Software, business process management software, contact company staff.";
+    ViewBag.SeoKeywords = "bap software, subscribe newsletter";
+
+    IConfigHelper config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = authContext.GetCurrentOrganization(config);
+}
+
+<section class="section-98 section-sm-50 text-lg-left">
+    <div class="shell">
+        <div class="range range-xs-center range-xs-center">
+            
+            <div class="cell-sm-12 offset-top-66 offset-lg-top-0">
+                <h3 class="text-uppercase text-bold">Subscribe for our news letter</h3>
+                <hr class="divider hr-lg-left-0 bg-mantis">
+                <!-- RD Mailform-->
+                <div class="alert-classic alert-classic-success alert-classic-lg hidden" id="SuccessAlert">
+                    <h4>
+                        <span class="text-middle icon icon-xxs mdi mdi-check"></span><span class="text-middle" id="SuccessText">Success! Subscription applied!</span>
+                    </h4>
+                </div>
+                <div class="alert-classic alert-classic-warning alert-classic-lg hidden" id="ErrorAlert">
+                    <h4>
+                        <span class="text-middle icon icon-xxs mdi mdi-alert-outline"></span><span class="text-middle" id="ErrorText">Oh snap! Could not subscribe for news letter - please try again later.</span>
+                    </h4>
+                </div>
+                <form data-form-output="form-output-global" data-form-type="contact" class="rd-mailform text-left" novalidate="novalidate" id="form">
+                    <div class="range">                        
+                        <div class="cell-lg-6 offset-top-20 offset-lg-top-0">
+                            <div class="form-group">
+                                <label for="contact-us-email" class="form-label form-label-outside rd-input-label">E-Mail:</label>
+                                <input id="contact-us-email" type="email" name="email" class="form-control form-control-has-validation form-control-last-child" value="@Model.Email" /><span class="form-validation"></span>
+                                <div class="g-recaptcha" data-sitekey="@currOrg.reCaptchaSiteKey"></div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="group-sm text-center text-lg-left offset-top-30">
+                        <button type="button" class="btn btn-primary" id="send">Apply</button>                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#contact-us-name").focus(function () {
+            HideAlerts();
+        });
+
+        $("#contact-us-email").focus(function () {
+            HideAlerts();
+        });
+
+        $("#contact-us-message").focus(function () {
+            HideAlerts();
+        });
+
+        $("#send").click(function () {
+            HideAlerts();
+            $("body").css("cursor", "progress");
+
+            var email = {
+                RecaptchaResponse : grecaptcha.getResponse(),                
+                Email: $("#contact-us-email").val().trim()                
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/RegisterSubscriber",
+                data: JSON.stringify(email),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $("body").css("cursor", "default");
+                    if (data.success)
+                    {
+                        ShowSuccess("Success! Subscription applied!");
+                        document.getElementById("form").reset();
+                        grecaptcha.reset();
+                    }
+                    else
+                        ShowError("Error. " + data.error);
+                },
+                error: function () {
+                    $("body").css("cursor", "default");
+                    ShowError("Oh snap! Could not subscribe for news letter - please try again later.");
+                }
+            });
+        });
+    });
+
+    function ShowSuccess(msg) {
+        $("#SuccessAlert").removeClass("hidden");
+        $("#SuccessText").text(msg);
+    }
+    function ShowError(msg) {
+        $("#ErrorAlert").removeClass("hidden");
+        $("#ErrorText").text(msg);
+    }
+    function HideAlerts(){
+        if (!$("#SuccessAlert").hasClass("hidden")) {
+            $("#SuccessAlert").addClass("hidden");
+        }
+        if (!$("#ErrorAlert").hasClass("hidden")) {
+            $("#ErrorAlert").addClass("hidden");
+        }
+    }
+</script>

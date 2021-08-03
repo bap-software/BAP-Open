@@ -1,0 +1,49 @@
+﻿<header class="page-head">
+    <!-- RD Navbar Transparent-->
+    <div class="rd-navbar-wrap">
+        <nav class="rd-navbar rd-navbar-default rd-navbar-light" data-lg-auto-height="true" data-md-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-stick-up="true">
+            <div class="rd-navbar-inner">
+                <!-- RD Navbar Panel-->
+                <div class="rd-navbar-panel">
+                    <!-- RD Navbar Toggle-->
+                    <button data-rd-navbar-toggle=".rd-navbar, .rd-navbar-nav-wrap" class="rd-navbar-toggle"><span></span></button>
+                    <!--Navbar Brand-->
+                    <div class="rd-navbar-brand"><a href="/"><img style='margin-top: -5px;margin-left: -15px;' src='/Content/Themes/Base/images/bap/logo-dark.png' alt='BAP Software' title="BAP Software" /></a></div>
+                </div>
+                <div class="rd-navbar-menu-wrap">
+                    <div class="rd-navbar-nav-wrap">
+                        <div class="rd-navbar-mobile-scroll">
+                            <!--Navbar Brand Mobile-->
+                            <div class="rd-navbar-mobile-brand"><a href="/"><img style='margin-top: -5px;margin-left: -15px;' src='/Content/Themes/Base/images/bap/logo-dark.png' alt='BAP Software' title="BAP Software" /></a></div>
+                            <div class="form-search-wrap">
+                                <form action="search-results.html" method="GET" class="form-search">
+                                    <div class="form-group">
+                                        <label for="rd-navbar-form-search-widget" class="form-label form-search-label form-label-sm">Search</label>
+                                        <input id="rd-navbar-form-search-widget" type="text" name="s" autocomplete="off" class="form-search-input input-sm form-control form-control-gray-lightest input-sm" />
+                                    </div>
+                                    <button type="submit" class="form-search-submit"><span class="mdi mdi-magnify"></span></button>
+                                </form>
+                            </div>
+                            <!-- RD Navbar Nav-->
+                            @Html.MvcSiteMap().Menu(false)                                                        
+                         </div>
+                    </div>                                
+                    <!--RD Navbar Search-->
+                    <div class="rd-navbar-search" style="display:none;">
+                        <a data-rd-navbar-toggle=".rd-navbar-inner,.rd-navbar-search" href="#" class="rd-navbar-search-toggle mdi"><span></span></a>
+                        <form action="search-results.html" method="GET" class="rd-navbar-search-form search-form-icon-right">
+                            <div class="form-group">
+                                <label for="rd-navbar-search-form-input" class="form-label">Type and hit enter...</label>
+                                <input id="rd-navbar-search-form-input" type="text" name="s" autocomplete="off" class="rd-navbar-search-form-input form-control form-control-gray-lightest" />
+                            </div>
+                            <!--button(type="submit").rd-navbar-search-form-submit.mdi.mdi-magnify-->
+                        </form>
+                        <!--div.rd-navbar-live-search-results-->
+                        <!--button(data-rd-navbar-toggle=".rd-navbar-search, .rd-navbar-inner, .rd-navbar-live-search-results").rd-navbar-search-toggle-->
+                        <!--  span-->
+                    </div>                    
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

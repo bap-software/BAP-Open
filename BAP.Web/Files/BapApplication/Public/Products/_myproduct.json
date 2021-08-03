@@ -1,0 +1,43 @@
+[
+  {
+    "Category": "My Subcategory 1",
+    "name": "My Deep Purple 700",
+    "shortDescription": "Our main z",
+    "description": "Loreasdsdsfdsfm ipsum  elit, sed do eicvbr incididunt ut labore et dolore magna alim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "price": 599.99,
+    "listPrice": 149.99,
+    "msrpPrice": 0.0,
+    "minPrice": 129.0,
+    "maxPrice": 0.0,
+    "enabled": true,
+    "imagePath": "/file/Public/Products/1.png",
+    "weight": 1.0,
+    "width": 1.0,
+    "depth": 1.0,
+    "height": 1.0,
+    "weightMeasure": "kg",
+    "sizeMeasure": "cm",
+    "internalStatus": "trending"
+  },
+  {
+    "Category": "My Subcategory 2",
+    "name": "My Black Sabbath 700",
+    "shortDescription": "Our main z",
+    "description": "Loreasdsdsfdsfm ipsum  elit, sed do eicvbr incididunt ut labore et dolore magna alim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "price": 499.99,
+    "listPrice": 169.99,
+    "msrpPrice": 0.0,
+    "minPrice": 119.0,
+    "maxPrice": 0.0,
+    "enabled": true,
+    "imagePath": "/file/Public/Products/2.png",
+    "weight": 1.0,
+    "width": 1.0,
+    "depth": 1.0,
+    "height": 1.0,
+    "weightMeasure": "kg",
+    "sizeMeasure": "cm",
+    "internalStatus": "trending",
+    "isFeatured": true
+  }
+] 

@@ -1,0 +1,39 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.BlogPost
+@{
+    ViewBag.Title = Resources.UIText_Delete;
+}
+
+<div id="BlogPostDeleteModal@(Model.Id)" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-entity-select">
+        <!-- Modal content-->
+        @using (Html.BeginForm("Delete", "BlogPosts", FormMethod.Post, new { id = "deleteBlogPost" + Model.Id }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="ModalTitle">@Resources.UIText_Delete @Resources.EntityLabel_BlogPost</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- begin col-12 -->
+                        <div class="col-md-12">
+                            <div class="panel-body panel-form">
+                                <div class="form-horizontal form-bordered" data-parsley-validate="true" name="post-form" novalidate>
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <input type="hidden" id="id" name="id" value="@Model.Id" />
+                                    @Html.Partial("_ReadOnlyBlogPostFields")                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="@Resources.UIText_Delete" class="btn btn-default btn-success" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.UIText_Cancel</button>
+                </div>
+            </div>
+        }
+    </div>    
+</div>

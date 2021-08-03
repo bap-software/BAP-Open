@@ -1,0 +1,42 @@
+﻿@using BAP.Resources
+@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = Resources.UIText_404Error;
+    var errorMessage = Resources.UIText_GeneralErrorText;
+    if (!string.IsNullOrWhiteSpace(ViewBag.errorMessage))
+    {
+        errorMessage = ViewBag.errorMessage;
+    }
+    var lastEventId = -1;
+    if (Session["LAST_EVENT_ID"] != null)
+    {
+        lastEventId = (int)Session["LAST_EVENT_ID"];
+        Session["LAST_EVENT_ID"] = null;
+    }
+}
+
+
+<!-- begin #page-container -->
+<div id="page-container">
+    <!-- begin error -->
+    <div class="error">
+        <div class="error-code m-b-10">404 <i class="fa fa-warning"></i></div>
+        <div class="error-content">
+            <div class="error-message">@ViewBag.Title</div>
+            <div class="error-desc m-b-20">@errorMessage</div>
+            <div>
+                <a href="@Url.Action("Index", "Home", new { area = "Administration"})" class="btn btn-success">@Resources.UIText_HomePage</a>
+                @if (lastEventId > 0)
+                {                    
+                    <a title="@Resources.UIText_Details" class="btn btn-default" href="@Url.Action("Details", "EventLogs",  new {area = "Administration", id=lastEventId})">@Resources.UIText_ErrorDetails</a>                    
+                }
+            </div>
+            
+        </div>
+    </div>
+    <!-- end error -->            
+</div>
+<!-- end page container -->
+
+

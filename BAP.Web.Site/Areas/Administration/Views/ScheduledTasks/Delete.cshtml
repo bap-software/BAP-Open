@@ -1,0 +1,117 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@model BAP.DAL.Entities.ScheduledTask
+@{
+    ViewBag.Title = Resources.UIText_Delete + " " + Resources.EntityLabel_ScheduledTask;
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("Index", "ScheduledTasks", new { Area = "Administration"})" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>
+    @ViewBag.Title 
+</h1>
+<!-- end page-header -->
+
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">@Resources.UIText_SureToDelete @(Resources.EntityLabel_ScheduledTask)?</h4>
+            </div>
+            <div class="panel-body panel-form">
+                <div class="form-horizontal form-bordered" novalidate>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter name" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.ShortName, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter name" } })
+                            @Html.ValidationMessageFor(model => model.ShortName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-8 col-sm-8">
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter description" } })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Interval, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.Interval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter interval" } })
+                            @Html.ValidationMessageFor(model => model.Interval, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.Recurring, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.CheckBoxFor(model => model.Recurring, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.Recurring, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.JobClass, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.JobClass, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter job class" } })
+                            @Html.ValidationMessageFor(model => model.JobClass, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.JobAssembly, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.JobAssembly, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter job assembly" } })
+                            @Html.ValidationMessageFor(model => model.JobAssembly, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.JobData, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.JobData, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter job data" } })
+                            @Html.ValidationMessageFor(model => model.JobData, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.Enabled, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.CheckBoxFor(model => model.Enabled, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @Html.Partial("_ReadOnlyFields")
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.UniqueId)                        
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.LastModifiedBy)
+                        @Html.HiddenFor(model => model.TenantUnit)
+                        @Html.HiddenFor(model => model.TenantUnitId)
+                        @Html.HiddenFor(model => model.OwnerGroup)
+                        @Html.HiddenFor(model => model.OwnerPermissions)
+                        @Html.HiddenFor(model => model.TimeStamp)
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="@Resources.UIText_Delete" class="btn btn-default btn-success" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

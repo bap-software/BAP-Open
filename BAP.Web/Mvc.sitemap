@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="None" controller="None" action="None" key="HomeKey">
+    <mvcSiteMapNode title="" action="" dynamicNodeProvider="BAP.UI.PluginsDynamicNodeProvider, BAP.UI" >
+      <mvcSiteMapNode title="" action="" dynamicNodeProvider="BAP.UI.PluginsActionDynamicNodeProvider, BAP.UI" />
+    </mvcSiteMapNode>       
+  </mvcSiteMapNode>
+</mvcSiteMap>

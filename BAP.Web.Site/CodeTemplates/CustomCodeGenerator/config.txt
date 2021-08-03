@@ -1,0 +1,3 @@
+﻿--We put here configuration of existing or extra layouts: <Name>,<Layout Path>,<1 if is partial>. This file is only considered if placed into project.
+AdminIndex,~/Views/Shared/_AdminLayout.cshtml,0
+AdminDetails,~/Views/Shared/_AdminLayout.cshtml,0

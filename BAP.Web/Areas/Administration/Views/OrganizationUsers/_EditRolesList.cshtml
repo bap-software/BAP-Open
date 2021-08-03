@@ -1,0 +1,66 @@
+﻿@using BAP.Resources;
+@model BAP.DAL.Entities.OrganizationUser
+@{ 
+    List<string> roles = ViewBag.AllRoles;
+    var userRoles = Model.Roles;
+}
+
+<section class="edit-box">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.AccessFailedCount)
+    @Html.HiddenFor(model => model.AddressLine1)
+    @Html.HiddenFor(model => model.AddressLine2)
+    @Html.HiddenFor(model => model.AspNetUserId)
+    @Html.HiddenFor(model => model.CellNumber)
+    @Html.HiddenFor(model => model.City)
+    @Html.HiddenFor(model => model.Country)
+    @Html.HiddenFor(model => model.County)
+    @Html.HiddenFor(model => model.CreateDate)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.Email)
+    @Html.HiddenFor(model => model.EmailConfirmed)
+    @Html.HiddenFor(model => model.FirstName)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.LastModifiedBy)
+    @Html.HiddenFor(model => model.LastModifiedDate)
+    @Html.HiddenFor(model => model.LastName)
+    @Html.HiddenFor(model => model.LockoutEnabled)
+    @Html.HiddenFor(model => model.LockoutEndDateUtc)
+    @Html.HiddenFor(model => model.MiddleName)
+    @Html.HiddenFor(model => model.Organization)
+    @Html.HiddenFor(model => model.OwnerGroup)
+    @Html.HiddenFor(model => model.OwnerPermissions)
+    @Html.HiddenFor(model => model.PhoneNumber)
+    @Html.HiddenFor(model => model.State)
+    @Html.HiddenFor(model => model.TenantUnit)
+    @Html.HiddenFor(model => model.TenantUnitId)
+    @Html.HiddenFor(model => model.TwoFactorEnabled)
+    @Html.HiddenFor(model => model.UserName)
+    @Html.HiddenFor(model => model.Zip)
+
+        <legend>@Resources.FieldLabel_OrganizationUser_Roles (@Model.UserName)</legend>        
+        if (roles != null)
+        {
+            foreach (var role in roles.OrderBy(r => r.ToUpper()))
+            {
+                var checkedText = string.Empty;
+                if (userRoles.Contains(role))
+                {
+                    checkedText = "checked=\"checked\"";
+                }
+                <div class="row">
+                    <div class=""><input type="checkbox" id="SelectedRole" name="SelectedRole" value="@role" class="form-control" @checkedText style="max-width: 30px;margin-right: 10px;"/><span>@role</span></div>                    
+                </div>
+            }
+            <hr />
+            <div class="row">
+                <div class="">                    
+                    <button type="submit" class="btn btn-success">@Resources.UIText_Save</button>
+                    <input type="hidden" id="EditFormFlag" name="EditFormFlag" value="3" />
+                </div>
+            </div>
+        }    
+}
+</section>

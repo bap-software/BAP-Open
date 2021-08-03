@@ -1,0 +1,90 @@
+﻿@using BAP.eCommerce.Resources;
+
+@model BAP.Web.Areas.eCommerce.Models.CategoryModel
+@{
+    Layout = null;
+    var currentCurrency = (string)ViewBag.CurrencySymbol;
+    bool quickAddToCart = (bool)ViewBag.QuickAddToCart;
+}
+
+<div id="mobile-list" class="section-container bg-silver p-t-0">
+    <!-- BEGIN container -->
+    <div class="container">
+        <!-- BEGIN section-title -->
+        <h4 class="section-title clearfix">
+            <!--Category Expand with link-->
+            <a href="/shop?category=@Model.PCID" class="pull-right">@ResObject.UIText_ShowAll</a>
+            <!--Category.Name-->
+            @Model.Name
+            <!--Category Description-->
+            <small>@Model.Description</small>
+        </h4>
+        <!-- END section-title -->
+        <!-- BEGIN category-container -->
+        <div class="category-container">
+            <!-- BEGIN category-sidebar -->
+            <!-- Manufacturer.Name-->
+
+            <div class="category-sidebar">
+                <ul class="category-list">
+                    <li class="list-header">@ResObject.FieldLabel_ProductCategory_Name</li>
+                    <!--Need implement "onClick" functionality in left navbar -->
+                    @foreach (var item in Model.Manufacturers)
+                    {
+                        <li class="nav-tabs"><a href="/shop?manufacturer=@item.Name">@item.Name</a></li>
+
+                    }
+                </ul>
+            </div>
+            <!-- END category-sidebar -->
+            <!-- BEGIN category-detail -->
+            <!-- BEGIN category-item -->
+            @foreach (var temp in Model.Manufacturers.Take(1))
+            {<div class="category-detail">
+                    <a href="@Url.Action("Details", "Products", new { pid = temp.ProductByCategory.First().PublicId })" class="category-item full">
+                        <div class="item">
+                            <div class="item-cover">
+                                <img src="@temp.ProductByCategory.First().ImagePath" alt="" />
+                            </div>
+                            <div class="item-info bottom">
+                                <h4 class="item-title">@temp.ProductByCategory.First().Name</h4>
+                                <p class="item-desc">@temp.ProductByCategory.First().Description</p>
+                                <div class="item-price">@currentCurrency@temp.ProductByCategory.First().RegularPrice</div>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- END category-item -->
+                    <!-- BEGIN category-item -->
+                    <div class="category-item list">
+                        <!-- BEGIN item-row -->
+                        <div class="item-row clearfix">
+                            @foreach (var item in temp.ProductByCategory.Skip(1))
+                            {
+                                <!-- BEGIN item -->
+                                <div class="item item-thumbnail">
+                                    <a href="@Url.Action("Details", "Products", new { pid = item.PublicId })" class="item-image">
+                                        <img src="@item.ImagePath" alt="" />
+                                        <div class="discount">@item.GetDiscount()@ResObject.UIText_PercentOff.ToUpper()</div>
+                                    </a>
+                                    <div class="item-info">
+                                        <h4 class="item-title">
+                                            <a href="@Url.Action("Details", "Products", new { pid = item.PublicId })">@item.Name</a>
+                                        </h4>
+                                        <div class="item-desc">@Html.Raw(item.Description)</div>
+                                        <div class="item-price">@currentCurrency@item.SalesPrice</div>
+                                        <div class="item-discount-price">@currentCurrency@item.RegularPrice</div>
+                                    </div>
+                                </div>
+                            }
+                            <!-- END item-row -->
+                        </div>
+                        <!-- END category-item -->
+                    </div>
+                    <!-- END category-detail -->
+                </div>
+            }
+            <!-- END category-container -->
+        </div>
+        <!-- END container -->
+    </div>
+</div>

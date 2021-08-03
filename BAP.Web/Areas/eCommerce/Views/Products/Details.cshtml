@@ -1,0 +1,659 @@
+﻿@using BAP.Resources
+@using BAP.eCommerce.Resources
+@model BAP.Web.Areas.eCommerce.Models.ProductModel
+@{
+    ViewBag.Title = ResObject.EntityLabel_Product + " " + Resources.UIText_Details;
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+    var isOptionsTabPresent = (Model.Options != null && Model.Options.Any(a => a.Enabled));
+    bool quickAddToCart = (bool)ViewBag.QuickAddToCart;
+    var currencySymbol = (string)ViewBag.CurrencySymbol;
+    var shippingOptions = (IEnumerable<BAP.eCommerce.BL.DataContracts.ShippingOptionDC>)ViewBag.ShippingOptions;
+    var productCategoryLinks = (IList<KeyValuePair<string, string>>)ViewBag.ProductCategoryLinks;
+}
+
+@using (Html.BeginForm("AddToCart", "Products", FormMethod.Post, new { @id = "AddToCartForm" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="productId" id="productId" value="@Model.Id" />
+    <input type="hidden" name="token" id="token" value="@Guid.NewGuid().ToString()" />
+    <input type="hidden" name="count" id="count" value="0" />
+    <!-- BEGIN #product -->
+    <div id="product" class="section-container p-t-20">
+        <!-- BEGIN container -->
+        <div class="container">
+            <!-- BEGIN breadcrumb -->
+            <ul class="breadcrumb m-b-10 f-s-12">
+                <li><a href="@Url.Action("Index", "eShop", new { Area = "eCommerce" })">@Resources.UIText_HomePage</a></li>
+                <li><a href="@Url.Action("Index", "Products")">Products</a></li>
+                @if (Model.Manufacturer != null)
+                {
+                    <li><a href="@Url.Action("Index", "Products", new { manufacturer = Model.Manufacturer.Name })">@Model.Manufacturer.Name</a></li>
+                }
+            <li class="active">@Model.Name</li>
+            </ul>
+            <!-- END breadcrumb -->
+            <!-- BEGIN product -->
+            <div class="product">
+                <!-- BEGIN product-detail -->
+                <div class="product-detail">
+                    <!-- BEGIN product-image -->
+                    <div class="product-image">
+                        <!-- BEGIN product-thumbnail -->
+                        <div class="product-thumbnail">
+                            <ul class="product-thumbnail-list">
+                                <li class="active"><a href="#" data-click="show-main-image" data-url="@Model.ImagePath"><img src="@Model.ImagePath" alt="" /></a></li>
+                                @foreach (var attachment in Model.Attachments)
+                                {
+                                    if (attachment.AttachmentType == "photo" || attachment.AttachmentType == "picture")
+                                    {
+                                        <li>
+                                            <a href="#" data-click="show-main-image" data-url="/file/@attachment.PathUrl">
+                                                <img src="/file/@attachment.PathUrl" alt="" />
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <!-- END product-thumbnail -->
+                        <!-- BEGIN product-main-image -->
+                        <div class="product-main-image" data-id="main-image">
+                            <img src="@Model.ImagePath" alt="" />
+                        </div>
+                        <!-- END product-main-image -->
+                    </div>
+                    <!-- END product-image -->
+                    <!-- BEGIN product-info -->
+                    <div class="product-info">
+                        <!-- BEGIN product-info-header -->
+                        <div class="product-info-header">
+                            <h1 class="product-title">
+                                @if (Model.ListPrice > 0)
+                                {
+                                    <span class="label label-success">@((int)((Model.Price - Model.ListPrice) / Model.Price * 100))@ResObject.UIText_PercentOff.ToUpper()</span>
+                                }
+
+                                @Model.Name - #@Model.SKU @(Model.IsOutOfStock ? "(" + ResObject.UIText_OutOfStock + ")" : Model.PublicStatus)
+                            </h1>
+                            <ul class="product-category">
+                                @for (int i = 0; i < productCategoryLinks.Count; i++)
+                                {
+                                    var pclink = productCategoryLinks[i];
+                                    <li><a href="@pclink.Key">@pclink.Value</a></li>
+                                    if (i != productCategoryLinks.Count - 1)
+                                    {
+                                        @:<li>/</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <!-- END product-info-header -->
+
+                        @{
+                            var warrantyOption = Model.Options.FirstOrDefault(o => o.Name.ToLowerInvariant().Contains("warranty"));
+                            if (warrantyOption != null)
+                            {
+                                <!-- BEGIN product-warranty -->
+                                <div class="product-warranty">
+                                    @if (Model.AvailableItems > 0)
+                                    {
+                                        <span class="pull-right">Availability: In stock</span>
+                                    }
+                                    @foreach (var item in warrantyOption.ProductOptionItems)
+                                    {
+                                        <div><b>@item.Name</b> @item.ShortDescription</div>
+                                    }
+                                </div>
+                                <!-- END product-warranty -->
+                            }
+                            else
+                            {
+                                if (Model.AvailableItems > 0)
+                                {
+                                    <div class="product-warranty" style="padding-bottom: 35px">
+                                        <span class="pull-right">Availability: In stock</span>
+                                    </div>
+                                }
+                            }
+                        }
+                        <!-- BEGIN product-info-list -->
+                        <p>
+                            @Html.Raw(Model.ShortDescription)
+                        </p>
+                        <!-- END product-info-list -->
+                        <!-- BEGIN product-social -->
+                        <div class="product-social">
+                            <ul>
+                                <li><a href="javascript:;" class="facebook" data-toggle="tooltip" data-trigger="hover" data-title="Facebook" data-placement="top"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="javascript:;" class="twitter" data-toggle="tooltip" data-trigger="hover" data-title="Twitter" data-placement="top"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="javascript:;" class="google-plus" data-toggle="tooltip" data-trigger="hover" data-title="Google Plus" data-placement="top"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="javascript:;" class="whatsapp" data-toggle="tooltip" data-trigger="hover" data-title="Whatsapp" data-placement="top"><i class="fa fa-whatsapp"></i></a></li>
+                                <li><a href="javascript:;" class="tumblr" data-toggle="tooltip" data-trigger="hover" data-title="Tumblr" data-placement="top"><i class="fa fa-tumblr"></i></a></li>
+                            </ul>
+                        </div>
+                        <!-- END product-social -->
+                        <!-- BEGIN product-purchase-container -->
+                        <div class="product-purchase-container">
+                            @if (Model.ListPrice > 0)
+                            {
+                                <div class="product-discount">
+                                    <span class="discount">@currencySymbol@Model.Price</span>
+                                </div>
+                            }
+                            <div class="product-price">
+                                <div class="price">@currencySymbol@(Model.ListPrice > 0 ? Model.ListPrice : Model.Price)</div>
+                            </div>
+                            @if (quickAddToCart)
+                            {
+                                if (Model.IsOutOfStock)
+                                {
+                                    <a disabled class="btn btn-inverse btn-lg">Add to cart</a>
+                                }
+                                else
+                                {
+                                    <a onclick="quickAddToCart(event, @Model.Id, $('#ProductCount@(Model.Id)').val().IsNullOrEmpty('1'), '@Guid.NewGuid()', '@Url.Action("QuickAddToCart", "ShoppingCarts")')" class="btn btn-inverse btn-lg">Add to cart</a>
+                                }
+                            }
+                            else
+                            {
+                                <a href="#" onclick="SubmitForm()" class="btn btn-inverse btn-lg">Add to cart</a>
+                            }
+                        </div>
+                        <!-- END product-purchase-container -->
+                    </div>
+                    <!-- END product-info -->
+                </div>
+                <!-- END product-detail -->
+                <!-- BEGIN product-tab -->
+                <div class="product-tab">
+                    <!-- BEGIN #product-tab -->
+                    <ul id="product-tab" class="nav nav-tabs">
+                        <li class="active"><a href="#product-desc" data-toggle="tab">Product Description</a></li>
+                        @if (Model.Options.Any())
+                        {
+                            <li class=""><a href="#product-info" data-toggle="tab">Additional Information</a></li>
+                        }
+                        @*<li class=""><a href="#product-reviews" data-toggle="tab">Rating & Reviews (5)</a></li>*@
+                        @if (Model.NeedsShipping)
+                        {
+                            <li class=""><a href="#product-shipping" data-toggle="tab">Shipping</a></li>
+                        }
+                    </ul>
+                    <!-- END #product-tab -->
+                    <!-- BEGIN #product-tab-content -->
+                    <div id="product-tab-content" class="tab-content">
+                        <!-- BEGIN #product-desc -->
+                        <div class="tab-pane fade active in" id="product-desc">
+                            <!-- BEGIN product-desc -->
+                            <div class="product-desc">
+                                <div class="image">
+                                    <img src="@Model.ImagePath" alt="" />
+                                </div>
+                                <div class="desc">
+                                    <h4>@Model.Name</h4>
+                                    <p>
+                                        @Html.Raw(Model.Description)
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- END product-desc -->
+                        </div>
+                        <!-- END #product-desc -->
+                        <!-- BEGIN #product-info -->
+                        <div class="tab-pane fade" id="product-info">
+                            <!-- BEGIN table-responsive -->
+                            <div class="table-responsive">
+                                <!-- BEGIN table-product -->
+                                <table class="table table-product table-striped">
+                                    <tbody>
+                                        @foreach (var option in Model.Options)
+                                        {
+                                            <tr>
+                                                <td class="field">@option.Name</td>
+                                                <td>
+                                                    @Html.Raw(option.Description)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <!-- END table-product -->
+                            </div>
+                            <!-- END table-responsive -->
+                        </div>
+                        <!-- END #product-info -->
+                        <!-- BEGIN #product-reviews -->
+                        <div class="tab-pane fade" id="product-reviews">
+                            <!-- BEGIN row -->
+                            <div class="row row-space-30">
+                                <!-- BEGIN col-7 -->
+                                <div class="col-md-7">
+                                    <!-- BEGIN review -->
+                                    <div class="review">
+                                        <div class="review-info">
+                                            <div class="review-icon"><img src="/Content/Theme/Base/assets/img/user/user-1.jpg" alt="" /></div>
+                                            <div class="review-rate">
+                                                <ul class="review-star">
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class=""><i class="fa fa-star-o"></i></li>
+                                                </ul>
+                                                (4/5)
+                                            </div>
+                                            <div class="review-name">Terry</div>
+                                            <div class="review-date">24/05/2016 7:40am</div>
+                                        </div>
+                                        <div class="review-title">
+                                            What does “SIM-free” mean?
+                                        </div>
+                                        <div class="review-message">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi in imperdiet augue. Integer non aliquam eros. Cras vehicula nec sapien pretium sagittis. Pellentesque feugiat lectus non malesuada aliquam. Etiam id tortor pretium, dictum leo at, malesuada tortor.
+                                        </div>
+                                    </div>
+                                    <!-- END review -->
+                                    <!-- BEGIN review -->
+                                    <div class="review">
+                                        <div class="review-info">
+                                            <div class="review-icon"><img src="/Content/Theme/Base/assets/img/user/user-2.jpg" alt="" /></div>
+                                            <div class="review-rate">
+                                                <ul class="review-star">
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class=""><i class="fa fa-star-o"></i></li>
+                                                    <li class=""><i class="fa fa-star-o"></i></li>
+                                                </ul>
+                                                (3/5)
+                                            </div>
+                                            <div class="review-name">George</div>
+                                            <div class="review-date">24/05/2016 8:40am</div>
+                                        </div>
+                                        <div class="review-title">
+                                            When I buy iPhone from apple.com, is it tied to a carrier or does it come “unlocked”?
+                                        </div>
+                                        <div class="review-message">
+                                            In mauris leo, maximus at pellentesque vel, pharetra vel risus. Aenean in semper velit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi volutpat mattis neque, at molestie tellus ultricies quis. Ut lobortis odio nec nunc ullamcorper, vitae faucibus augue semper. Sed luctus lobortis nulla ac volutpat. Mauris blandit scelerisque sem.
+                                        </div>
+                                    </div>
+                                    <!-- END review -->
+                                    <!-- BEGIN review -->
+                                    <div class="review">
+                                        <div class="review-info">
+                                            <div class="review-icon"><img src="/Content/Theme/Base/assets/img/user/user-3.jpg" alt="" /></div>
+                                            <div class="review-rate">
+                                                <ul class="review-star">
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                </ul>
+                                                (5/5)
+                                            </div>
+                                            <div class="review-name">Steve</div>
+                                            <div class="review-date">23/05/2016 8:40am</div>
+                                        </div>
+                                        <div class="review-title">
+                                            Where is the iPhone Upgrade Program available?
+                                        </div>
+                                        <div class="review-message">
+                                            Duis ut nunc sem. Integer efficitur, justo sit amet feugiat hendrerit, arcu nisl elementum dui, in ultricies erat quam at mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec nec ultrices tellus. Mauris elementum venenatis volutpat.
+                                        </div>
+                                    </div>
+                                    <!-- END review -->
+                                    <!-- BEGIN review -->
+                                    <div class="review">
+                                        <div class="review-info">
+                                            <div class="review-icon"><img src="/Content/Theme/Base/assets/img/user/user-4.jpg" alt="" /></div>
+                                            <div class="review-rate">
+                                                <ul class="review-star">
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class=""><i class="fa fa-star-o"></i></li>
+                                                    <li class=""><i class="fa fa-star-o"></i></li>
+                                                    <li class=""><i class="fa fa-star-o"></i></li>
+                                                </ul>
+                                                (2/5)
+                                            </div>
+                                            <div class="review-name">Alfred</div>
+                                            <div class="review-date">23/05/2016 10.02am</div>
+                                        </div>
+                                        <div class="review-title">
+                                            Can I keep my current service plan if I choose the iPhone Upgrade Program?
+                                        </div>
+                                        <div class="review-message">
+                                            Donec vel fermentum quam. Vivamus scelerisque enim eget tristique auctor. Vivamus tempus, turpis iaculis tempus egestas, leo augue hendrerit tellus, et efficitur neque massa at neque. Aenean efficitur eleifend orci at ornare.
+                                        </div>
+                                    </div>
+                                    <!-- END review -->
+                                    <!-- BEGIN review -->
+                                    <div class="review">
+                                        <div class="review-info">
+                                            <div class="review-icon"><img src="/Content/Theme/Base/assets/img/user/user-5.jpg" alt="" /></div>
+                                            <div class="review-rate">
+                                                <ul class="review-star">
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                    <li class="active"><i class="fa fa-star"></i></li>
+                                                </ul>
+                                                (5/5)
+                                            </div>
+                                            <div class="review-name">Edward</div>
+                                            <div class="review-date">22/05/2016 9.30pm</div>
+                                        </div>
+                                        <div class="review-title">
+                                            I have an existing carrier contract or installment plan. Can I purchase with the iPhone Upgrade Program
+                                        </div>
+                                        <div class="review-message">
+                                            Aliquam consequat ut turpis non interdum. Integer blandit erat nec sapien sollicitudin, a fermentum dui venenatis. Nullam consequat at enim et aliquet. Cras mattis turpis quis eros volutpat tristique vel a ligula. Proin aliquet leo mi, et euismod metus placerat sit amet.
+                                        </div>
+                                    </div>
+                                    <!-- END review -->
+                                </div>
+                                <!-- END col-7 -->
+                                <!-- BEGIN col-5 -->
+                                <div class="col-md-5">
+                                    <!-- BEGIN review-form -->
+                                    <div class="review-form">
+                                        <form action="product_detail.html" name="review_form" method="POST">
+                                            <h2>Write a review</h2>
+                                            <div class="form-group">
+                                                <label for="name">Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="name" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Title <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="email" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="review">Review <span class="text-danger">*</span></label>
+                                                <textarea class="form-control" rows="8" id="review"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Rating  <span class="text-danger">*</span></label>
+                                                <div class="rating rating-selection" data-rating="true" data-target="rating">
+                                                    <i class="fa fa-star-o" data-value="2"></i>
+                                                    <i class="fa fa-star-o" data-value="4"></i>
+                                                    <i class="fa fa-star-o" data-value="6"></i>
+                                                    <i class="fa fa-star-o" data-value="8"></i>
+                                                    <i class="fa fa-star-o" data-value="10"></i>
+                                                    <span class="rating-comment">
+                                                        <span class="rating-comment-tooltip">Click to rate</span>
+                                                    </span>
+                                                </div>
+                                                <select name="rating" class="hide">
+                                                    <option value="2">2</option>
+                                                    <option value="4">4</option>
+                                                    <option value="6">6</option>
+                                                    <option value="8">8</option>
+                                                    <option value="10">10</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-inverse btn-lg">Submit Review</button>
+                                        </form>
+                                    </div>
+                                    <!-- END review-form -->
+                                </div>
+                                <!-- END col-5 -->
+                            </div>
+                            <!-- END row -->
+                        </div>
+                        <!-- END #product-reviews -->
+                        <!-- BEGIN #product-shipping -->
+                        <div class="tab-pane fade" id="product-shipping">
+                            @if (Model.NeedsShipping)
+                            {
+                                <p>@Resources.UIText_ShippingOptionsAvailable</p>
+                                <div class="col-xs-12">
+                                    <div class="orderBox">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Carrier</th>
+                                                        <th>Method</th>
+                                                        <th>Information</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var option in shippingOptions)
+                                                    {
+                                                        <tr>
+                                                            <td class="col-xs-1" title="@option.ShippingCarrierName">
+                                                                <i class="@option.Icon" aria-hidden="true"></i>
+                                                            </td>
+                                                            <td>@option.Name</td>
+                                                            <td>@option.Description</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <!-- END #product-desc -->
+                    </div>
+                    <!-- END #product-tab-content -->
+                </div>
+                <!-- END product-tab -->
+            </div>
+            <!-- END product -->
+            @if (Model.RelatedProducts != null && Model.RelatedProducts.Count > 0)
+            {
+                <!-- BEGIN similar-product -->
+                <h4 class="m-b-15 m-t-30">You Might Also Like</h4>
+                <div class="row row-space-10">
+                    @foreach (var item in Model.RelatedProducts)
+                    {
+                        <div class="col-md-2 col-sm-4">
+                            <!-- BEGIN item -->
+                            <div class="item item-thumbnail">
+                                <a href="@Url.Action("Details", new {pid=item.SimilarProduct.GetPublicId()})" class="item-image">
+                                    <img src="@item.SimilarProduct.ImagePath" alt="">
+                                </a>
+                                <div class="item-info">
+                                    <h4 class="item-title">
+                                        <a href="@Url.Action("Details", new {pid=item.SimilarProduct.GetPublicId()})">@item.SimilarProduct.Name</a>
+                                    </h4>
+                                    <p class="item-desc" style="height:auto;">@Html.Raw(Helpers.StripHtml(item.SimilarProduct.ShortDescription, 20))</p>
+                                    @if (item.SimilarProduct.ListPrice > 0)
+                                    {
+                                        <div class="item-price">@currencySymbol@item.SimilarProduct.ListPrice</div>
+                                        <div class="item-discount-price">@currencySymbol@item.SimilarProduct.Price</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="item-price">@currencySymbol@item.SimilarProduct.Price</div>
+                                    }
+                                    
+                                </div>
+                            </div>
+                            <!-- END item -->
+                        </div>
+                    }
+                </div>
+                <!-- END similar-product -->
+            }
+        </div>
+        <!-- END container -->
+    </div>
+    <!-- END #product -->
+
+
+    <!-- MAIN CONTENT SECTION -->
+
+    <section class="mainContent clearfix" style="display:none;">
+        <div class="container">
+            <div class="row singleProduct">
+                <div class="col-xs-12">
+                    <div class="media">
+                        @if (Model.Attachments != null && Model.Attachments.Count > 0)
+                        {
+                            <div class="media-left productSlider">
+                                <div id="carousel" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <div class="item active" data-thumb="0">
+                                            <img src="img/products/signle-product/product-slide-big-01.jpg">
+                                        </div>
+                                        <div class="item" data-thumb="1">
+                                            <img src="img/products/signle-product/product-slide-big-02.jpg">
+                                        </div>
+                                        <div class="item" data-thumb="2">
+                                            <img src="img/products/signle-product/product-slide-big-03.jpg">
+                                        </div>
+                                        <div class="item" data-thumb="3">
+                                            <img src="img/products/signle-product/product-slide-big-04.jpg">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <div id="thumbcarousel" class="carousel slide" data-interval="false">
+                                        <div class="carousel-inner">
+                                            <div data-target="#carousel" data-slide-to="0" class="thumb"><img src="img/products/signle-product/product-slide-small-01.jpg"></div>
+                                            <div data-target="#carousel" data-slide-to="1" class="thumb"><img src="img/products/signle-product/product-slide-small-02.jpg"></div>
+                                            <div data-target="#carousel" data-slide-to="2" class="thumb"><img src="img/products/signle-product/product-slide-small-03.jpg"></div>
+                                            <div data-target="#carousel" data-slide-to="3" class="thumb"><img src="img/products/signle-product/product-slide-small-04.jpg"></div>
+                                        </div>
+                                        <a class="left carousel-control" href="#thumbcarousel" role="button" data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left"></span>
+                                        </a>
+                                        <a class="right carousel-control" href="#thumbcarousel" role="button" data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="media-left">
+                                <div class="item">
+                                    <img src="@Model.ImagePath">
+                                </div>
+                            </div>
+                        }
+                        <div class="media-body">
+                            <ul class="list-inline">
+                                <li><a href="@Url.Action("Index", "Products")"><i class="fa fa-reply" aria-hidden="true"></i>Continue Shopping</a></li>
+                                <li><a href="#"><i class="fa fa-plus" aria-hidden="true"></i>Share This</a></li>
+                            </ul>
+                            <h2>@Model.Name</h2>
+                            <h3>@Model.Currency.Symbol@Model.Price</h3>
+                            <p>@Model.ShortDescription</p>
+                            <span class="quick-drop">
+                                <label class="control-label" for="ProductCount@(Model.Id)">Quantity</label>
+                                <input type="number" min="1" max="1000" step="1" id="ProductCount@(Model.Id)" name="ProductCount@(Model.Id)" class="form-control" placeholder="Quantity" value="1" />
+                            </span>
+                            <div class="btn-area">
+                                @if (quickAddToCart)
+                                {
+                                    if (Model.IsOutOfStock)
+                                    {
+                                        <a disabled class="btn btn-primary btn-block">Add to cart <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a onclick="quickAddToCart(event, @Model.Id, $('#ProductCount@(Model.Id)').val().IsNullOrEmpty('1'), '@Guid.NewGuid()', '@Url.Action("QuickAddToCart", "ShoppingCarts")')" class="btn btn-primary btn-block">Add to cart <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="#" onclick="SubmitForm()" class="btn btn-primary btn-block">Add to cart <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                }
+                            </div>
+                            <div class="tabArea">
+                                <ul class="nav nav-tabs">
+                                    @if (isOptionsTabPresent)
+                                    {
+                                        <li class="active"><a data-toggle="tab" href="#product-options">@Html.DisplayNameFor(model => Model.Options)</a></li>
+                                    }
+                                    <li @(!isOptionsTabPresent ? "class='active'" : "")><a data-toggle="tab" href="#details">details</a></li>
+                                    <li><a data-toggle="tab" href="#about-art">specification</a></li>
+                                    <li><a data-toggle="tab" href="#shipping">shipping</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    @if (isOptionsTabPresent)
+                                    {
+                                        <div id="product-options" class="tab-pane fade in active">
+                                            @Html.Partial("_ProductOptions")
+                                        </div>
+                                    }
+                                    <div id="details" class="tab-pane fade @(!isOptionsTabPresent ? "in active" : "")">
+                                        @Html.Raw(Model.Description)
+                                    </div>
+                                    <div id="about-art" class="tab-pane fade">
+                                        <p>
+                                            <strong>Width:</strong> @Model.Width @Model.SizeMeasure<br />
+                                            <strong>Depth:</strong> @Model.Depth @Model.SizeMeasure<br />
+                                            <strong>Height:</strong> @Model.Height @Model.SizeMeasure<br />
+                                            <strong>Weight:</strong> @Model.Weight @Model.WeightMeasure
+                                        </p>
+                                    </div>
+                                    <div id="shipping" class="tab-pane fade">
+                                        @if (Model.NeedsShipping)
+                                        {
+                                            <p>@Resources.UIText_ShippingOptionsAvailable</p>
+                                            <div class="col-xs-12" ng-app="eCommerce" ng-controller="commShippingCtrl">
+                                                <div class="alert alert-danger fade in" ng-model="statusText" ng-show="statusText"></div>
+                                                <div class="orderBox">
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Carrier</th>
+                                                                    <th>Method</th>
+                                                                    <th>Information</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="o in shippingOptions">
+                                                                    <td class="col-xs-1" title="{{o.ShippingCarrierName}}"><i class="{{o.Icon}}" aria-hidden="true"></i></td>
+                                                                    <td>{{o.Name}}</td>
+                                                                    <td>{{o.Description}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <script>
+                                                    var app = angular.module('eCommerce', []);
+                                                    app.controller('commShippingCtrl', function ($scope, $http) {
+                                                        var shippingOptionsJSON = '@Html.Raw(ViewBag.ShippingOptions)';
+                                                        if (shippingOptionsJSON != '') {
+                                                            $scope.shippingOptions = JSON.parse(shippingOptionsJSON);
+                                                        }
+                                                    });
+                                                </script>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <p>@Resources.UIText_NoShipping</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script>
+        function SubmitForm()
+        {
+            $("#count").val($('#ProductCount@(Model.Id)').val().IsNullOrEmpty('1'));
+            $("#AddToCartForm").submit();
+        }
+    </script>
+}

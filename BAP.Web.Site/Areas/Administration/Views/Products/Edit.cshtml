@@ -1,0 +1,68 @@
+﻿@using BAP.Resources
+@using BAP.eCommerce.Resources
+@model BAP.eCommerce.DAL.Entities.Product
+
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = Resources.UIText_Edit + " " + ResObject.EntityLabel_Product;
+    int backCategoryId = -1;
+    if(!string.IsNullOrEmpty(Request["categoryId"]))
+    {
+        Int32.TryParse(Request["categoryId"], out backCategoryId);
+    }
+}
+
+@using (Html.BeginForm())
+{
+@Html.AntiForgeryToken()
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("AdminIndex", "Products", new { categoryId = backCategoryId })" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>
+    <button type="submit" class="btn btn-default btn-default btn-success" title="@Resources.UIText_Save"><i class="fa fa-floppy-o"></i></button>
+    @ViewBag.Title<small></small>
+</h1>
+<!-- end page-header -->
+
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">@ResObject.EntityLabel_Product @Resources.UIText_Details</h4>
+            </div>
+            <div class="panel-body panel-form">
+                <div class="form-horizontal form-bordered" data-parsley-validate="true" name="demo-form" novalidate>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    @Html.HiddenFor(model => model.LastModifiedBy)
+                    @Html.HiddenFor(model => model.TenantUnit)
+                    @Html.HiddenFor(model => model.TenantUnitId)
+                    @Html.HiddenFor(model => model.OwnerGroup)
+                    @Html.HiddenFor(model => model.OwnerPermissions)
+                    @Html.HiddenFor(model => model.UID)
+                    @Html.HiddenFor(model => model.CultureCode)
+                    @Html.HiddenFor(model => model.LocalizationId)
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.Hidden("categoryId", backCategoryId)
+
+                    @Html.Partial("_EditFields")
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="@Resources.UIText_Save" class="btn btn-default btn-success" />
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+}

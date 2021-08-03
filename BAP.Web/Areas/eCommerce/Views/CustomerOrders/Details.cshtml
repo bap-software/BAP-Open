@@ -1,0 +1,174 @@
+﻿@using BAP.eCommerce.DAL.Entities
+@using BAP.eCommerce.Resources
+@model CustomerOrder
+@{
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+    var billingAddress = Model.BillingAddress;
+    var shippingAddress = Model.ShippingAddress;
+}
+
+<section class="mainContent clearfix" style="padding-top:20px;padding-bottom:20px">
+    <div class="container">
+        <!-- BEGIN account-container -->
+        <div class="account-container my-order">
+            @Html.Partial("_MenuSideBar")
+            <!-- BEGIN account-body -->
+            <div class="account-body">
+                <!-- BEGIN row -->
+                <div class="row">
+                    <div class="block-user-order user-home-pages">
+                        <div class="user-home-block">
+                            <a class="back" href="@Url.Action("Index", "CustomerOrders")"><i class="fa fa-angle-left"></i> @ResObject.FieldLabel_BackToOrders</a>
+                        </div>
+                        <div class="user-home-block">
+                            <h1 class="user-home-title">@ResObject.FieldLabel_ShoppingBasket</h1>
+                            <div class="clear"></div>
+                            <div class="order-add">
+                                <div>
+                                    <label>@ResObject.FieldLabel_OrderNo</label>
+                                    <strong>@Model.Id</strong>
+                                </div>
+                                <div>
+                                    <label>@ResObject.FieldLabel_Date</label><!-- Order Date -->
+                                    <i>@Model.CreateDate.GetValueOrDefault().ToString("dd MMM yyyy")</i>
+                                </div>
+                            </div>
+                            <div class="order-invoice">
+
+                            </div>
+                            <div class="clear"></div>
+                            <div class="user-item-wrapper user-order">
+                                <div class="user-item-titles">
+                                    <div class="user-item-line item-name"></div>
+                                    <div class="user-item-line item-qty">@ResObject.FieldLabel_Qty</div>
+                                    <div class="user-item-line item-price">@ResObject.FieldLabel_PriceIncVat</div>
+                                    <div class="user-item-line item-total">@ResObject.FieldLabel_TotalIncVat</div>
+                                </div>
+                                @foreach (var item in Model.Items)
+                                {
+                                    var softwareUrl = "";
+                                    var softwareUrlTitle = "";
+                                    if(!string.IsNullOrEmpty(item.DownloadUrl))
+                                    {
+                                        softwareUrlTitle = ResObject.FieldLabel_Download;
+                                        softwareUrl = item.DownloadUrl;
+                                    }
+                                    else if(!string.IsNullOrEmpty(item.OnlineProductUrl))
+                                    {
+                                        softwareUrlTitle = ResObject.FieldLabel_OrderItem_OnlineProductUrl;
+                                        softwareUrl = item.OnlineProductUrl;
+                                    }
+                                    <div class="user-item">
+                                        <div class="user-item-line item-name">
+                                            <div>
+                                                @if (!string.IsNullOrEmpty(softwareUrl))
+                                                {
+                                                    <a href="/file/@softwareUrl" target="_blank" title="@softwareUrlTitle">
+                                                        <img src="@item.Product.ImagePath" alt="@item.Product.Name" width="49" height="50">
+                                                    </a>                                                    
+                                                }
+                                                else
+                                                {
+                                                    <img src="@item.Product.ImagePath" alt="@item.Product.Name" width="49" height="50">
+                                                }
+                                            </div>
+                                            <div class="product-name">
+                                                @if (!string.IsNullOrEmpty(softwareUrl))
+                                                {
+                                                    <a href="/file/@softwareUrl" target="_blank" title="@softwareUrlTitle">
+                                                        <span>@item.Product.Name</span>
+                                                        @if(!string.IsNullOrEmpty(item.DownloadUrl))
+                                                        {
+                                                            <span>&nbsp;</span><i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
+                                                        } else if (!string.IsNullOrEmpty(item.OnlineProductUrl))
+                                                        {
+                                                            <span>&nbsp;</span><i class="glyphicon glyphicon-log-ine" aria-hidden="true"></i>
+                                                        }
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <span>@item.Product.Name</span>
+                                                }                                                    
+                                            </div>                                            
+                                        </div>
+                                        <div class="user-item-line item-qty">@item.Count</div>
+                                        <div class="user-item-line item-price">@(item.Product?.Currency?.Symbol)@item.Price</div>
+                                        <div class="user-item-line item-total">@(item.Product?.Currency?.Symbol)@item.Subtotal</div>
+                                    </div>
+                                }
+                                <div class="user-item goods-total">
+                                    <div class="goods-total-title"><b>@ResObject.FieldLabel_GoodsTotal</b></div>
+                                    <div class="goods-total-price">@(Model?.Currency?.Symbol)@(Model.Total - Model.DiscountsTotal)</div>
+                                </div>
+                                @if (Model.ShippingOption != null)
+                                {
+                                    <div class="user-item shipping">
+                                        <div class="shipping-title">@(Model.ShippingOption?.Name)</div>
+                                        <div class="shipping-price">@(Model?.Currency?.Symbol)@Model.ShippingCost</div>
+                                    </div>
+                                }
+                                @if (Model.TaxTotal > 0)
+                                {
+                                    <div class="user-item vat">
+                                        <div class="vat-title">VAT</div>
+                                        <div class="vat-price">@(Model?.Currency?.Symbol)@Model.TaxTotal</div>
+                                    </div>
+                                }
+                                <div class="user-item total-order-cost">
+                                    <div class="total-order-cost-title"><b>Total Order Cost</b></div>
+                                    <div class="total-order-cost-price"><b>@(Model?.Currency?.Symbol)@(Model.Total + Model.ShippingCost)</b></div>
+                                </div>
+                            </div>
+                            @if (!Model.Paid.HasValue || !Model.Paid.Value)
+                            {
+                                <div class="user-item-view">
+                                    <a class="button primary" href="#">@ResObject.FieldLabel_PayForYourOrder</a>
+                                </div>
+                            }
+                        </div>
+                        <div class="user-home-block">
+                            <h2 class="user-home-title">@ResObject.FieldLabel_YourDetails</h2><!-- Personal Details -->
+                            <div class="clear"></div>
+                            <div class="personal-details">
+                                <div>
+                                    <div class="title"><strong>@ResObject.FieldLabel_ShoppingCart_BillingAddress</strong></div>
+                                    <div><span>@ResObject.FieldLabel_Address_Name:</span> <b>@(billingAddress?.FirstName) @(billingAddress?.LastName)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_ContactEmail:</span> <b>@(billingAddress?.ContactEmail)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_AddressLine1:</span> <b>@(billingAddress?.AddressLine1)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_AddressLine2:</span> <b>@(billingAddress?.AddressLine2)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_Town_City:</span> <b>@(billingAddress?.City)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_County_Region:</span> <b>@(billingAddress?.County)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_State_US_Only:</span> <b>@(billingAddress?.State)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_Postcode:</span> <b>@(billingAddress?.Zip)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_Country:</span> <b>@(billingAddress?.Country)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_PhoneNumber:</span> <b>@(billingAddress?.PhoneNumber)</b></div>
+                                    <div><a href="#">@ResObject.FieldLabel_EditDetails</a></div>
+                                </div>
+                                <div>
+                                    <div class="title"><strong>@ResObject.FieldLabel_ShoppingCart_ShippingAddress</strong></div>
+                                    <div><span>@ResObject.FieldLabel_Address_Name:</span> <b>@(shippingAddress?.FirstName) @(shippingAddress?.LastName)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_ContactEmail:</span> <b>@(shippingAddress?.ContactEmail)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_AddressLine1:</span> <b>@(shippingAddress?.AddressLine1)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_AddressLine2:</span> <b>@(shippingAddress?.AddressLine2)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_Town_City:</span> <b>@(shippingAddress?.City)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_County_Region:</span> <b>@(shippingAddress?.County)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_State_US_Only:</span> <b>@(shippingAddress?.State)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_Postcode:</span> <b>@(shippingAddress?.Zip)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_Country:</span> <b>@(shippingAddress?.Country)</b></div>
+                                    <div><span>@ResObject.FieldLabel_Address_PhoneNumber:</span> <b>@(shippingAddress?.PhoneNumber)</b></div>
+                                    <div><a href="#">@ResObject.FieldLabel_EditDetails</a></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END row -->
+            </div>
+            <!-- END account-body -->
+        </div>
+        <!-- END account-container -->
+    </div>
+</section>

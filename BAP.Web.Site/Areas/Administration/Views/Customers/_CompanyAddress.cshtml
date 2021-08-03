@@ -1,0 +1,73 @@
+﻿@using BAP.UI.HtmlHelpers
+@model BAP.eCommerce.DAL.Entities.Customer
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CompanyAddress.FirstName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.FirstName)
+    </div>
+    @Html.LabelFor(model => model.CompanyAddress.LastName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.LastName)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CompanyAddress.ContactEmail, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.ContactEmail)
+    </div>
+    @Html.LabelFor(model => model.CompanyAddress.CompanyName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.CompanyName)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CompanyAddress.AddressLine1, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.AddressLine1)
+    </div>
+    @Html.LabelFor(model => model.CompanyAddress.AddressLine2, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.AddressLine2)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CompanyAddress.City, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.City)
+    </div>
+    @Html.LabelFor(model => model.CompanyAddress.Zip, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.Zip)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CompanyAddress.Country, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.Country)
+    </div>
+    @Html.LabelFor(model => model.CompanyAddress.State, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.State)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CompanyAddress.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.PhoneNumber)
+    </div>
+    @Html.LabelFor(model => model.CompanyAddress.PhoneExtension, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.PhoneExtension)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.CompanyAddress.CellNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.CellNumber)
+    </div>
+    @Html.LabelFor(model => model.CompanyAddress.FaxNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CompanyAddress.FaxNumber)
+    </div>
+</div>

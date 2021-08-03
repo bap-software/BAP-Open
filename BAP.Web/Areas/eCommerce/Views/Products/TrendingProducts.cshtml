@@ -1,0 +1,158 @@
+﻿@using System.Configuration
+@using System.Linq
+@using BAP.Resources
+@using BAP.eCommerce.Resources;
+@using BAP.eCommerce.BL.Context
+@model IList<BAP.Web.Areas.eCommerce.Models.TrendingProductModel>
+@{
+    Layout = null;
+    bool quickAddToCart = (bool)ViewBag.QuickAddToCart;
+    var currencySymbol = (string)ViewBag.CurrencySymbol;
+}
+
+@if (Model.Count > 0)
+{
+    <style>
+        .bg-color-imitate {
+            color: #f0f3f4 !important;
+        }
+
+            .bg-color-imitate:hover {
+                color: #f0f3f4 !important
+            }
+
+        .row.display-flex {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+            .row.display-flex > [class*='col-'] {
+                flex-grow: 1;
+            }
+
+        /* only for demo not required */
+        .box {
+            border: 1px #666 solid;
+            height: 100%;
+        }
+    </style>
+    <div id="trending-items" class="section-container bg-silver">
+
+        <div class="container">
+            <h4 class="section-title clearfix">
+                <!-- Links must be changed to provide slider functionality-->
+                <a id="pull-right-trending-slider" class="pull-right m-l-5"><i class="fa fa-angle-right f-s-18"></i></a>
+                <a id="pull-left-trending-slider" class="pull-right"><i class="fa fa-angle-left f-s-18"></i></a>
+
+                @ResObject.UIText_TrendingProducts
+                <small>@ResObject.UIText_TrendingProductsPromotion</small>
+            </h4>
+            <div class="row row-space-10 display-flex">
+                <!-- Taking just 6 element from Model due correct represantion. Should be refactored when slider functionality be activated.-->
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-2 col-sm-4 trending-item" id="trending-item-@item.Id">
+                        <div class="item item-thumbnail box">
+                            <a href="@Url.Action("Details", "Products", new { pid = @item.PublicId })" class="item-image">
+                                <img src="@item.ImagePath" alt="trending-product" />
+                                @if (item.IsDiscounted())
+                                {
+                                    <div class="discount">@item.GetDiscount()@ResObject.UIText_PercentOff</div>
+                                }
+                            </a>
+                            <div class="item-info">
+                                <h4 class="item-title">
+                                    <a href="@Url.Action("Details", "Products", new { pid = @item.PublicId })">@item.Name</a>
+                                </h4>
+                                <p class="item-desc" style="height:auto;">@Html.Raw(Helpers.StripHtml(item.ShortDescription, 20))</p>
+
+                                <!--Checking SalesPrice for correct represantion of product price-->
+
+                                @if (item.IsDiscounted())
+                                {
+                                    <div class="item-price">@currencySymbol@item.SalesPrice</div>
+                                    <div class="item-discount-price">@currencySymbol@item.RegularPrice</div>
+                                }
+                                else
+                                {
+                                    <div class="item-price">@currencySymbol@item.RegularPrice</div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+    var trendingProducts = [];
+    var counter = 0,
+        startNumberMax = 0,
+        endNumberMax = 0;
+
+
+    $(function () {
+        $(".trending-item").each(function () {
+            trendingProducts[counter] = '#' + $(this).attr('id');
+            counter++;
+        });
+
+        if (trendingProducts.length >= 6) {
+            startNumberMax = 0;
+            endNumberMax = 5;
+        }
+        else {
+            startNumberMax = 0;
+        }
+        updateSlider();
+    });
+</script>
+<script>
+
+    function sliderMoveRight() {
+        startNumberMax++;
+        endNumberMax++;
+        updateSlider();
+    };
+
+    function sliderMoveLeft() {
+        startNumberMax--;
+        endNumberMax--;
+        updateSlider();
+    };
+
+    function updateSlider() {
+        $(".trending-item").hide();
+        if (endNumberMax == trendingProducts.length - 1)
+            $("#pull-right-trending-slider i").addClass("bg-color-imitate");
+        else
+            $("#pull-right-trending-slider i").removeClass("bg-color-imitate");
+        if (startNumberMax == 0)
+            $("#pull-left-trending-slider i").addClass("bg-color-imitate");
+        else
+            $("#pull-left-trending-slider i").removeClass("bg-color-imitate");
+
+
+        for (var i = startNumberMax; i <= endNumberMax; i++) {
+            $(trendingProducts[i]).show();
+        }
+    };
+</script>
+<script>
+    $("#pull-right-trending-slider").click(function () {
+        if (endNumberMax < trendingProducts.length - 1) {
+            sliderMoveRight();
+        }
+
+    });
+
+    $("#pull-left-trending-slider").click(function () {
+        if (startNumberMax > 0) {
+            sliderMoveLeft();
+        }
+    });
+</script>

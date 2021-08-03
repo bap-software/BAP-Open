@@ -1,0 +1,64 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.eCommerce.DAL.Entities.ProductOption
+
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+    bool disabledOnEdit = false;
+    if (Model != null && Model.Id > 0)
+    {
+        disabledOnEdit = true;
+    }
+}
+
+
+<div class="form-group">            
+    @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })            
+	<div class="col-md-4">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>            
+    @Html.LabelFor(model => model.ShortDescription, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })            
+	<div class="col-md-4">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>    
+
+<div class="form-group">            
+    @Html.LabelFor(model => model.Type, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })            
+	<div class="col-md-4">        
+        @if (disabledOnEdit)
+        {
+            @Html.BapDisplayEnum(Model.Type)
+            @Html.HiddenFor(model => model.Type)
+        }
+        else
+        {
+            @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+        }
+    </div>
+    @Html.LabelFor(model => model.UserControl, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })           
+	<div class="col-md-4">                
+        @Html.EnumDropDownListFor(model => model.UserControl, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.UserControl, "", new { @class = "text-danger" })        
+    </div>
+</div>    
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Enabled, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Enabled, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+    </div>
+</div>
+     
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "ckeditor" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>

@@ -1,0 +1,142 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.Blog
+
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>@Model.Name</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })">@Resources.UIText_HomePage</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Blogs", new { Area = "Content" })">Blogs</a>
+                    </li>
+                    <li class="active">@Model.Name</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix blogPage">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-8 col-md-push-3 col-sm-push-4 col-xs-12">
+                <div class="row">
+                    @foreach (var item in Model.BlogPosts)
+                    {
+                        var comentCount = 0;
+                        if(item.BlogComments != null)
+                        {
+                            comentCount = item.BlogComments.Count;
+                        }
+
+                        <div class="col-xs-12">
+                            <div class="thumbnail">
+                                @if (item.PostImages != null && item.PostImages.Count > 0)
+                                {
+                                    <div id="carousel-id" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                        @foreach (var img in item.PostImages)
+                                        {
+                                            <div class="item">
+                                                <img src="@img.PathUrl" alt="blog-image">
+                                            </div>
+                                        }                                           
+                                        </div>
+                                        <a class="left carousel-control" href="#carousel-id" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                                        <a class="right carousel-control" href="#carousel-id" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <img src="@item.MainImageUrl" alt="blog-image">
+                                }                                
+
+                                <div class="caption">
+                                    <div class="row">
+                                        <div class="col-md-2 col-md-push-10 col-sm-4 col-sm-push-8 col-xs-12">
+                                            <h5>@Resources.UIText_Details</h5>
+                                            <ul class="list-unstyled">
+                                                <li><a href="@Url.Action("Details", "BlogAuthors", new { Id = Model.BlogAuthor.Id })"><i class="fa fa-user" aria-hidden="true"></i>@Model.BlogAuthor.NickName</a></li>
+                                                <li><i class="fa fa-calendar" aria-hidden="true"></i>@item.CreateDate.Value.ToString("MMM") @item.CreateDate.Value.Day, @item.CreateDate.Value.Year</li>
+                                                <li><a href="#"><i class="fa fa-tags" aria-hidden="true"></i>@Model.Tags</a></li>
+                                                <li><a href="@Url.Action("Details", "BlogPosts", new { Id = item.Id })"><i class="fa fa-envelope" aria-hidden="true"></i>@comentCount comments</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-10 col-md-pull-2 col-sm-8 col-sm-pull-4 col-xs-12">
+                                            <h3><a href="@Url.Action("Details", "BlogPosts", new { Id = item.Id })">@item.Title</a> </h3>
+                                            <h4>@item.ShortDescription</h4>
+                                            <div style="text-align:justify">
+                                                @Html.Raw(item.Text)
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }                                       
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="text-left">
+                            <ul class="pagination">
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4 col-md-pull-9 col-sm-pull-8 col-xs-12 sideBar">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2">
+                    <a href="#" class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></a>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">categories</div>
+                    <div class="panel-body">
+                        <ul class="list-unstyle sidebar-list">
+                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Product <span>(1)</span></a></li>                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default recentBlogPosts">
+                    <div class="panel-heading">recent posts</div>
+                    <div class="panel-body">
+                        <div class="media">
+                            <a class="media-left" href="blog-single-right-sidebar.html">
+                                <img class="media-object" src="/Content/Themes/Base/img/blog/blog-small-06.jpg" alt="Image">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="blog-single-right-sidebar.html">How It Was Invented.</a></h4>
+                                <p><i class="fa fa-calendar" aria-hidden="true"></i>Jan 13, 2017</p>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

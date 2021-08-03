@@ -1,0 +1,40 @@
+﻿@using BAP.eCommerce.Resources
+<!-- BEGIN account-sidebar -->
+<div class="account-sidebar">
+    <div class="account-sidebar-cover">
+        <img src="~/Content/themes/base/assets/img/my-account-cover.jpg" alt="" />
+    </div>
+    <div class="account-sidebar-content">
+        <div class="row">
+            <!-- BEGIN col-6 -->
+            <div class="col-md-12">
+                <h4><i class="fa fa-gitlab fa-fw text-muted"></i> @ResObject.FieldLabel_Orders</h4>
+                <ul class="nav nav-list">
+                    <li><a href="#">@ResObject.FieldLabel_CheckStatusOfOrder</a></li>
+                    <li><a href="#">@ResObject.FieldLabel_TrackShipment</a></li>                    
+                    <li><a href="#">@ResObject.FieldLabel_CancelItems</a></li>
+                    <li><a href="#">@ResObject.FieldLabel_PrintInvoice</a></li>
+                    <li><a href="#">@ResObject.FieldLabel_ReturnItems</a></li>
+                    <li><a href="#">@ResObject.FieldLabel_ChangeShippingOrBillingInfoForOrder</a></li>
+                    <li><a href="#">@ResObject.FieldLabel_ViewOrderHistory</a></li>
+                </ul>
+                <h4><i class="fa fa-universal-access fa-fw text-muted"></i> @ResObject.FieldLabel_AccountSettings</h4>
+                <ul class="nav nav-list">
+                    <li><a href="@Url.Action("ChangePassword", "Manage", new { Area = "eCommerce"})">@ResObject.FieldLabel_UpdateYourEmailAddressAndPassword</a></li>
+                    <li><a href="#">@ResObject.FieldLabel_ChangeYourDefaultShippingOrBillingInfo</a></li>
+                    <li><a href="#">@ResObject.FieldLabel_ManageEmailSubscriptions</a></li>
+                </ul>
+                <h4><i class="fa fa-cc-visa fa-fw text-muted"></i> @ResObject.FieldLabel_PaymentsAndFinancing</h4>
+                <ul class="nav nav-list">
+                    <li><a href="#">@ResObject.FieldLabel_ChangePreferablePaymentMethod</a></li>                    
+                </ul>
+                <h4><i class="fa fa-wpforms fa-fw text-muted"></i> @ResObject.FieldLabel_Specialists</h4>
+                <ul class="nav nav-list">
+                    <li><a href="#">@ResObject.FieldLabel_ViewYourPreviousActivity</a></li>
+                </ul>
+            </div>
+            <!-- END col-6 -->
+        </div>
+    </div>
+</div>
+<!-- END account-sidebar -->

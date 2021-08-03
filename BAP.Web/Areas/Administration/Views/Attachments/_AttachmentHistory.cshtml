@@ -1,0 +1,80 @@
+﻿@using BAP.Resources;
+@model BAP.DAL.Entities.Attachment
+
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">@Resources.EntityLabel_AttachmentHistoryItems</h4>
+            </div>
+            <div class="panel-body panel-form">
+                <div class="form-horizontal form-bordered" novalidate>
+                    @if (Model.History != null && Model.History.Count > 0)
+                    {
+                        <!-- begin row -->
+                        <div class="row">
+                            <!-- begin col-12 -->
+                            <div class="col-md-12">
+                                <!-- begin panel -->
+                                <div class="panel panel-inverse">
+                                    <div class="panel-body">
+                                        <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                                            <tr>
+                                                <th>@Resources.UIText_Actions</th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.History.First().FileName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.History.First().CreateDate)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.History.First().CreatedByUserName)
+                                                </th>
+                                            </tr>
+
+                                            @foreach (var item in Model.History)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", "AttachmentHistories", new {id=item.Id})">
+                                                            <i class="glyphicon glyphicon-th-list"></i>
+                                                        </a>
+                                                        <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", "AttachmentHistories", new {id=item.Id})">
+                                                            <i class="glyphicon glyphicon-remove"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.FileName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CreateDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CreatedByUserName)
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="panel-heading">@Resources.UIText_NoDataFound</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

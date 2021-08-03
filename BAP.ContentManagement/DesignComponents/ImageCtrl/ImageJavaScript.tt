@@ -1,0 +1,46 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<script type="text/javascript">
+    var imageContent = '<#= ImageContent #>';
+	$("#hdnImageContent").val(imageContent);
+	setImageValues();
+
+	function setImageValues()
+	{
+		var url = $("#imageUrl").val();
+		var alt = $("#altUrl").val();
+		var width = $("#imageWidth").val();
+		var height = $("#imageHeight").val();
+		var temp = imageContent;
+		temp = temp.replace(/<%0%>/g, url);
+		temp = temp.replace(/<%1%>/g, alt);
+		temp = temp.replace(/<%2%>/g, width);
+		temp = temp.replace(/<%3%>/g, height);
+		$("#hdnImageContent").val(temp);
+	}
+
+    $("#imageUrl").change(function () {  
+        setImageValues();
+    });	
+
+	$("#altUrl").change(function () {  
+        setImageValues();
+    });	
+
+	$("#imageWidth").change(function () {  
+        setImageValues();
+    });	
+
+	$("#imageHeight").change(function () {  
+        setImageValues();
+    });	
+</script>
+
+
+<#+
+public string ImageContent { get; set; }
+#>

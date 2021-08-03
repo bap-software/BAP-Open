@@ -1,0 +1,8 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<label for="pageAuthor">Page author:</label><input type="text" id="pageAuthor" value="Page author" class="form-control"/>
+<input type="hidden" id="hdnPageAuthorContent" />

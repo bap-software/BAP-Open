@@ -1,0 +1,116 @@
+﻿@using BAP.Resources;
+@using BAP.UI.HtmlHelpers;
+@using BAP.DAL.Entities;
+@model WorkflowAction
+@{
+    int maxRowsToShow = (int)ViewBag.DefaultPageSize;
+    int rowsToShow = (Model != null && Model.Attributes != null) ? Model.Attributes.Count : 0;
+    if (rowsToShow > maxRowsToShow)
+    {
+        rowsToShow = maxRowsToShow;
+    }
+}
+
+<div class="form-group">
+    <p>
+        <a href="#" onclick="addAttribute()" class="btn btn-icon btn-success btn-add-attribute" title="@Resources.UIText_Create @Resources.EntityLabel_WorkflowActionAttribute"><i class="fa fa-plus"></i></a>
+        @Resources.EntityLabel_WorkflowActionAttribute
+    </p>
+</div>
+@Html.Partial("_CreateAttribute", new WorkflowActionAttribute() { WorkflowAction = Model, WorkflowActionId = Model.Id })
+
+<div class="form-group">
+    <div class="col-md-12 col-sm-12">
+        <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+            <thead>
+                <tr>
+                    <th>@Resources.UIText_Actions</th>
+                    <th>@Html.LabelFor(model => model.Attributes.First().Name)</th>
+                    <th>@Html.LabelFor(model => model.Attributes.First().AtributeType)</th>
+                    <th>@Html.LabelFor(model => model.Attributes.First().AtributeDirection)</th>
+                    <th>@Html.LabelFor(model => model.Attributes.First().DefaultValue)</th>
+                    <th>@Html.LabelFor(model => model.Attributes.First().IsPublic)</th>
+                    <th>@Html.LabelFor(model => model.Attributes.First().IsVisible)</th>
+                    <th>@Html.LabelFor(model => model.Attributes.First().IsReadonly)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < rowsToShow; i++)
+                {
+                    var item = Model.Attributes[i];
+                <tr>
+                    <td>
+                        <a title="@Resources.UIText_Details" style="text-decoration: none;" href="#" onclick="detailsAttribute('@item.Id')">
+                            <i class="glyphicon glyphicon-th-list"></i>
+                        </a>
+                        @Html.Partial("_DetailsAttribute", item)
+                        <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="#" onclick="editAttribute('@item.Id')">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        @Html.Partial("_EditAttribute", item)
+                        <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="#" onclick="deleteAttribute('@item.Id')">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                        @Html.Partial("_DeleteAttribute", item)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AtributeType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AtributeDirection)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DefaultValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsPublic)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsVisible)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsReadonly)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function detailsAttribute(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttributeDetailsModal" + id).modal(opt);
+    }
+
+    function addAttribute() {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttributeAddModal").modal(opt);
+    }
+
+    function editAttribute(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttributeEditModal" + id).modal(opt);
+    }
+
+    function deleteAttribute(id) {
+        var opt = {
+            show: true,
+            keyboard: true
+        };
+        $("#AttributeDeleteModal" + id).modal(opt);
+    }
+</script>

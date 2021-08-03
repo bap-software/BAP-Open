@@ -1,0 +1,151 @@
+﻿@using BAP.DAL
+@using BAP.eCommerce.BL
+@using BAP.eCommerce.Resources
+
+@model BAP.eCommerce.DAL.Entities.ShoppingCart
+@{
+    ViewBag.Title = ResObject.FieldLabel_ShoppingCartProduct_ShoppingCart;
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+    var authContext = (IAuthorizationContext)ViewBag.AuthContextInstance;
+    var couponCode = "";
+    if (Model != null && Model.DiscountCoupon != null)
+    {
+        couponCode = Model.DiscountCoupon.Code;
+    }
+    var isUnregisteredCheckoutAllowed = ViewBag.IsUnregisteredCheckoutAllowed != null && (bool)ViewBag.IsUnregisteredCheckoutAllowed;
+}
+
+<!-- BEGIN #checkout-cart -->
+<div class="section-container" id="checkout-cart">
+    <!-- BEGIN container -->
+    <div class="container">
+        <!-- BEGIN checkout -->
+        <div class="checkout">
+            <!-- BEGIN checkout-header -->
+            @Html.Partial("_CheckoutHeader", 1)
+            <!-- END checkout-header -->
+            @Html.Partial("_SmallSummary")
+            @if (Model?.ShoppingCartProducts != null && Model.ShoppingCartProducts.Count > 0)
+            {
+                <form action="@Url.Action("Details")" method="POST" name="form_checkout" id="DetailsForm">
+                    @Html.AntiForgeryToken()
+                    <!-- BEGIN checkout-body -->
+                    <div class="checkout-body">
+                        <div class="table-responsive">
+                            <div class="basket-wrapper ">
+                                <div class="basket-head-mobile">Your Basket Contains... </div>
+                                <div class="basket-head">
+                                    <div class="basket-product">@ResObject.EntityLabel_Product</div>
+                                    <div class="basket-price">@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().Product.Price)</div>
+                                    <div class="basket-count">@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().Count)</div>
+                                    <div class="basket-coupon">@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().DiscountCoupon)</div>
+                                    <div class="basket-subtotal">@Html.DisplayNameFor(model => model.ShoppingCartProducts.First().Subtotal)</div>
+                                </div>
+                                <div class="basket-body">
+                                    @foreach (var item in Model.ShoppingCartProducts)
+                                    {
+                                    <div class="basket-product-wrapper">
+                                        <div class="basket-product">
+                                            <div class="cart-item-close">
+                                                <a href="@Url.Action("RemoveFromCart", "ShoppingCarts" , new { Id=Model.Id, productId=item.Id})" data-toggle="tooltip" data-title="Remove">&times;</a>
+                                            </div>
+                                            <div class="product-img">
+                                                <img src="@item.Product.ImagePath" alt="@item.Product.ShortDescription" style="height:80px;">
+                                            </div>
+                                            <div class="product-info">
+                                                <div class="title"><a href="@Url.Action(" Details", "Products" , new { pid=item.Product.GetPublicId() })">@item.Product.Name</a></div>
+                                                <div class="desc">@Html.Raw(item.Product.ShortDescription)</div>
+                                                @if (!string.IsNullOrEmpty(item.OptionsData))
+                                                {
+                                                    <br />
+                                                    <span style="font-weight:normal;font-size:smaller;">
+                                                        <label>@ResObject.UIText_ProductOptionsInCart</label>
+                                                        <i>@item.OptionsData</i>
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="basket-price">@Model.Currency.Symbol @item.Product.Price</div>
+                                        <div class="basket-count">
+                                            <div class="cart-qty-input">
+                                                <a href="#" class="qty-control left disabled" data-click="decrease-qty" data-target="#ItemCount_@item.Id"><i class="fa fa-minus"></i></a>
+                                                <input type="text" min="1" value="@item.Count" class="form-control" id="ItemCount_@item.Id" name="ItemCount_@item.Id" onblur="document.getElementById('DetailsForm').submit();" />
+                                                <a href="#" class="qty-control right disabled" data-click="increase-qty" data-target="#ItemCount_@item.Id"><i class="fa fa-plus"></i></a>
+                                            </div>
+                                            <div class="qty-desc">1 to max order</div>
+                                        </div>
+                                        <div class="basket-coupon">@Model.Currency.Symbol @item.TotalDiscount</div>
+                                        <div class="basket-subtotal">@Model.Currency.Symbol @item.Subtotal</div>
+                                    </div>
+                                    }
+                                </div>
+
+                                <div class="basket-coupon-wrapper">
+                                    <div class="basket-coupon-container">
+                                        <div class="summary-row">
+                                            <input type="text" class="form-control" placeholder="I have a discount coupon" aria-describedby="basic-addon2" id="DiscountCoupon" name="DiscountCoupon" value="@couponCode" />
+                                            <a href="javascript:document.getElementById('DetailsForm').submit();" class="btn input-group-addon" id="basic-addon2">@ResObject.FieldLabel_ShoppingCart_ApplyCoupon</a>
+                                            <span>@ViewBag.CouponAppliedText</span>
+                                            <a href="javascript:$('#forceUpdate').val('True');document.getElementById('DetailsForm').submit();" class="btn input-group-addon">@ResObject.FieldLabel_ShoppingCart_UpdateCoupon</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="basket-total-price-wrapper">
+                                    <div class="basket-total-price-container">
+                                        @if (Model.TotalDiscounts > 0)
+                                        {
+                                            <div class="summary-row">
+                                                <div class="field">@Html.DisplayNameFor(model => model.TotalDiscounts)</div>
+                                                <div class="value">@Model.Currency.Symbol @Html.DisplayFor(m => m.TotalDiscounts)</div>
+                                            </div>
+                                        }
+                                        <div class="summary-row">
+                                            <div class="field">@Html.DisplayNameFor(model => model.TaxTotal)</div>
+                                            <div class="value">@Model.Currency.Symbol @Html.DisplayFor(m => m.TaxTotal)</div>
+                                        </div>
+                                        @if (Model.ShippingCost > 0)
+                                        {
+                                            <div class="summary-row text-danger">
+                                                <div class="field">@Html.DisplayNameFor(model => model.ShippingCost)</div>
+                                                <div class="value">@Model.Currency.Symbol @Html.DisplayFor(m => m.ShippingCost)</div>
+                                            </div>
+                                        }
+                                        <div class="summary-row">
+                                            <div class="field">@Html.DisplayNameFor(model => model.Subtotal)</div>
+                                            <div class="value">@Model.Currency.Symbol @Html.DisplayFor(m => m.Subtotal)</div>
+                                        </div>
+                                        <div class="summary-row total">
+                                            <div class="field">@Html.DisplayNameFor(model => model.Total)</div>
+                                            <div class="value">@Model.Currency.Symbol @Html.DisplayFor(m => m.Total)</div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- END checkout-body -->
+                    <!-- BEGIN checkout-footer -->
+                    <div class="checkout-footer">
+                        <a href="@Url.Action("Index", "Products")" class="btn btn-white btn-lg pull-left">@ResObject.FieldLabel_ShoppingCart_ContinueShopping</a>
+                        <a href="@Url.Action("Checkout")" class="btn btn-inverse btn-lg p-l-30 p-r-30 m-l-10">@ResObject.FieldLabel_ShoppingCart_Checkout</a>
+                        @if (!authContext.IsAuthenticated && isUnregisteredCheckoutAllowed)
+                        {
+                            <a href="@Url.Action("Checkout", "ShoppingCarts", new { GoThrough = true})" class="btn btn-inverse btn-lg p-l-30 p-r-30 m-l-10">@ResObject.FieldLabel_ShoppingCart_ContinueAsUnregistered</a>
+                        }
+                    </div>
+                    <!-- END checkout-footer -->
+                </form>
+            }
+            else
+            {
+                <div class="checkout-footer">
+                    <a href="@Url.Action("Index", "Products")" class="btn btn-white btn-lg pull-left">@ResObject.FieldLabel_ShoppingCart_ContinueShopping</a>
+                </div>
+            }
+        </div>
+        <!-- END checkout -->
+    </div>
+    <!-- END container -->
+</div>
+<!-- END #checkout-cart -->

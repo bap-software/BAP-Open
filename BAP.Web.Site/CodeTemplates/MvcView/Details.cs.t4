@@ -1,0 +1,127 @@
+﻿<#@ template language="C#" HostSpecific="True" #>
+<#@ output extension=".cshtml" #>
+<#@ include file="Imports.include.t4" #>
+@using BAP.Resources
+@model <#= ViewDataTypeName #>
+<#
+// The following chained if-statement outputs the file header code and markup for a partial view, a view using a layout page, or a regular view.
+if(IsPartialView) {
+#>
+
+<#
+} else if(IsLayoutPageSelected) {
+#>
+
+@{
+    ViewBag.Title = Resources.UIText_<#= ViewName#>;
+<#
+if (!String.IsNullOrEmpty(LayoutPageFile)) {
+#>
+    Layout = "<#= LayoutPageFile#>";
+<#
+}
+#>
+}
+
+@section featured
+{
+    <section class="featured-section edit">
+        <!-- category image -->
+        <div class="container">
+            <div class="wrap clearfix">
+                <h1 class="page-title"><span>@Resources.EntityLabel_<#= ViewDataTypeShortName #> @ViewBag.Title</span></h1> <!-- category title -->
+                <p>
+                    <a href="@Url.Action("Index")"><i class="glyphicon glyphicon-hand-left"></i>@Resources.UIText_Back</a> |
+                    <a href="@Url.Action("Edit", new { id = Model.Id })"><i class="fa fa-edit"></i>@Resources.UIText_Edit</a> |                    
+                    <a href="javascript:window.print()"><i class="fa fa-print"></i> @Resources.UIText_Print</a> |
+                    <span class="add-to-fav"><a href="#"><i class="fa fa-star"></i> @Resources.UIText_AddToFavorites</a></span> <!-- go to add to favorites page, if not logged go to login page -->
+                </p>
+            </div>
+        </div>
+    </section>
+}
+
+
+<#
+} else {
+#>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title><#= ViewName #></title>
+</head>
+<body>
+<#
+    PushIndent("    ");
+}
+#>
+<div>    
+<!-- Create partial view _ReadOnlyFields including <dl></dl> tag below 
+	Partial view would start like this:
+
+@using BAP.Lookups
+@model <#= ViewDataTypeName #>
+
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+-->
+
+	@*Html.Partial("_ReadOnlyFields")*@
+
+
+    <dl class="dl-horizontal">
+<#
+foreach (PropertyMetadata property in ModelMetadata.Properties) {
+    if (property.Scaffold && !property.IsPrimaryKey && !property.IsForeignKey) {
+#>
+<#
+        // We do not want to show any association properties for which there is
+        // no associated foreign key.
+        if (property.IsAssociation && GetRelatedModelMetadata(property) == null) {
+            continue;
+        }
+
+		//Bypass certain properties:
+		if(property.PropertyName == "CreatedBy" || property.PropertyName == "LastModifiedBy" 
+			|| property.PropertyName == "TenantUnit" || property.PropertyName == "TenantUnitId"
+			 || property.PropertyName == "TimeStamp" || property.PropertyName == "OwnerGroup" || property.PropertyName == "OwnerPermissions")
+        {
+			continue;
+		}
+#>
+        <dt>
+            @Html.DisplayNameFor(model => model.<#= GetValueExpression(property) #>)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.<#= GetValueExpression(property) #>)
+        </dd>
+
+<#
+    }
+}
+#>
+    </dl>
+	<!-- End of partial view _ReadOnlyFields -->
+</div>
+<#
+// The following code closes the tag used in the case of a view using a layout page and the body and html tags in the case of a regular view page
+#>
+<#
+if(!IsPartialView && !IsLayoutPageSelected) {
+    ClearIndent();
+#>
+</body>
+</html>
+<#
+}
+#>
+<#@ include file="ModelMetadataFunctions.cs.include.t4" #>

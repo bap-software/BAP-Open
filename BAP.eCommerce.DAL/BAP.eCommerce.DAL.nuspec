@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>http://bap-software.com/</projectUrl>
+    <iconUrl>http://bap-software.com/Content/Themes/Base/images/favicon.ico</iconUrl>
+    <description>$description$</description>
+    <releaseNotes>Initial version of the package.</releaseNotes>
+    <copyright>Copyright 2020</copyright>
+    <tags>BAP eCommerce DAL</tags>
+  </metadata>
+</package>

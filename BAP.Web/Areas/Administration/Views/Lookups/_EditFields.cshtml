@@ -1,0 +1,164 @@
+﻿@using BAP.DAL.Entities
+@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@model Lookup
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function() {
+        var lookupType = '@(Model != null ? Model.LookupType : 0)';
+        $(".form-group.optional").hide();
+        $("#LookupRangePrefix").hide();
+
+        $("#Lookup" + lookupType).show();
+        if (lookupType.indexOf("Range") > -1)
+            $("#LookupRangePrefix").show();
+
+        $("#LookupType").change(function() {
+            var lookupType = $("#LookupType option:selected").text();
+            $(".form-group.optional").hide();
+            $("#LookupRangePrefix").hide();
+
+            $("#Lookup" + lookupType).show();
+            if (lookupType.indexOf("Range") > -1)
+                $("#LookupRangePrefix").show();
+        });
+    });
+</script>
+
+<div class="form-group" id="LookupHeader">
+   
+        @Html.LabelFor(model => model.Name, DisplayOptions.Humanize,  new { @class = "control-label col-md-2 col-sm-2"})
+
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+  </div>
+    
+
+ <div class="form-group">
+        @Html.LabelFor(model => model.LookupType, DisplayOptions.Humanize, htmlAttributes: new {@class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.DropDownList(@"LookupType", EnumHelper.GetSelectList(typeof (LookupType)), Resources.UIText_ChooseLookupType, new {@class = @"form-control"})
+            @Html.ValidationMessageFor(model => model.LookupType, "", new { @class = "text-danger" })
+        </div>
+             
+        @Html.LabelFor(model => model.RangePrefix, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.RangePrefix, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.RangePrefix, "", new { @class = "text-danger" })
+        </div>
+ </div>        
+   
+
+
+<div class="form-group" id="LookupIntRange">       
+        @Html.LabelFor(model => model.IntRangeFrom, DisplayOptions.Humanize, htmlAttributes: new {@class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.IntRangeFrom, new {htmlAttributes = new {@class = @"form-control", @type = @"number"}})
+            @Html.ValidationMessageFor(model => model.IntRangeFrom, "", new {@class = "text-danger"})
+        </div>
+
+        @Html.LabelFor(model => model.IntRangeTo, DisplayOptions.Humanize, htmlAttributes: new {@class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.IntRangeTo, new {htmlAttributes = new {@class = "form-control", @type = "number"}})
+            @Html.ValidationMessageFor(model => model.IntRangeTo, "", new {@class = "text-danger"})
+        </div>
+ </div>
+
+
+
+<div class="form-group" id="LookupFloatRange"> 
+        @Html.LabelFor(model => model.FloatRangeFrom, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.FloatRangeFrom, new { htmlAttributes = new { @class = @"form-control", @type = @"number", @step = @"0.01" } })
+            @Html.ValidationMessageFor(model => model.FloatRangeFrom, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.FloatRangeTo, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.FloatRangeTo, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = @"0.01" } })
+            @Html.ValidationMessageFor(model => model.FloatRangeTo, "", new { @class = "text-danger" })
+        </div>
+</div>
+
+
+ <div class="form-group">
+       @Html.LabelFor(model => model.FloatRangeStep, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.FloatRangeStep, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = @"0.01" } })
+            @Html.ValidationMessageFor(model => model.FloatRangeStep, "", new { @class = "text-danger" })
+        </div>
+ </div>
+
+ <div class="form-group" id="LookupDateRange">   
+        @Html.LabelFor(model => model.DateRangeFrom, DisplayOptions.Humanize, htmlAttributes: new {@class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.DateRangeFrom, new {htmlAttributes = new {@class = @"form-control", @type = @"date"}})
+            @Html.ValidationMessageFor(model => model.DateRangeFrom, "", new {@class = "text-danger"})
+        </div>
+
+        @Html.LabelFor(model => model.DateRangeTo, DisplayOptions.Humanize, htmlAttributes: new {@class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.DateRangeTo, new {htmlAttributes = new {@class = "form-control", @type = "date"}})
+            @Html.ValidationMessageFor(model => model.DateRangeTo, "", new {@class = "text-danger"})
+        </div>
+</div>
+
+<div class="form-group" id="LookupEntity">   
+        @Html.LabelFor(model => model.EntityName, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.EntityName, new { htmlAttributes = new { @class = @"form-control" } })
+            @Html.ValidationMessageFor(model => model.EntityName, "", new { @class = "text-danger" })
+        </div>        
+ </div>
+
+ <div class="form-group">
+        @Html.LabelFor(model => model.EntityNameField, DisplayOptions.Humanize, htmlAttributes: new {@class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.EntityNameField, new {htmlAttributes = new {@class = @"form-control"}})
+            @Html.ValidationMessageFor(model => model.EntityNameField, "", new {@class = "text-danger"})
+        </div>
+
+        @Html.LabelFor(model => model.EntityValueField, DisplayOptions.Humanize, htmlAttributes: new {@class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.EntityValueField, new {htmlAttributes = new {@class = "form-control"}})
+            @Html.ValidationMessageFor(model => model.EntityValueField, "", new {@class = "text-danger"})
+        </div>
+ </div>
+
+ <div class="form-group">
+        @Html.LabelFor(model => model.EntityFilter, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.EntityFilter, new { htmlAttributes = new { @class = @"form-control" } })
+            @Html.ValidationMessageFor(model => model.EntityFilter, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.EntityOrderBy, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.EntityOrderBy, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EntityOrderBy, "", new { @class = "text-danger" })
+        </div>
+ </div>
+
+ <div class="form-group">
+
+        @Html.LabelFor(model => model.EntityAssembly, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.EntityAssembly, new { htmlAttributes = new { @class = @"form-control" } })
+            @Html.ValidationMessageFor(model => model.EntityAssembly, "", new { @class = "text-danger" })
+        </div>
+        @Html.LabelFor(model => model.EntityClass, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2"})
+        <div class="col-md-3 col-sm-3">
+            @Html.EditorFor(model => model.EntityClass, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.EntityClass, "", new { @class = "text-danger" })
+        </div>
+ </div>
+
+

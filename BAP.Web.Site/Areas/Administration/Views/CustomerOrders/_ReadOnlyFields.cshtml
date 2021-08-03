@@ -1,0 +1,209 @@
+﻿@using BAP.Resources
+@model BAP.eCommerce.DAL.Entities.CustomerOrder
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Id)
+    </div>
+    @Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CreateDate)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.CompanyName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BillingAddress.CompanyName)
+    </div>
+    @Html.LabelFor(model => model.Customer, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Customer.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CustomerPayment, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.CustomerPayment.Name)
+    </div>
+    @Html.LabelFor(model => model.User, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.User.FullName)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Currency, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Currency.Name)
+    </div>
+    @Html.LabelFor(model => model.ShippingOption, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.ShippingOption.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        <a href="#billing-address-modal-dialog" data-toggle="modal" title="@Resources.UIText_MoreDetails">
+            @Html.DisplayFor(model => model.BillingAddress.AddressLine1) @Html.DisplayFor(model => model.BillingAddress.AddressLine2)
+            @Html.DisplayFor(model => model.BillingAddress.City) @Html.DisplayFor(model => model.BillingAddress.County) <span>, </span>
+            @Html.DisplayFor(model => model.BillingAddress.State) @Html.DisplayFor(model => model.BillingAddress.Country) <span>, </span>
+            @Html.DisplayFor(model => model.BillingAddress.Zip)
+        </a>
+    </div>
+    <div class="modal fade" id="billing-address-modal-dialog" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">@Html.LabelFor(model => model.BillingAddress)</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.DisplayFor(model => model.BillingAddress.FirstName) @Html.DisplayFor(model => model.BillingAddress.MiddleName)
+                    @Html.DisplayFor(model => model.BillingAddress.LastName)
+                    <br />
+                    @Html.DisplayFor(model => model.BillingAddress.CompanyName)
+                    <br />
+                    @Html.DisplayFor(model => model.BillingAddress.AddressLine1) @Html.DisplayFor(model => model.BillingAddress.AddressLine2)
+                    @Html.DisplayFor(model => model.BillingAddress.City) @Html.DisplayFor(model => model.BillingAddress.County) <span>, </span>
+                    @Html.DisplayFor(model => model.BillingAddress.State) @Html.DisplayFor(model => model.BillingAddress.Country) <span>, </span>
+                    @Html.DisplayFor(model => model.BillingAddress.Zip)
+                    <br />
+                    @Html.LabelFor(model => model.BillingAddress.PhoneNumber)
+                    @Html.DisplayFor(model => model.BillingAddress.PhoneNumber) @Html.DisplayFor(model => model.BillingAddress.PhoneExtension)
+                    <br />
+                    @Html.LabelFor(model => model.BillingAddress.CellNumber) @Html.DisplayFor(model => model.BillingAddress.CellNumber)
+                    <br />
+                    @Html.LabelFor(model => model.BillingAddress.FaxNumber) @Html.DisplayFor(model => model.BillingAddress.FaxNumber)
+                    <br />
+                    @Html.LabelFor(model => model.BillingAddress.ContactEmail) @Html.DisplayFor(model => model.BillingAddress.ContactEmail)
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        <a href="#shipping-address-modal-dialog" data-toggle="modal" title="@Resources.UIText_MoreDetails">
+            @Html.DisplayFor(model => model.ShippingAddress.AddressLine1) @Html.DisplayFor(model => model.ShippingAddress.AddressLine2)
+            @Html.DisplayFor(model => model.ShippingAddress.City) @Html.DisplayFor(model => model.ShippingAddress.County) <span>, </span>
+            @Html.DisplayFor(model => model.ShippingAddress.State) @Html.DisplayFor(model => model.ShippingAddress.Country)<span>, </span>
+            @Html.DisplayFor(model => model.ShippingAddress.Zip)
+        </a>
+    </div>
+
+    <div class="modal fade" id="shipping-address-modal-dialog" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">@Html.LabelFor(model => model.ShippingAddress)</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.DisplayFor(model => model.ShippingAddress.FirstName) @Html.DisplayFor(model => model.ShippingAddress.MiddleName)
+                    @Html.DisplayFor(model => model.ShippingAddress.LastName)
+                    <br />
+                    @Html.DisplayFor(model => model.ShippingAddress.CompanyName)
+                    <br />
+                    @Html.DisplayFor(model => model.ShippingAddress.AddressLine1) @Html.DisplayFor(model => model.ShippingAddress.AddressLine2)
+                    @Html.DisplayFor(model => model.ShippingAddress.City) @Html.DisplayFor(model => model.ShippingAddress.County) <span>, </span>
+                    @Html.DisplayFor(model => model.ShippingAddress.State) @Html.DisplayFor(model => model.ShippingAddress.Country) <span>, </span>
+                    @Html.DisplayFor(model => model.ShippingAddress.Zip)
+                    <br />
+                    @Html.LabelFor(model => model.ShippingAddress.PhoneNumber)
+                    @Html.DisplayFor(model => model.ShippingAddress.PhoneNumber) @Html.DisplayFor(model => model.ShippingAddress.PhoneExtension)
+                    <br />
+                    @Html.LabelFor(model => model.ShippingAddress.CellNumber) @Html.DisplayFor(model => model.ShippingAddress.CellNumber)
+                    <br />
+                    @Html.LabelFor(model => model.ShippingAddress.FaxNumber) @Html.DisplayFor(model => model.ShippingAddress.FaxNumber)
+                    <br />
+                    @Html.LabelFor(model => model.ShippingAddress.ContactEmail) @Html.DisplayFor(model => model.ShippingAddress.ContactEmail)
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BillingAddress.PhoneNumber)
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.PhoneExtension, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BillingAddress.PhoneExtension)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BillingAddress.ContactEmail, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BillingAddress.ContactEmail)
+    </div>
+    @Html.LabelFor(model => model.BillingAddress.CellNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.BillingAddress.CellNumber)
+    </div>
+</div>
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PaymentOption, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.PaymentOption.Name)
+    </div>
+    @Html.LabelFor(model => model.DiscountCoupon, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.DiscountCoupon.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Subtotal, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.Subtotal)
+    </div>
+    @Html.LabelFor(model => model.Coupon, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Coupon)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DiscountsTotal, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.DiscountsTotal)
+    </div>
+    @Html.LabelFor(model => model.ShippingCost, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.ShippingCost)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TaxTotal, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.TaxTotal)
+    </div>
+    @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.Total)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-8 col-sm-8">
+        @Html.DisplayFor(model => model.Notes)
+    </div>
+</div>

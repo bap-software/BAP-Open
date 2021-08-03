@@ -1,0 +1,59 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.Attachment
+@{
+    ViewBag.Title = Resources.UIText_Details;
+}
+
+<div id="AttachmentDetailsModal@(Model.Id)" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-entity-select">
+        <!-- Modal content-->
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="ModalTitle">@Resources.EntityLabel_Attachment @Resources.UIText_Details</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    @Html.Partial("_ReadonlyAttachmentFields")
+                </div>
+
+                @if (Model.History != null && Model.History.Count > 0)
+                {
+                    <h4>Attachment History</h4>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.History[0].FileName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.History[0].CreateDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.History[0].CreatedByUserName)
+                            </th>
+                        </tr>
+
+                        @foreach (var item in Model.History)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FileName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreateDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedByUserName)
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.UIText_Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

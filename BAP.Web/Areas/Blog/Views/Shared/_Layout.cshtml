@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>Blogs</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    @Styles.Render("~/blog/css")
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    @Scripts.Render("~/blog/top-scripts")
+    @RenderSection("styles", required: false)
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+    <!-- begin #header -->
+    @Html.Partial("_HeaderPartial")
+    <!-- end #header -->
+    <!-- begin #page-title -->
+    @Html.Partial("_PageTitlePartial")
+    <!-- end #page-title -->
+    <!-- begin #content -->
+    <div id="content" class="content">
+        <!-- begin container -->
+        @RenderBody()
+        <!-- end container -->
+    </div>
+    <!-- end #content -->
+    <!-- begin #footer -->
+    @Html.Partial("_FooterPartial")
+    <!-- end #footer -->
+    <!-- begin #footer-copyright -->
+    @Html.Partial("_FooterCopyright")
+    <!-- end #footer-copyright -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    @Scripts.Render("~/blog/plugin-scripts")
+    <!--[if lt IE 9]>
+        <script src="../assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="../assets/crossbrowserjs/respond.min.js"></script>
+        <script src="../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/blog/custom-scripts")
+
+    <!-- ================== END BASE JS ================== -->
+    @Html.Partial("_LoginModal", new BAP.Web.Models.LoginViewModel() { Area = "Blog" })
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>
+</body>
+</html>

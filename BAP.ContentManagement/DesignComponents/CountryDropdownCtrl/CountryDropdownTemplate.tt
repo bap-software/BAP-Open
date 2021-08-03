@@ -1,0 +1,9 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<label for="countryDropdownName">Name:</label><input type="text" id="countryDropdownName" value="Country" class="form-control"/>
+<label for="countryDropdownValue">Value:</label><input type="text" id="countryDropdownValue" value="US" class="form-control"/>
+<input type="hidden" id="hdnCountryDropdownContent" />

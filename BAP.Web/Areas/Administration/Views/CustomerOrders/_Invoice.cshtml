@@ -1,0 +1,61 @@
+﻿@using BAP.Resources;
+@using BAP.eCommerce.Resources
+@model BAP.eCommerce.DAL.Entities.CustomerOrder
+
+<div class="row">
+    <div class="col-md-12">
+        <table id="data-table" class="table table-striped table-bordered dataTable">
+            <thead>
+                <tr role="row">
+                    <th>
+                        @Resources.UIText_Actions
+                    </th>
+                    <th>
+                        @ResObject.FieldLabel_CustomerOrderPayment_InvoiceFileName
+                    </th>
+                    <th>
+                        @ResObject.FieldLabel_CustomerOrderPayment_CreateDate
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <a title="@ResObject.FieldLabel_SendToCustomer" style="text-decoration: none;" href="@Url.Action("SendInvoiceToCustomer", new {id=Model.Id})">
+                            <i class="glyphicon glyphicon-send" aria-hidden="true"></i>
+                        </a>
+                        <a title="@ResObject.FieldLabel_Download" style="text-decoration: none;" href="/file/public/invoices/invoice@(Model.Id).pdf" target="_blank">
+                            <i class="glyphicon glyphicon-download" aria-hidden="true"></i>
+                        </a>
+                        <a title="@ResObject.FieldLabel_Preview" style="text-decoration: none;" href="javascript:FilePreview('invoice@(Model.Id).pdf', '@Url.Action("FileForAdmin", "Home", new { area = "", path = $"Public/Invoices/invoice{Model.Id}.pdf" })', 'application/pdf')">
+                            <i class="glyphicon glyphicon-th-list"></i>
+                        </a>
+                    </td>
+                    <td>
+                        invoice@(Model.Id).pdf
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => m.CreateDate)
+                    </td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div id="FilePreviewModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="text" style="width:0px;height:0px;position:absolute;left:10px;top:10px;z-index:-10;" id="FocusControl" />
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="ModalTitle">@ResObject.FieldLabel_CustomerOrderInvoice #@Model.Id</h4>
+            </div>
+            <div class="modal-body">
+                <object id="PreviewObject" class="media-object" type="application/pdf" style="width:100%;min-height:500px"></object>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info m-r-5 m-b-5" data-dismiss="modal">@Resources.UIText_Close</button>
+            </div>
+        </div>
+    </div>
+</div>

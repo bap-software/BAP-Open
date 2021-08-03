@@ -1,0 +1,9 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<h5>You about to add some HTML to the page</h5>
+<label for="StaticHtmlContent">HTML content:</label>
+<textarea id="StaticHtmlContent" class="ckeditor" rows="10"></textarea>
+

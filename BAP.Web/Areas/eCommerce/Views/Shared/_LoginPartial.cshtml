@@ -1,0 +1,32 @@
+﻿@using BAP.Resources;
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { Area = "" }, FormMethod.Post, new { id = "logoutForm", style = "position:absolute;left:-1000px;" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+    <li>
+        <a href="@Url.Action("Index", "Manage")">
+            <img src="~/Content/Themes/Base/assets/img/user/user-1.jpg" class="user-img" alt="" title="@Resources.UIText_Hello @User.Identity.GetUserName()" />
+        </a>
+    </li>
+    <li class="divider"></li>
+    <li>
+        <a href="javascript:document.getElementById('logoutForm').submit()">@Resources.UIText_LogOffLink</a>
+    </li>
+}
+else
+{
+<li>
+    <a href="#" id="loginModalLink">
+        <span class="hidden-md hidden-sm hidden-xs">@Resources.UIText_LoginLink</span>
+    </a>
+</li>
+    <li class="divider"></li>
+    <li>
+        <a href="#" id="registerModalLink">
+            <span class="hidden-md hidden-sm hidden-xs">@Resources.UIText_RegisterLink</span>
+        </a>
+    </li>
+}

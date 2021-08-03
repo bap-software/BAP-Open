@@ -1,0 +1,82 @@
+﻿@using BAP.UI.HtmlHelpers
+@model BAP.DAL.Entities.WorkflowActionAttribute
+@{
+    var attributeTypes = new SelectList(ViewBag.AtributeTypes, "Id", "Name", Model.AtributeType);
+    var atributeDirections = new SelectList(ViewBag.AtributeDirections, "Id", "Name", Model.AtributeDirection);
+}
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.AtributeType, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.DropDownListFor(model => model.AtributeType, attributeTypes, new { @class = "form-control" })
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.AtributeDirection, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.DropDownListFor(model => model.AtributeDirection, atributeDirections, new { @class = "form-control" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "ckeditor" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.DefaultValue, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.DefaultValue, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.DefaultValue, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.IsPublic, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.IsPublic, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.IsPublic, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.IsVisible, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.IsVisible, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.IsVisible, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.IsReadonly, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.EditorFor(model => model.IsReadonly, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.IsReadonly, "", new { @class = "text-danger" })
+    </div>
+</div>

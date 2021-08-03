@@ -1,0 +1,157 @@
+﻿@using BAP.DAL
+@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@model BAP.eCommerce.DAL.Entities.ShoppingCart
+@{
+    ViewBag.Title = "Checkout";
+    IAuthorizationContext authContext = ViewBag.AuthContextInstance;
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Shipping Method</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })">@Resources.UIText_HomePage</a>
+                    </li>
+                    <li class="active">Shipping method</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix stepsWrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="innerWrapper clearfix stepsPage">
+                    <div class="row progress-wizard" style="border-bottom:0;">
+
+                        <div class="col-xs-3 progress-wizard-step complete fullBar">
+                            <div class="text-center progress-wizard-stepnum">Billing &amp; Shipping Address</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Checkout", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step active">
+                            <div class="text-center progress-wizard-stepnum">Shipping Method</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Shipping", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step disabled">
+                            <div class="text-center progress-wizard-stepnum">Payment Method</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Payment", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step disabled">
+                            <div class="text-center progress-wizard-stepnum">Review</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Review", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+                    </div>
+
+                    <form action="@Url.Action("Shipping")" class="row" method="POST" role="form" id="ShippingForm">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="col-xs-12">
+                            <div class="page-header">
+                                <h4>Choose your Delivery method</h4>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.Country)
+                            @if (Model != null && Model.ShippingAddress != null)
+                            {
+                                <span class="step-drop">
+                                    @Html.BapCountryFor(model => model.ShippingAddress.Country, new { @class = "form-control", @readonly = "readonly" })
+                                </span>
+                            }
+                        </div>
+                        <div class="form-group col-sm-4 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.State)
+                            @if (Model != null && Model.ShippingAddress != null)
+                            {
+                                <span class="step-drop">
+                                    @Html.EditorFor(model => model.ShippingAddress.State, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.ShippingAddress.State)
+                                </span>
+                            }
+                        </div>
+                        <div class="form-group col-sm-4 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.Zip)
+                            @if (Model != null && Model.ShippingAddress != null)
+                            {
+                                @Html.EditorFor(model => model.ShippingAddress.Zip, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.ShippingAddress.Zip)
+                            }
+                        </div>
+                        <div class="col-xs-12" ng-app="eCommerce" ng-controller="commShippingCtrl">                            
+                            <div class="alert alert-danger fade in" ng-model="statusText" ng-show="statusText"></div>
+                            <div class="orderBox">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Carrier</th>
+                                                <th>Method</th>
+                                                <th>Information</th>
+                                                <th>Price</th>                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="o in shippingOptions">
+                                                <td>
+                                                    <div class="checkboxArea">
+                                                        <input id="checkbox{{o.Id}}" type="radio" name="ShippingOptionId" value="{{o.Id}}" ng-checked="o.Selected">
+                                                        <label for="checkbox{{o.Id}}"><span></span></label>
+                                                    </div>
+                                                </td>
+                                                <td class="col-xs-1" title="{{o.ShippingCarrierName}}"><i class="{{o.Icon}}" aria-hidden="true"></i></td>
+                                                <td>{{o.Name}}</td>
+                                                <td>{{o.Description}}</td>
+                                                <td>{{o.BasicCost | currency}}</td>                                                
+                                            </tr>                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <script>
+                                var app = angular.module('eCommerce', []);
+                                app.controller('commShippingCtrl', function ($scope, $http) {                                    
+                                    var shippingOptionsJSON = '@Html.Raw(ViewBag.ShippingOptions)';                                    
+                                    if (shippingOptionsJSON != '')
+                                    {
+                                        $scope.shippingOptions = JSON.parse(shippingOptionsJSON);
+                                    }
+                                });
+                            </script>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="well well-lg clearfix">
+                                <ul class="pager">
+                                    <li class="previous"><a href="@Url.Action("Checkout", "ShoppingCarts", new { GoThrough = true })">back</a></li>
+                                    <li class="next"><a href="javascript:document.getElementById('ShippingForm').submit();">Continue</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

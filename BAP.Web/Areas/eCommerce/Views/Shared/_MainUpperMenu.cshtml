@@ -1,0 +1,52 @@
+﻿<!-- BEGIN header-nav -->
+<script type="text/javascript" language="javascript">
+$(document).ready(function () {
+    var filterText = $("#currentFilter.global-control").val();
+    if (filterText != "")
+    {
+        var searchArr = jQuery.parseJSON(filterText);
+        for(i = 0; i < searchArr.length; i++)
+        {
+            $("#" + searchArr[i].field + ".global-control").val(searchArr[i].value);
+        }
+    }
+
+    $('#FullTextSearch').submit(function () {
+        var filter = "";
+        var arr = [];
+        $(".search-control.global-control").each(function (index) {
+            var name = $(this).attr("id");
+            var value = $(this).val();
+            arr[index] = {field: name, value: value};
+        });
+        filter += JSON.stringify(arr);
+        $("#currentFilter.global-control").val(filter);
+    });
+});
+</script>
+
+<div class="header-nav">
+    <div class=" collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav">
+            @Html.MvcSiteMap().Menu(false)                                 
+            <li class="dropdown dropdown-hover">
+                <a href="#" data-toggle="dropdown">
+                    <i class="fa fa-search search-btn"></i>
+                    <span class="arrow top"></span>
+                </a>
+                <div class="dropdown-menu p-15">
+                    <form id="FullTextSearch" name="FullTextSearch" method="post" action="@ViewBag.FullTextSearchAction" >
+                        <div class="input-group">
+                            <input type="text" placeholder="Search" class="form-control bg-silver-lighter search-control global-control" id="fulltext" name="fulltext" />
+                            <input type="hidden" name="currentFilter" id="currentFilter" class="global-control" value="@ViewBag.CurrentFilter">
+                            <span class="input-group-btn">
+                                <button class="btn btn-inverse" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- END header-nav -->

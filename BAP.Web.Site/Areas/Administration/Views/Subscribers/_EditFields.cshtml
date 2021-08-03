@@ -1,0 +1,39 @@
+﻿@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.DAL.Entities.Subscriber
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.PublicId)
+@Html.HiddenFor(model => model.TenantUnit)
+@Html.HiddenFor(model => model.TenantUnitId)
+@Html.HiddenFor(model => model.CreateDate)
+@Html.HiddenFor(model => model.CreatedBy)
+@Html.HiddenFor(model => model.LastModifiedDate)
+@Html.HiddenFor(model => model.LastModifiedBy)
+@Html.HiddenFor(model => model.TimeStamp)
+@Html.HiddenFor(model => model.CreatedByUserName)
+@Html.HiddenFor(model => model.LastModifiedByUserName)
+@Html.HiddenFor(model => model.OwnerGroup)
+@Html.HiddenFor(model => model.OwnerPermissions)
+@Html.HiddenFor(model => model.LastNewsletterIdReceived)
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.Enabled, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-1 col-sm-1">
+        @Html.EditorFor(model => model.Enabled, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.RegisterDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-2 col-sm-2">
+        @Html.BapDateFor(model => model.RegisterDate, new { @class = "form-control" }, StartDate.Today)
+        @Html.ValidationMessageFor(model => model.RegisterDate, "", new { @class = "text-danger" })
+    </div>
+</div>

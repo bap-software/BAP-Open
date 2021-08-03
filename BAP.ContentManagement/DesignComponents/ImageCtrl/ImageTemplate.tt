@@ -1,0 +1,11 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<label for="imageUrl">Url:</label><input type="text" id="imageUrl" value="Type image url" class="form-control"/>
+<label for="altUrl">Alt:</label><input type="text" id="altUrl" value="Alt text" class="form-control"/>
+<label for="imageWidth">Width:</label><input type="number" id="imageWidth" value="500" class="form-control"/>
+<label for="imageHeight">Height:</label><input type="number" id="imageHeight" value="400" class="form-control"/>
+<input type="hidden" id="hdnImageContent" />

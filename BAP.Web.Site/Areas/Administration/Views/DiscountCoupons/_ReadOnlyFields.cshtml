@@ -1,0 +1,86 @@
+﻿@model BAP.eCommerce.DAL.Entities.DiscountCoupon
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+    @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.ShortDescription)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-8 col-sm-8">
+        @Html.Raw(Model.Description)
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.DiscountType, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.DiscountType)
+    </div>
+    @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Enabled)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Amount)
+    </div>
+    @Html.LabelFor(model => model.IsPercent, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.IsPercent)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Code)
+    </div>
+    @Html.LabelFor(model => model.ExtraCodesText, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.ExtraCodesText)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ValidFrom, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.ValidFrom)
+    </div>
+    @Html.LabelFor(model => model.ValidTo, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.ValidTo)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Priority, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.Priority)
+    </div>
+    @Html.LabelFor(model => model.AllowLowerPriority, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.DisplayFor(model => model.AllowLowerPriority)
+    </div>
+</div>
+
+@if (Model.DiscountType == BAP.eCommerce.DAL.Entities.DiscountType.BuyXGetY)
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.BuyXAmount, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-4 col-sm-4">
+            @Html.DisplayFor(model => model.BuyXAmount)
+        </div>
+        @Html.LabelFor(model => model.GetYAmount, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-4 col-sm-4">
+            @Html.DisplayFor(model => model.GetYAmount)
+        </div>
+    </div>
+}

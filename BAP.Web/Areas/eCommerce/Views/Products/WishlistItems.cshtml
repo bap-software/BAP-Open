@@ -1,0 +1,50 @@
+﻿@model BAP.Web.Areas.eCommerce.Models.WishlistModel
+@{    
+    bool quickAddToCart = (bool)ViewBag.QuickAddToCart;    
+}
+
+<div class="cartListInner">
+    @Html.AntiForgeryToken()
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="5%"></th>
+                    <th width="5%"></th>
+                    <th width="30%"></th>
+                    <th width="40%">@Html.DisplayNameFor(model => model.Products.First().Name)</th>
+                    <th width="20%">@Html.DisplayNameFor(model => model.Products.First().Price)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                <tr>
+                    <td class="col-xs-1">
+                        <a href="" class="close" data-dismiss="alert" aria-label="Close" onclick="removeFromWishlist(@item.Id)"><span aria-hidden="true">&times;</span></a>
+                    </td>
+                    <td class="col-xs-1">
+                        @if (quickAddToCart)
+                        {
+                            <a @(item.IsOutOfStock? "disabled" : "") onclick="quickAddToCart(event, @item.Id, 1, '@Guid.NewGuid()', '@Url.Action("QuickAddToCart", "ShoppingCarts")')" class="close"><i class="fa fa-shopping-cart"></i></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("AddToCart", "ShoppingCarts" , new { productId=item.Id, count=1, token=Guid.NewGuid().ToString()})" class="close"><i class="fa fa-shopping-cart"></i></a>
+                        }
+                    </td>
+                    <td class="col-xs-2">
+                        <span class="cartImage"><img src="@item.ImagePath" alt="@item.ShortDescription" style="height:80px;"></span>
+                    </td>
+                    <td class="col-xs-2">
+                        @item.Name
+                    </td>
+                    <td class="col-xs-2">
+                        @Model.Currency.Symbol @item.Price
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

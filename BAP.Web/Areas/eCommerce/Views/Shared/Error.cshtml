@@ -1,0 +1,61 @@
+﻿@using BAP.Resources
+@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = Resources.ErrorText_Error;
+    var errorMessage = Resources.UIText_GeneralErrorText;
+    if (!string.IsNullOrWhiteSpace(ViewBag.errorMessage))
+    {
+        errorMessage = ViewBag.errorMessage;
+    }
+    var lastEventId = -1;
+    if (Session["LAST_EVENT_ID"] != null)
+    {
+        lastEventId = (int)Session["LAST_EVENT_ID"];
+        Session["LAST_EVENT_ID"] = null;
+    }
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>@ViewBag.Title</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">@Resources.UIText_HomePage</a>
+                    </li>
+                    <li class="active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix logIn">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>@ViewBag.Title</h3></div>
+                    <div class="panel-body">
+                        <h4 class="text-danger">@errorMessage</h4>                    
+                        @if (lastEventId > 0)
+                        {
+                            <h5 style="text-align:center;">
+                                <a title="@Resources.UIText_Details" style="text-decoration: none;color:black;" href="@Url.Action("Details", "EventLogs",  new {area = "Administration", id=lastEventId})">@Resources.UIText_ErrorDetails</a>
+                            </h5>
+                        }
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+

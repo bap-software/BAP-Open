@@ -1,0 +1,363 @@
+﻿@using BAP.Resources
+@using BAP.Lookups
+@using BAP.UI.HtmlHelpers
+@model BAP.eCommerce.DAL.Entities.ShoppingCart
+@{
+    ViewBag.Title = "Checkout";    
+}
+
+<style>
+    .show-shipping-address
+    {
+        display: block;
+    }
+
+    .hide-shipping-address
+    {
+        display: none;
+    }
+
+    .field-validation-error
+    {
+        position: absolute;
+    }
+</style>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>billing &amp; Shipping address</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })">@Resources.UIText_HomePage</a>
+                    </li>
+                    <li class="active">Billing &amp; Shipping address</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix stepsWrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="innerWrapper clearfix stepsPage">
+                    <div class="row progress-wizard" style="border-bottom:0;">
+
+                        <div class="col-xs-3 progress-wizard-step complete">
+                            <div class="text-center progress-wizard-stepnum">Billing &amp; Shipping Address</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Checkout", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step disabled">
+                            <div class="text-center progress-wizard-stepnum">Shipping Method</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Shipping", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step disabled">
+                            <div class="text-center progress-wizard-stepnum">Payment Method</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Payment", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+
+                        <div class="col-xs-3 progress-wizard-step disabled">
+                            <div class="text-center progress-wizard-stepnum">Review</div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <a href="@Url.Action("Review", "ShoppingCarts")" class="progress-wizard-dot"></a>
+                        </div>
+                    </div>
+
+                    <form action="@Url.Action("Checkout")" class="row" method="POST" role="form" id="CheckoutForm">
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.LastModifiedBy)
+                        @Html.HiddenFor(model => model.TenantUnit)
+                        @Html.HiddenFor(model => model.TenantUnitId)
+                        @Html.HiddenFor(model => model.OwnerGroup)
+                        @Html.HiddenFor(model => model.OwnerPermissions)
+                        @Html.HiddenFor(model => model.UserId)
+                        @Html.HiddenFor(model => model.CurrencyId)                        
+                        @Html.HiddenFor(model => model.ShippingOptionId)                        
+                        @Html.HiddenFor(model => model.PaymentOptionId)                        
+                        @Html.HiddenFor(model => model.DiscountCouponId)                        
+                        @Html.HiddenFor(model => model.Coupon)                        
+                        @Html.HiddenFor(model => model.CustomData)
+                        @Html.HiddenFor(model => model.Subtotal)
+                        @Html.HiddenFor(model => model.Total)
+                        @Html.HiddenFor(model => model.ShippingCost)
+                        @Html.HiddenFor(model => model.TotalDiscounts)
+                        @Html.HiddenFor(model => model.TaxTotal)
+
+                        @if (Model.BillingAddressId > 0)
+                        {
+                            <span></span>
+                            @Html.HiddenFor(model => model.BillingAddressId)
+                            @Html.HiddenFor(model => model.BillingAddress.Id)
+                            @Html.HiddenFor(model => model.BillingAddress.OwnerGroup)
+                            @Html.HiddenFor(model => model.BillingAddress.OwnerPermissions)
+                            @Html.HiddenFor(model => model.BillingAddress.TenantUnit)
+                            @Html.HiddenFor(model => model.BillingAddress.TenantUnitId)
+                            <span></span>
+                        }
+                        
+                        @if (Model.ShippingAddressId > 0)
+                        {
+                            <span></span>
+                            @Html.HiddenFor(model => model.ShippingAddressId)
+                            @Html.HiddenFor(model => model.ShippingAddress.Id)
+                            @Html.HiddenFor(model => model.ShippingAddress.OwnerGroup)
+                            @Html.HiddenFor(model => model.ShippingAddress.OwnerPermissions)
+                            @Html.HiddenFor(model => model.ShippingAddress.TenantUnit)
+                            @Html.HiddenFor(model => model.ShippingAddress.TenantUnitId)
+                            <span></span>
+                        }                       
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="col-xs-12">
+                            <div class="page-header">
+                                <h4>Billing information</h4>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.FirstName, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.FirstName, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.FirstName)                                                        
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.LastName, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.LastName, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.LastName)
+                        </div>
+
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.ContactEmail, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.ContactEmail, new { htmlAttributes = new { @class = "form-control billing-address", @type="email" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.ContactEmail)
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.CompanyName, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.CompanyName, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.CompanyName)
+                        </div>
+
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.AddressLine1, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.AddressLine1, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.AddressLine1)
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.AddressLine2, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.AddressLine2, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.AddressLine2)
+                        </div>
+
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.City, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.City, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.City)
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.Zip, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.Zip, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.Zip)
+                        </div>
+
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.Country, DisplayOptions.Humanize)
+                            @Html.BapCountryListFor(model => model.BillingAddress.Country, new { @class = "form-control billing-address", onchange = "fillStates('#BillingAddress_Country', '#BillingAddress_State')" })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.Country)
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.State, DisplayOptions.Humanize)
+                            @Html.BapStateListFor(model => model.BillingAddress.State, Model.BillingAddress.Country, new { @class = "form-control", @style="width: 200px" })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.State)
+                        </div>
+
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.PhoneNumber, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.PhoneNumber)
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.PhoneExtension, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.PhoneExtension, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.PhoneExtension)
+                        </div>
+
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.CellNumber, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.CellNumber, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.CellNumber)
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.BillingAddress.FaxNumber, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.BillingAddress.FaxNumber, new { htmlAttributes = new { @class = "form-control billing-address" } })
+                            @Html.ValidationMessageFor(model => model.BillingAddress.FaxNumber)
+                        </div>
+                                                                                               
+                        <div class="col-xs-12">
+                            <div class="page-header">
+                                <h4>Shipping information</h4>
+                            </div>
+                        </div>                       
+                        <div class="col-xs-12 checkboxArea">
+                            <input id="ShippingAsBilling" type="checkbox" name="ShippingAsBilling" @(Model.ShippingAsBilling ? "checked='checked'" : "")>                            
+                            <label for="ShippingAsBilling"><span></span>@Html.DisplayNameFor(model => model.ShippingAsBilling)</label>
+                        </div>
+
+                        <!--Beging of shipping info-->
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.FirstName, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.FirstName)
+                        </div>
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.LastName, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.LastName)
+                        </div>
+
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.ContactEmail, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.ContactEmail, new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.ContactEmail)
+                        </div>
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.CompanyName, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.CompanyName)
+                        </div>
+
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.AddressLine1, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.AddressLine1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.AddressLine1)
+                        </div>
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.AddressLine2, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.AddressLine2)
+                        </div>
+
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.City, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.City, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.City)
+                        </div>
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.Zip, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.Zip, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.Zip)
+                        </div>
+
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.Country, DisplayOptions.Humanize)
+                            @Html.BapCountryListFor(model => model.ShippingAddress.Country, new { @class = "form-control", onchange = "fillStates('#ShippingAddress_Country', '#ShippingAddress_State')" })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.Country)
+                        </div>
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.State, DisplayOptions.Humanize)
+                            @Html.BapStateListFor(model => model.ShippingAddress.State, Model.ShippingAddress.Country, new { @class = "form-control", @style="width: 200px" })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.State)
+                        </div>
+
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.PhoneNumber, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.PhoneNumber)
+                        </div>
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.PhoneExtension, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.PhoneExtension, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.PhoneExtension)
+                        </div>
+
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.CellNumber, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.CellNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.CellNumber)
+                        </div>
+                        <div class="form-group shipping-address hide-shipping-address col-sm-6 col-xs-12">
+                            @Html.LabelFor(model => model.ShippingAddress.FaxNumber, DisplayOptions.Humanize)
+                            @Html.EditorFor(model => model.ShippingAddress.FaxNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress.FaxNumber)
+                        </div>
+                        <!--End of shipping info-->
+
+                        <div class="form-group col-sm-12 col-xs-12">
+                            @Html.LabelFor(model => model.Notes)
+                            @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = "4" })
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="well well-lg clearfix">
+                                <ul class="pager">
+                                    <li class="previous"><a href="@Url.Action("Details", "ShoppingCarts")">back</a></li>
+                                    <li class="next"><a href="javascript:SubmitForm();">Continue</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts
+{
+<script>
+    $(document).ready(function () {
+        ShowHideShippingAddress(@Model.ShippingAsBilling.ToString().ToLower());
+
+        $('#ShippingAsBilling').change(function () {
+            ShowHideShippingAddress(this.checked);
+        });
+    });
+
+    function ShowHideShippingAddress(checked)
+    {
+        if (checked) {
+            $(".shipping-address").removeClass("show-shipping-address");
+            $(".shipping-address").addClass("hide-shipping-address");
+            $('#ShippingAsBilling').val(true);            
+            MapBillingToShippingAddress();
+        } else {
+            $(".shipping-address").removeClass("hide-shipping-address");
+            $(".shipping-address").addClass("show-shipping-address");
+            $('#ShippingAsBilling').val(false);
+        }        
+    }
+
+    function MapBillingToShippingAddress()
+    {
+        $(".billing-address").each(function (index) {
+            var shippingId = $(this).attr("id").replace("BillingAddress", "ShippingAddress");
+            $('#' + shippingId).val($(this).val());
+        });
+    }
+
+    function SubmitForm()
+    {
+        if ($('#ShippingAsBilling').val() == "true")
+        {
+            MapBillingToShippingAddress();
+        }
+        document.getElementById('CheckoutForm').submit();
+    }
+
+</script>    
+}
+
+

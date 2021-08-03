@@ -1,0 +1,164 @@
+﻿@using BAP.Resources
+@model BAP.Web.Areas.Administration.Models.LocalizationEditViewModel
+
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = Resources.UIText_Edit + " " + Resources.EntityLabel_Localization;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <!-- begin page-header -->
+    <h1 class="page-header">
+        <a href="@Url.Action("Index", "Localizations")" class="btn btn-square btn-default" title="@Resources.UIText_Back">
+            <i class="fa fa-reply"></i>
+        </a>
+        <button type="submit" class="btn btn-default btn-default btn-success" title="@Resources.UIText_Save">
+            <i class="fa fa-floppy-o"></i>
+        </button>
+        @ViewBag.Title<small></small>
+    </h1>
+    <!-- end page-header -->
+
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-md-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload">
+                            <i class="fa fa-repeat"></i>
+                        </a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </div>
+                    <h4 class="panel-title">@Resources.EntityLabel_OrganizationService @Resources.UIText_Details</h4>
+                </div>
+                <div class="panel-body panel-form">
+                    <div class="form-horizontal form-bordered" data-parsley-validate="true" name="demo-form" novalidate>
+                        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "control-label"})
+                            </div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                        </div>
+
+                        <div class="form-group localization-edit-items">
+                            @* Use plain FOR loop to correctly store and pass list data tp POST request *@
+                            @for (var i = 0; i < Model.Items.Count; i++)
+                            {
+                                @Html.HiddenFor(m => Model.Items[i].LocalizationId)
+                                @Html.HiddenFor(m => Model.Items[i].CountryCode)
+                                @Html.HiddenFor(m => Model.Items[i].LanguageName)
+                                @Html.HiddenFor(m => Model.Items[i].CultureCode)
+
+                                <div class="col-md-2 control-label localization-edit-items-label">
+                                    <img src="~/flags/4x3/@(Model.Items[i].CountryCode).svg" class="flag-img" alt=""/>
+                                </div>
+                                <div class="col-md-10 localization-edit-items-value">
+                                    @Html.EditorFor(model => Model.Items[i].Value, new {htmlAttributes = new {@class = "form-control"}})
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="@Resources.UIText_Save" class="btn btn-default btn-success"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-md-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </div>
+                    <h4 class="panel-title">@Resources.EntityLabel_OrganizationService @Resources.UIText_MoreDetails</h4>
+                </div>
+                <div style="display: none" class="panel-body panel-form">
+                    <div class="form-horizontal form-bordered" data-parsley-validate="true" name="demo-form" novalidate>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.Object, htmlAttributes: new {@class = "control-label"})
+                            </div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.Object, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.ObjectId, htmlAttributes: new {@class = "control-label"})
+                            </div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.ObjectId, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.ResourceSet, htmlAttributes: new {@class = "control-label"})
+                            </div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.ResourceSet, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                            
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.FileName, htmlAttributes: new {@class = "control-label"})
+                            </div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.FileName, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                        </div>
+
+                        <!-- Read-only system fields -->
+                        <div class="form-group">
+                            <div class="col-md-2">@Html.LabelFor(model => model.CreateDate, htmlAttributes: new {@class = "control-label"})</div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.CreateDate, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                            
+                            <div class="col-md-2">@Html.LabelFor(model => model.CreatedBy, htmlAttributes: new {@class = "control-label"})</div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.CreatedBy, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">@Html.LabelFor(model => model.LastModifiedDate, htmlAttributes: new {@class = "control-label"})</div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.LastModifiedDate, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                            
+                            <div class="col-md-2">@Html.LabelFor(model => model.LastModifiedBy, htmlAttributes: new {@class = "control-label"})</div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(model => model.LastModifiedBy, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                            </div>
+                        </div>
+                        <!-- End of read-only system fields -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

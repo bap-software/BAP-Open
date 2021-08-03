@@ -1,0 +1,71 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.DAL.Entities.Attachment
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+<div id="AttachDocumentModal" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-entity-select">
+        <!-- Modal content-->
+        <!-- Modal content-->
+        @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { id = "createAttachment", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Object)
+            @Html.HiddenFor(model => model.ObjectId)
+            <input type="hidden" id="childObjectId" name="childObjectId" value="" />
+            <input type="hidden" id="IsExternalUpdate" name="IsExternalUpdate" value="true" />
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="ModalTitle">@Resources.UIText_WFAttachDocument</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <!-- begin col-12 -->
+                        <div class="col-md-12">
+                            <div class="panel-body panel-form">
+                                <div class="form-horizontal form-bordered" data-parsley-validate="true" name="attachment-form" novalidate>
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        <div class="col-md-2">
+                                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-2">
+                                            @Html.LabelFor(model => model.AttachmentType, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.BapDropDownFor(model => model.AttachmentType, engine, @"AttachmentType", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-2">
+                                            @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(model => model.File, new { @type = "file", @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                                            @Html.DisplayFor(model => model.PathUrl)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="@Resources.UIText_Add" class="btn btn-default btn-success" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.UIText_Cancel</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,97 @@
+﻿@using BAP.Web.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" class="wide wow-animation smoothscroll scrollTo">
+<head>
+    <!-- Site Title-->    
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <title>@ViewBag.Title | BAP Software</title>
+    <link href="~/Content/Themes/Base/css/style.css" rel="stylesheet" />
+    <link href="~/Content/Themes/Base/css/site.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src='https://www.google.com/recaptcha/api.js'></script> 
+    <!--[if lt IE 10]>
+    <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="images/ie8-panel/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
+    <script src="js/html5shiv.min.js"></script>
+        <![endif]-->
+</head>
+<body>
+    <!-- Page-->
+    <div class="page text-center">
+        <!-- Page Content-->
+        <main class="page-content bg-shark-radio">
+            <div class="one-page">
+                <div class="one-page-header">
+                    <!--Navbar Brand-->
+                    <div class="rd-navbar-brand"><a href="index.html"><img style='margin-top: -5px;margin-left: -15px;' src='/images/bap/logo-light.png' alt='' /></a></div>
+                </div>
+                <!-- Login-->
+                <section>
+                    <div class="shell">
+                        <div class="range">
+                            <div class="section-110 section-cover range range-xs-center range-xs-middle">
+                                <div class="cell-xs-8 cell-sm-6 cell-md-4">
+                                    <div class="panel section-34 section-sm-41 inset-left-20 inset-right-20 inset-sm-left-20 inset-sm-right-20 inset-lg-left-30 inset-lg-right-30 bg-white shadow-drop-md">
+                                        <!-- Icon Box Type 4--><span class="icon icon-circle icon-bordered icon-lg icon-default mdi mdi-account-multiple-outline"></span>
+                                        <div>
+                                            <div class="offset-top-24 text-darker big text-bold">Login to your account</div>
+                                            <p class="text-extra-small text-dark offset-top-4">Enter your credentials below</p>
+                                        </div>
+                                        <!-- RD Mailform-->
+                                        
+                                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                            <div class="form-group">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-addon input-group-addon-inverse"><span class="input-group-icon mdi mdi-account-outline"></span></span>                                                    
+                                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group offset-top-20">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-addon input-group-addon-inverse"><span class="input-group-icon mdi mdi-lock-open-outline"></span></span>
+                                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-icon btn-block btn-primary offset-top-20">Sign In <span class="icon mdi mdi-arrow-right-bold-circle-outline"></span></button>                                            
+                                        }          
+                                        <div class="offset-top-30 text-sm-left text-dark text-extra-small">
+                                            <a href="@Url.Action("ForgotPassword", "Account")" class="text-picton-blue">Forgot your password?</a>
+                                            <div class="offset-top-0">Haven’t an account? <a href="@Url.Action("Register", "Account")" class="text-picton-blue">Sign up here</a>.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="one-page-footer">
+                    <p style="color: rgba(255,255,255, 0.3)" class="small">BAP Software &copy; <span id="copyright-year"></span> | <a href="@Url.Action("PrivacyPolicy", "Home")">Privacy Policy</a></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Java script-->
+    <script src="/Content/Themes/Base/js/core.min.js"></script>
+    <script src="/Content/Themes/Base/js/script.js"></script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+</body>
+</html>

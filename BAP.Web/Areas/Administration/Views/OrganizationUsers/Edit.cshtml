@@ -1,0 +1,85 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.OrganizationUser
+@{
+    var currentTab = ViewBag.currentTab;
+    if(string.IsNullOrEmpty(currentTab))
+    {
+        currentTab = "Settings";
+    }
+    ViewBag.Title = Resources.UIText_Edit + " " + Resources.EntityLabel_OrganizationUser;
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("Index", "OrganizationUsers", new { Area = "Administration" })" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>    
+    @ViewBag.Title<small></small>
+</h1>
+<!-- end page-header -->
+
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12 ui-sortable">
+        <ul class="nav nav-pills">
+            <li class="@((currentTab == "Settings") ? "active" : "")"><a href="#collapseSettings" data-toggle="tab" aria-expanded="true">Primary Settings</a></li>
+            <li class="@((currentTab == "ResetPassword") ? "active" : "")"><a href="#collapseResetPassword" data-toggle="tab" aria-expanded="false">@Resources.UIText_ResetPassword</a></li>
+            <li class="@((currentTab == "Roles") ? "active" : "")"><a href="#collapseRoles" data-toggle="tab" aria-expanded="false">Assigned Roles</a></li>
+            <li class="@((currentTab == "Objects") ? "active" : "")"><a href="#collapseObjects" data-toggle="tab" aria-expanded="false">Object Access</a></li>
+            <li class="@((currentTab == "ExtLogins") ? "active" : "")"><a href="#collapseExtLogins" data-toggle="tab" aria-expanded="false">External Logins</a></li>
+            <li class="@((currentTab == "Attachments") ? "active" : "")"><a href="#collapseAttachments" data-toggle="tab" aria-expanded="false">Attachments</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="tab-content">
+    <div id="collapseSettings" class="tab-pane fade  @((currentTab == "Settings") ? "active in" : "")">
+        <section class="edit-box">
+            @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input type="submit" value="@Resources.UIText_Save" class="btn btn-default btn-success" />
+                        @Html.ActionLink("Login as this User", "Login", "Account", new { @userName = Model.UserName }, new { @class = "btn btn-default" })
+                    </div>
+                </div>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.CreatedBy)
+                @Html.HiddenFor(model => model.LastModifiedBy)
+                @Html.HiddenFor(model => model.TenantUnit)
+                @Html.HiddenFor(model => model.TenantUnitId)
+                @Html.HiddenFor(model => model.OwnerGroup)
+                @Html.HiddenFor(model => model.OwnerPermissions)
+                @Html.HiddenFor(model => model.AspNetUserId)
+                @Html.HiddenFor(model => model.Id)
+
+                @Html.Partial("_EditFields")
+
+
+            </div>
+            }
+        </section>
+    </div>
+
+    <div id="collapseResetPassword" class="tab-pane fade @((currentTab == "ResetPassword") ? "active in" : "")">
+        @Html.Partial("_ResetPassword")
+    </div>
+
+    <div id="collapseRoles" class="tab-pane fade @((currentTab == "Roles") ? "active in" : "")">
+        @Html.Partial("_EditRolesList")
+    </div>
+
+    <div id="collapseObjects" class="tab-pane fade @((currentTab == "Objects") ? "active in" : "")">
+        @Html.Partial("_EditObjectAccess")
+    </div>
+
+    <div id="collapseExtLogins" class="tab-pane fade @((currentTab == "ExtLogins") ? "active in" : "")">
+        @Html.Partial("_EditExternalLogins")
+    </div>
+
+    <div id="collapseAttachments" class="tab-pane fade @((currentTab == "Attachments") ? "active in" : "")">
+        @Html.Partial("_EditAttachments")
+    </div>
+</div>

@@ -1,0 +1,138 @@
+﻿@using BAP.Resources
+@using PagedList.Mvc;
+@model PagedList.IPagedList<BAP.DAL.Entities.Blog>
+
+<div class="container">
+    <!-- begin row -->
+    <div class="row row-space-30">
+        <!-- begin col-9 -->
+        <div class="col-md-9">
+            <!-- begin post-list -->
+            <ul class="post-list">
+                @foreach (var item in Model)
+                {
+                    <li>
+                        <!-- begin post-left-info -->
+                        <div class="post-left-info">
+                            <div class="post-date">
+                                <span class="day">@item.CreateDate.GetValueOrDefault().ToString("dd")</span>
+                                <span class="month">@item.CreateDate.GetValueOrDefault().ToString("MMM").ToUpperInvariant()</span>
+                            </div>
+                        </div>
+                        <!-- end post-left-info -->
+                        <!-- begin post-content -->
+                        <div class="post-content">
+                            <!-- begin post-image -->
+                            <div class="post-image post-image-with-carousel">
+                                <!-- begin carousel -->
+                                <div id="carousel-post" class="carousel slide" data-ride="carousel">
+                                    @{
+                                        var images = item.BlogPosts.Select(bp => bp.MainImageUrl).ToList();
+                                        if (images.Count > 1)
+                                        {
+                                            <!-- begin carousel-indicators -->
+                                            <ol class="carousel-indicators">
+                                                @for (int i = 0; i <= images.Count; i++)
+                                                {
+                                                    <li data-target="#carousel-post" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+                                                }
+                                            </ol>
+                                            <!-- end carousel-indicators -->
+                                        }
+                                    }
+                                    <!-- begin carousel-inner -->
+                                    <div class="carousel-inner">
+                                        @if (Model != null && !string.IsNullOrWhiteSpace(item.MainImageUrl))
+                                        {
+                                            <div class="item active">
+                                                <a href="@Url.Action("Details", new {pid = item.GetPublicId()})"><img src="/file/@item.MainImageUrl" alt="" /></a>
+                                            </div>
+                                        }
+                                        @{
+                                            foreach (var image in images)
+                                            {
+                                                <div class="item">
+                                                    <a href="@Url.Action("Details", new {pid = item.GetPublicId()})"><img src="/file/@image" alt="" /></a>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                    <!-- end carousel-inner -->
+                                    @if (images.Count > 1)
+                                    {
+                                        <!-- begin carousel-control -->
+                                        <a class="left carousel-control" href="#carousel-post" role="button" data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                        </a>
+                                        <a class="right carousel-control" href="#carousel-post" role="button" data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                        </a>
+                                        <!-- end carousel-control -->
+                                    }
+                                </div>
+                                <!-- end carousel -->
+                            </div>
+                            <!-- end post-image -->
+                            <!-- begin post-info -->
+                            <div class="post-info">
+                                <h4 class="post-title">
+                                    <a href="@Url.Action("Details", new {pid=item.GetPublicId()})">@item.ShortDescription</a>
+                                </h4>
+                                <div class="post-by">
+                                    @if (item.BlogAuthorId > 0)
+                                    {
+                                        @Resources.FieldLabel_Blog_PostedBy <a href="@Url.Action("SearchBlogs", new { authorId = item.BlogAuthorId })">@item.BlogAuthor.FullName</a>
+                                        <span class="divider">|</span>
+                                    }
+                                    @{
+                                        var tags = item.Tags != null ? item.Tags.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
+                                        foreach (var tag in tags)
+                                        {
+                                            <a href="#">@tag</a>
+                                        }
+                                        if (tags.Any())
+                                        {
+                                            <span class="divider">|</span>
+                                        }
+                                    }
+                                    @item.BlogComments.Count @Resources.FieldLabel_Property_Comments
+                                </div>
+                                <div class="post-desc">
+                                    @Html.Raw(item.Description)
+                                </div>
+                            </div>
+                            <!-- end post-info -->
+                            <!-- begin read-btn-container -->
+                            <div class="read-btn-container">
+                                <a href="@Url.Action("Details", new {pid=item.GetPublicId()})">@Resources.FieldLabel_Blog_ReadMore <i class="fa fa-angle-double-right"></i></a>
+                            </div>
+                            <!-- end read-btn-container -->
+                        </div>
+                        <!-- end post-content -->
+                    </li>
+                }
+            </ul>
+            <!-- end post-list -->
+
+            <div class="section-container">
+                @if (Model.PageCount > 1)
+                {
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="text-center">
+                                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, pageSize = Model.PageSize }))
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <!-- end col-9 -->
+        <!-- begin col-3 -->
+        <div class="col-md-3">
+            @Html.Partial("_RightPanel")
+        </div>
+        <!-- end col-3 -->
+    </div>
+    <!-- end row -->
+</div>

@@ -1,0 +1,17 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.MenuHelperModel
+@using System.Web.Mvc.Html
+
+@foreach (var node in Model.Nodes) {
+    var isShopMenu = node.Action == "Index" && node.Controller == "eShop";
+    <li class="dropdown @(isShopMenu ? "dropdown-full-width ":"") dropdown-hover ">
+        @Html.DisplayFor(m => node)     
+        @if (isShopMenu)
+        {            
+            Html.RenderAction("ProductsMenu", "Products", new { area = "eCommerce", adminMenus = node.Children });
+        }
+        else if (node.Children.Any())
+        {
+            @Html.DisplayFor(m => node.Children)
+        }
+    </li>
+}

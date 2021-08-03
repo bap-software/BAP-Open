@@ -1,0 +1,129 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.eCommerce.DAL.Entities.DiscountCoupon
+
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+    bool disabledOnEdit = false;
+    if (Model != null && Model.Id > 0)
+    {
+        disabledOnEdit = true;
+    }
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShortDescription, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DiscountType, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @if (disabledOnEdit)
+        {
+            @Html.DisplayFor(model => model.DiscountType)
+            @Html.HiddenFor(model => model.DiscountType)
+        }
+        else
+        {
+            @Html.EnumDropDownListFor(model => model.DiscountType, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DiscountType, "", new { @class = "text-danger" })
+        }
+
+    </div>
+    @Html.LabelFor(model => model.Enabled, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Enabled, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Amount, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0.00", @step = "0.01" } })
+        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.IsPercent, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.IsPercent, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.IsPercent, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Code, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ExtraCodesText, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.ExtraCodesText, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ExtraCodesText, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ValidFrom, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+
+    <div class="col-md-4">
+        @Html.BapDateFor(model => model.ValidFrom, new { @class = "form-control" }, StartDate.Today)
+        @Html.ValidationMessageFor(model => model.ValidFrom, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ValidTo, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+
+    <div class="col-md-4">
+        @Html.BapDateFor(model => model.ValidTo, new { @class = "form-control" }, StartDate.NextMonth)
+        @Html.ValidationMessageFor(model => model.ValidTo, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Priority, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Priority, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0.00", @step = "1" } })
+        @Html.ValidationMessageFor(model => model.Priority, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.AllowLowerPriority, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.AllowLowerPriority, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AllowLowerPriority, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+
+    <div class="col-md-10">
+        @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "ckeditor" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@if (Model != null && Model.DiscountType == BAP.eCommerce.DAL.Entities.DiscountType.BuyXGetY)
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.BuyXAmount, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.BuyXAmount, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0.00", @step = "1" } })
+        </div>
+        @Html.LabelFor(model => model.GetYAmount, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+        <div class="col-md-4">
+            @Html.EditorFor(model => model.GetYAmount, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+}

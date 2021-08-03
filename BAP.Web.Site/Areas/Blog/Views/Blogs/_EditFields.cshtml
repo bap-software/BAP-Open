@@ -1,0 +1,67 @@
+﻿@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.DAL.Entities.Blog
+
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.MainImageUrl, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.MainImageUrl, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.MainImageUrl, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.BlogAuthorId, "BlogAuthorId", htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.DropDownList("BlogAuthorId", null, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.BlogAuthorId, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+    </div>
+</div>

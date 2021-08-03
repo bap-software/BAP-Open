@@ -1,0 +1,134 @@
+﻿@using BAP.Web.Models
+@model ApplicationUser
+@{
+    ViewBag.Title = "Complete registration";
+    ViewBag.TitleIcon = "mdi-account-multiple-outline";
+
+}
+
+<section>
+    <div class="shell section-98 section-sm-110">
+        <h1>Complete your registration</h1>
+        <hr class="divider bg-mantis">
+        <div class="range range-xs-center">
+            <div class="cell-sm-8 cell-md-12">
+                <div class="range range-xs-center">
+                    <div class="cell-md-8">
+                        <!-- RD Mailform-->
+                        @using (Html.BeginForm("CompleteRegistration", "Account", null, FormMethod.Post, new { @class = "text-left", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary()
+
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.EmailConfirmed)
+                            @Html.HiddenFor(model => model.PasswordHash)
+                            @Html.HiddenFor(model => model.SecurityStamp)
+                            @Html.HiddenFor(model => model.PhoneNumberConfirmed)
+                            @Html.HiddenFor(model => model.TwoFactorEnabled)
+                            @Html.HiddenFor(model => model.LockoutEndDateUtc)
+                            @Html.HiddenFor(model => model.LockoutEnabled)
+                            @Html.HiddenFor(model => model.AccessFailedCount)
+                            @Html.HiddenFor(model => model.UserName)
+                            @Html.HiddenFor(model => model.MiddleName)                            
+                            @Html.HiddenFor(model => model.SubscriptionType)
+
+                            <div class="range">
+                                <div class="cell-md-6">
+                                    <div class="form-group">                                        
+                                        @Html.LabelFor(m => m.FirstName, new { @class = "form-label form-label-outside" })
+                                        <input id="FirstName" value="@Model.FirstName" type="text" name="FirstName" data-constraints="@@Required" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="cell-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.LastName, new { @class = "form-label form-label-outside" })
+                                        <input id="LastName" value="@Model.LastName" type="text" name="LastName" data-constraints="@@Required" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="cell-md-6 offset-md-top-20">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Email, new { @class = "form-label form-label-outside" })
+                                        <input id="Email" value="@Model.Email" type="email" name="Email" data-constraints="@@Required @@Email" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="cell-md-6 offset-md-top-20">
+                                    <div class="range">
+                                        <div class="cell-sm-6">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.PhoneNumber, new { @class = "form-label form-label-outside" })
+                                                <input id="PhoneNumber" value="@Model.PhoneNumber" type="text" name="PhoneNumber" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-6">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.CellNumber, new { @class = "form-label form-label-outside" })
+                                                <input id="CellNumber" value="@Model.CellNumber" type="text" name="CellNumber" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="cell-md-6 offset-md-top-20">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.AddressLine1, new { @class = "form-label form-label-outside" })
+                                        <input id="AddressLine1" value="@Model.AddressLine1" type="text" name="AddressLine1" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="cell-md-6 offset-md-top-20">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.AddressLine2, new { @class = "form-label form-label-outside" })
+                                        <input id="AddressLine2" value="@Model.AddressLine2" type="text" name="AddressLine2" class="form-control">
+                                    </div>
+                                </div>
+                                
+                                <div class="cell-md-6 offset-md-top-20">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.City, new { @class = "form-label form-label-outside rd-input-label" })
+                                        <input id="City" value="@Model.City" type="text" name="City" data-constraints="@@Required" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="cell-md-6 offset-md-top-20">
+                                    <div class="range">
+                                        <div class="cell-sm-6">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.County, new { @class = "form-label form-label-outside" })
+                                                <input id="County" value="@Model.County" type="text" name="County" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-6">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Zip, new { @class = "form-label form-label-outside" })
+                                                <input id="Zip" value="@Model.Zip" type="text" name="Zip" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="cell-md-6 offset-md-top-20">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.State, new { @class = "form-label form-label-outside" })
+                                        <input id="State" value="@Model.State" type="text" name="State" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="cell-md-6 offset-md-top-20">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Country, new { @class = "form-label form-label-outside" })
+                                        <input id="Country" value="@Model.Country" type="text" name="Country" data-constraints="@@Required" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="cell-lg-12 offset-top-30 offset-md-top-20">                                    
+                                    <div class="range range-xs-center range-lg-left text-center text-lg-left offset-top-30">
+                                        <div class="cell-xs-5 cell-md-4 cell-lg-3">
+                                            <button type="submit" class="btn btn-block btn-primary" >Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

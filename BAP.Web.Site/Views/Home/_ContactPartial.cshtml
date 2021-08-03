@@ -1,0 +1,165 @@
+﻿@using BAP.Common;
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@model BAP.Web.Models.HomeData
+@{
+    IConfigHelper config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = authContext.GetCurrentOrganization(config);
+
+    var contactEmail = "info@bap-software.com";
+    var contactPhone = "+353 87 785 6746";
+    var callToPhoneNumber = "353877856746";
+    if (currOrg != null)
+    {
+        contactEmail = currOrg.BapDefaultContactEmail;
+        contactPhone = currOrg.PhoneNumber + " " + currOrg.PhoneExtension;
+        callToPhoneNumber = contactPhone.Replace(" ", "").Replace("+", "00").Replace("(", "").Replace(")", "").Replace("-", "");
+    }
+}
+
+<section class="section-98 section-sm-50 text-lg-left">
+    <div class="shell">
+        <div class="range range-xs-center range-xs-center">
+            <div class="cell-lg-4">
+                <h3 class="text-uppercase text-bold">How to Find us</h3>
+                <hr class="divider hr-lg-left-0 bg-mantis">
+                <p>If you have any questions, just fill in the contact form, and we will answer you shortly.</p>
+                <address class="contact-info offset-top-50">
+                    <p class="h6 text-uppercase text-bold text-picton-blue letter-space-none offset-top-none">Our contacts</p>
+                    @*<p>31 Ashgrove Glencairin Dooradoyle, Limerick, Ireland.</p>*@
+                    <dl class="offset-top-0">
+                        <dt>Telephone:</dt>
+                        <dd><a href="callto:@callToPhoneNumber">@contactPhone</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>E-mail:</dt>
+                        <dd><a href="mailto:@contactEmail">@contactEmail</a></dd>
+                    </dl>
+                </address>
+
+            </div>
+            <div class="cell-sm-8 offset-top-66 offset-lg-top-0">
+                <h3 class="text-uppercase text-bold">Get in touch</h3>
+                <hr class="divider hr-lg-left-0 bg-mantis">
+                <!-- RD Mailform-->
+                <div class="alert-classic alert-classic-success alert-classic-lg hidden" id="SuccessAlert">
+                    <h4>
+                        <span class="text-middle icon icon-xxs mdi mdi-check"></span><span class="text-middle" id="SuccessText">Well done! Message has been sent!</span>
+                    </h4>
+                </div>
+                <div class="alert-classic alert-classic-warning alert-classic-lg hidden" id="ErrorAlert">
+                    <h4>
+                        <span class="text-middle icon icon-xxs mdi mdi-alert-outline"></span><span class="text-middle" id="ErrorText">Oh snap! Could not sent an email - please try again later.</span>
+                    </h4>
+                </div>
+                <form data-form-output="form-output-global" data-form-type="contact" class="rd-mailform text-left" novalidate="novalidate" id="form">
+                    <div class="range">
+                        <div class="cell-lg-6">
+                            <div class="form-group">
+                                <label for="contact-us-name" class="form-label form-label-outside rd-input-label">Name:</label>
+                                <input id="contact-us-name" type="text" name="name" class="form-control form-control-has-validation form-control-last-child" placeholder="Your name"><span class="form-validation"></span>
+                            </div>
+                        </div>
+                        <div class="cell-lg-6 offset-top-20 offset-lg-top-0">
+                            <div class="form-group">
+                                <label for="contact-us-email" class="form-label form-label-outside rd-input-label">E-Mail:</label>
+                                <input id="contact-us-email" type="email" name="email" class="form-control form-control-has-validation form-control-last-child" placeholder="Your email"><span class="form-validation"></span>
+                            </div>
+                        </div>
+                        <div class="cell-lg-12 offset-top-20">
+                            <div class="form-group">
+                                <label for="contact-us-message" class="form-label form-label-outside rd-input-label">Message:</label>
+                                <textarea id="contact-us-message" name="message" class="form-control form-control-has-validation form-control-last-child" placeholder="Put your message here">@Model.ContactSubject</textarea><span class="form-validation"></span>
+                                <div class="g-recaptcha" data-sitekey="@currOrg.reCaptchaSiteKey"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-sm text-center text-lg-left offset-top-30">
+                        <button type="button" class="btn btn-primary" id="send">Send</button>
+                        <button type="reset" class="btn btn-default" id="btnReset">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- RD Google Map-->
+<!-- RD Google Map-->
+<div class="rd-google-map" style="display:none;">
+    <div id="rd-google-map" data-zoom="17" data-x="-73.9874068" data-y="40.643180" data-styles='[{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":60}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","stylers":[{"visibility":"on"},{"lightness":30}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ef8c25"},{"lightness":40}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#b6c54c"},{"lightness":40},{"saturation":-40}]},{}]' class="rd-google-map__model"></div>
+    <ul class="rd-google-map__locations">
+        <li data-x="-8.6498817" data-y="52.6223879">
+            <p>31 Ashgrove Glencairin Dooradoyle, Limerick, Ireland.</p>
+        </li>
+    </ul>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#contact-us-name").focus(function () {
+            HideAlerts();
+        });
+
+        $("#contact-us-email").focus(function () {
+            HideAlerts();
+        });
+
+        $("#contact-us-message").focus(function () {
+            HideAlerts();
+        });
+
+        $("#send").click(function () {
+            HideAlerts();
+            $("body").css("cursor", "progress");
+
+            var email = {
+                RecaptchaResponse: grecaptcha.getResponse(),
+                FromName: $("#contact-us-name").val().trim(),
+                FromEmail: $("#contact-us-email").val().trim(),
+                FromMsg: $("#contact-us-message").val().trim()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/SendEmail",
+                data: JSON.stringify(email),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $("body").css("cursor", "default");
+                    if (data.success) {
+                        ShowSuccess("Message has been sent");
+                        document.getElementById("form").reset();
+                        grecaptcha.reset();
+                    }
+                    else
+                        ShowError("Error. " + data.error);
+                },
+                error: function () {
+                    $("body").css("cursor", "default");
+                    ShowError("Sorry, could not send email.");
+                }
+            });
+        });
+    });
+
+    function ShowSuccess(msg) {
+        $("#SuccessAlert").removeClass("hidden");
+        $("#SuccessText").text(msg);
+    }
+    function ShowError(msg) {
+        $("#ErrorAlert").removeClass("hidden");
+        $("#ErrorText").text(msg);
+    }
+    function HideAlerts() {
+        if (!$("#SuccessAlert").hasClass("hidden")) {
+            $("#SuccessAlert").addClass("hidden");
+        }
+        if (!$("#ErrorAlert").hasClass("hidden")) {
+            $("#ErrorAlert").addClass("hidden");
+        }
+    }
+</script>

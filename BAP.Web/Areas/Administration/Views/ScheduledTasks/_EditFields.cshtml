@@ -1,0 +1,70 @@
+﻿@using BAP.BL.Tasks
+@using BAP.UI.HtmlHelpers
+@model BAP.DAL.Entities.ScheduledTask
+
+@{ 
+    var customDataJsonExample = (string)ViewBag.CustomDataJsonExample;
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter name" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShortName, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter name" } })
+        @Html.ValidationMessageFor(model => model.ShortName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-8 col-sm-8">
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter description" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Recurring, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.CheckBoxFor(model => model.Recurring, new { @class = "form-control" } )
+        @Html.ValidationMessageFor(model => model.Recurring, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.Interval, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.Interval, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter interval" } })
+        @Html.ValidationMessageFor(model => model.Interval, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.JobAssembly, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.BapInterfaceAssembliesDropDownFor(model => model.JobAssembly, typeof(IBAPScheduledTask), new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.JobAssembly, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.JobClass, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.BapInterfaceClassesDropDownFor(model => model.JobClass, typeof(IBAPScheduledTask), new { @class = "form-control" }, "JobAssembly")        
+        @Html.ValidationMessageFor(model => model.JobClass, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@if(Model != null && Model.Id > 0)
+{
+<div class="form-group">
+    @Html.LabelFor(model => model.JobData, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.JobData, new { htmlAttributes = new { @class = "form-control", @placeholder = customDataJsonExample } })
+        @Html.ValidationMessageFor(model => model.JobData, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.Enabled, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.CheckBoxFor(model => model.Enabled, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+    </div>
+</div>
+}

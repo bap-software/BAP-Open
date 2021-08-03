@@ -1,0 +1,22 @@
+﻿@{ 
+    var message = TempData["NotificationMessage"];
+    var title = TempData["NotificationTitle"];    
+}
+
+<script language="JavaScript" type="text/javascript">
+    $(document).ready(function () {
+        var message = '@message';
+        var title = '@title';
+
+        if(message != '')
+        {
+            if (title != '')
+            {
+                alert(message, title);
+            }
+            else {
+                alert(message);
+            }            
+        }
+    });
+</script>

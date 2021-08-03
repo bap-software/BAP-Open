@@ -1,0 +1,275 @@
+﻿@using BAP.Common
+@using BAP.eCommerce.DAL.Entities
+@model BAP.eCommerce.DAL.Entities.Product
+
+<div class="form-group">
+    <div class="col-md-2 col-sm-6">
+        <p title="Public identifier">@(((ISEOFriendly<Product>)Model).GetPublicId())</p>
+        <img src="@Model.ImagePath" class="img-responsive" />
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    @Html.LabelFor(model => model.SKU, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.SKU)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ProductCategory, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.ProductCategory.Name)
+    </div>
+
+    @Html.LabelFor(model => model.Supplier, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Supplier.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ProductType, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.ProductType)
+    </div>
+    @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.ShortDescription)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.SourcePrice, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.SourcePrice)
+    </div>
+    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.Price)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ListPrice, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.ListPrice)
+    </div>
+    @Html.LabelFor(model => model.MsrpPrice, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.MsrpPrice)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MinPrice, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.MinPrice)
+    </div>
+    @Html.LabelFor(model => model.MaxPrice, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.Currency.Symbol@Html.DisplayFor(model => model.MaxPrice)
+    </div>
+</div>
+
+<div class="form-group">
+
+    @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Enabled)
+    </div>
+    @Html.LabelFor(model => model.IsFeatured, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.IsFeatured)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PublishFrom, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.PublishFrom.ToShortDateString()
+    </div>
+
+    @Html.LabelFor(model => model.PublishTo, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.PublishTo.ToShortDateString()
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.InStoreFrom, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.InStoreFrom.ToShortDateString()
+    </div>
+
+    @Html.LabelFor(model => model.ImagePath, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.ImagePath)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PublicStatus, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.PublicStatus)
+    </div>
+
+    @Html.LabelFor(model => model.InternalStatus, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.InternalStatus)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Width, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Width) @Model.SizeMeasure
+    </div>
+
+    @Html.LabelFor(model => model.Depth, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Depth) @Model.SizeMeasure
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Height, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Height) @Model.SizeMeasure
+    </div>
+
+    @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Weight) @Model.WeightMeasure
+    </div>
+
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.AvailableItems, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.AvailableItems)
+    </div>
+
+    @Html.LabelFor(model => model.NeedsShipping, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.NeedsShipping)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.IsOnline, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-1 col-sm-1">
+        @Html.DisplayFor(model => model.IsOnline)
+    </div>
+    @Html.LabelFor(model => model.IsDownloadable, htmlAttributes: new { @class = "control-label col-md-1 col-sm-1" })
+    <div class="col-md-1 col-sm-1">
+        @Html.DisplayFor(model => model.IsDownloadable)
+    </div>
+    @Html.LabelFor(model => model.MaxDownloads, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.MaxDownloads)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BaseOnlineUrl, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.DisplayFor(model => model.BaseOnlineUrl)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ReorderAt, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Model.ReorderAt.ToShortDateString()
+    </div>
+
+    @Html.LabelFor(model => model.TrackInventory, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.TrackInventory)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.AllowToRenew, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.AllowToRenew)
+    </div>
+
+    @Html.LabelFor(model => model.IsTrial, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.IsTrial)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Discounts, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @if (Model.Discounts != null && Model.Discounts.Any())
+        {
+            var firstItem = true;
+            foreach (var coupon in Model.Discounts)
+            {
+                if (!firstItem)
+                {
+                    <span>, </span>
+                }
+                @Html.DisplayFor(item => coupon.Name)
+                firstItem = false;
+            }
+        }
+    </div>
+
+    @Html.LabelFor(model => model.CustomData, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.CustomData)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Manufacturer, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Manufacturer.Name)
+    </div>
+    @Html.LabelFor(model => model.Supplier, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.Supplier.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10 col-sm-10">
+        @Html.Raw(Model.Description)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CreatedByUserName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.CreatedByUserName)
+    </div>
+
+    @Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.CreateDate)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LastModifiedByUserName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.LastModifiedByUserName)
+    </div>
+
+    @Html.LabelFor(model => model.LastModifiedDate, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.DisplayFor(model => model.LastModifiedDate)
+    </div>
+</div>
+

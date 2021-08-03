@@ -1,0 +1,54 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<script>
+window.CommunicationHandler = {};
+function parseQueryString(str) {
+	var vars = [];
+	var arr = str.split('&');
+	var pair;
+	for (var i = 0; i < arr.length; i++) {
+		pair = arr[i].split('=');
+		vars[pair[0]] = unescape(pair[1]);
+	}
+	return vars;
+}
+CommunicationHandler.onReceiveCommunication = function (argument) {
+	params = parseQueryString(argument.qstr);	
+	parentFrame = argument.parent.split('/')[4];
+	console.log(params);
+	console.log(parentFrame);		
+	$frame = $("#load_payment");
+	
+	switch(params['action']){
+		case "resizeWindow" 	: 	if( parseInt(params['height'])<1000) params['height']=1000;									
+									$frame.outerHeight(parseInt(params['height']));
+									break;		
+		case "cancel" 			: 	window.location = "<#= Data.CancelUrl #>";									
+						 			break;
+		case "transactResponse"	: 	var transResponse = JSON.parse(params['response']);
+									var callbackUrl = "<#= Data.ReturnUrl #>?orderid=<#= Data.OrderId #>";									
+									if(typeof transResponse.transId !== "undefined" )
+									{
+										callbackUrl += '&refid=' + transResponse.transId;
+									}
+									window.location = callbackUrl;
+									break;									
+	}
+}
+
+$(document).ready(function () {
+    $("#send_hptoken").submit();
+});
+</script>
+<div  id="iframe_holder" class="center-block <#= Data.ContainerCss #>" style="width:90%;max-width:1000px;">
+	<iframe id="load_payment" class="embed-responsive-item" name="load_payment" width="100%" height="650px" frameborder="0">
+	</iframe>
+			
+	<form id="send_hptoken" action="<#= Data.ANetFormUrl #>" method="post" target="load_payment" >
+		<input type="hidden" name="token" value="<#= Data.SessionToken #>" />
+	</form>
+</div>

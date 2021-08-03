@@ -1,0 +1,43 @@
+@using BAP.UI.HtmlHelpers
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title | @BAP.Resources.Resources.UIText_ApplicationTitle</title>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    @Html.Meta()
+    <link href="/content/assets/minimalist-blocks/content.css" rel="stylesheet" type="text/css" />
+    <link href="/content/contentbuilder/contentbuilder.css" rel="stylesheet" type="text/css" />
+    <style>
+        .container {
+            margin: 150px auto;
+            max-width: 800px;
+            width: 100%;
+            padding: 0 35px;
+            box-sizing: border-box;
+        }
+    </style>
+    <script src="/Content/themes/base/assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+    @RenderBody()
+
+    <script src="/content/contentbuilder/lang/en.js" type="text/javascript"></script>
+    <script src="/content/contentbuilder/contentbuilder.min.js" type="text/javascript"></script>
+    <script src="/content/assets/minimalist-blocks/content.js" type="text/javascript"></script> <!-- Snippets file -->
+    @if (IsSectionDefined("scripts"))
+    {
+        @RenderSection("scripts", required: false)
+    }
+</body>
+</html>

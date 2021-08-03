@@ -1,0 +1,136 @@
+﻿@using BAP.UI.HtmlHelpers
+@using BAP.eCommerce.Resources
+@using BAP.eCommerce.BL.DataContracts
+@model BAP.eCommerce.DAL.Entities.ShoppingCart
+@{
+    ViewBag.Title = ResObject.FieldLabel_ShoppingCart_ShippingPayment;
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+    var shippingOptions = (IEnumerable<ShippingOptionDC>)ViewBag.ShippingOptions;
+    var paymentOptions = (IEnumerable<PaymentOtionDC>)ViewBag.PaymentOptions;
+    var currencySymbol = (string)ViewBag.CurrencySymbol;
+    var needsShipping = Model.ShoppingCartProducts.Any(p => p.Product.NeedsShipping);
+    var needsPayment = Model.ShoppingCartProducts.Any(p => p.Product.Price > 0);
+}
+
+<!-- BEGIN #checkout-payment -->
+<div class="section-container" id="checkout-payment">
+    <!-- BEGIN container -->
+    <div class="container">
+        <!-- BEGIN checkout -->
+        <div class="checkout">
+            <form action="@Url.Action("ShippingAndPayment")" method="POST" name="form_payment" class="form-horizontal">
+                <!-- BEGIN checkout-header -->
+                @Html.Partial("_CheckoutHeader", 3)
+                <!-- END checkout-header -->
+                <!-- BEGIN checkout-body -->
+                <div class="checkout-body">
+
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.Id)
+                    
+                    @if (needsShipping)
+                    {
+                        <h4 class="checkout-title">@ResObject.FieldLabel_ShoppingCart_ChooseDeliveryMethod</h4>
+                        <hr/>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                @Html.LabelFor(model => model.ShippingAddress.Country)
+                                @if (Model != null && Model.ShippingAddress != null)
+                                {
+                                    <span class="step-drop">
+                                        @Html.BapCountryFor(model => model.ShippingAddress.Country, new {@class = "form-control", @readonly = "readonly"})
+                                    </span>
+                                }
+                            </div>
+                            <div class="col-sm-4 col-xs-12">
+                                @Html.LabelFor(model => model.ShippingAddress.State)
+                                @if (Model != null && Model.ShippingAddress != null)
+                                {
+                                    <span class="step-drop">
+                                        @Html.EditorFor(model => model.ShippingAddress.State, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                                        @Html.ValidationMessageFor(model => model.ShippingAddress.State)
+                                    </span>
+                                }
+                            </div>
+                            <div class="col-sm-4 col-xs-12">
+                                @Html.LabelFor(model => model.ShippingAddress.Zip)
+                                @if (Model != null && Model.ShippingAddress != null)
+                                {
+                                    @Html.EditorFor(model => model.ShippingAddress.Zip, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly"}})
+                                    @Html.ValidationMessageFor(model => model.ShippingAddress.Zip)
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="orderBox">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>@ResObject.FieldLabel_ShippingOptions_Carrier</th>
+                                                <th>@ResObject.FieldLabel_ShippingOptions_Method</th>
+                                                <th>@ResObject.FieldLabel_ShippingOptions_Information</th>
+                                                <th>@ResObject.FieldLabel_ShippingOptions_Price</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach (var shippingOption in shippingOptions)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="checkboxArea">
+                                                            <input id="checkbox(@shippingOption.Id)" type="radio" name="ShippingOptionId" value="@shippingOption.Id" @(shippingOption.Selected ? "checked" : "")>
+                                                            <label for="checkbox(@shippingOption.Id)"><span></span></label>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-xs-1" title="@shippingOption.ShippingCarrierName"><i class="@shippingOption.Icon" aria-hidden="true"></i></td>
+                                                    <td>@shippingOption.Name</td>
+                                                    <td>@shippingOption.Description</td>
+                                                    <td>@currencySymbol@shippingOption.BasicCost</td>
+                                                </tr>
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
+                    @if (needsPayment)
+                    {
+                        <h4 class="checkout-title">@ResObject.FieldLabel_ShoppingCart_ChoosePaymentMethod</h4>
+                        <hr/>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-xs-12">
+                                <label for="">@ResObject.FieldLabel_ShoppingCart_PaymentBy</label>
+                                <span class="step-drop">
+                                    <select name="PaymentOptionId" id="PaymentOptionId" class="form-control">
+                                        @foreach (var paymentOption in paymentOptions)
+                                        {
+                                            <option value="@paymentOption.Id" title="@paymentOption.ShortDescription" @(paymentOption.Selected ? "checked" : "")>@paymentOption.Name @paymentOption.CustomerPaymentDescription</option>
+                                        }
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- END checkout-body -->
+                <!-- BEGIN checkout-footer -->
+                <div class="checkout-footer">
+                    <a href="@Url.Action("Checkout", "ShoppingCarts", new { GoThrough = true })" class="btn btn-white btn-lg pull-left">@ResObject.FieldLabel_ShoppingCart_Back</a>
+                    <button type="submit" class="btn btn-inverse btn-lg p-l-30 p-r-30 m-l-10">@ResObject.FieldLabel_ShoppingCart_Continue</button>
+                </div>
+                <!-- END checkout-footer -->
+            </form>
+        </div>
+        <!-- END checkout -->
+
+    </div>
+    <!-- END container -->
+</div>
+<!-- END #checkout-payment -->

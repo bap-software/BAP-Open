@@ -1,0 +1,61 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.BlogPost
+
+@{
+    ViewBag.Title = Resources.UIText_Edit;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <section class="edit-box">
+    <div class="form-horizontal">        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+	    @Html.HiddenFor(model => model.CreatedBy)
+        @Html.HiddenFor(model => model.LastModifiedBy)
+        @Html.HiddenFor(model => model.TenantUnit)
+        @Html.HiddenFor(model => model.TenantUnitId)
+	    @Html.HiddenFor(model => model.OwnerGroup)
+        @Html.HiddenFor(model => model.OwnerPermissions)
+	    @Html.HiddenFor(model => model.Id)
+	    @Html.Partial("_EditFields")              
+
+		<!-- Read-only system fields -->
+		<div class="form-group">
+                <div class="col-md-2">@Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "control-label" })</div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">@Html.LabelFor(model => model.CreatedByUserName, htmlAttributes: new { @class = "control-label" })</div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CreatedByUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">@Html.LabelFor(model => model.LastModifiedDate, htmlAttributes: new { @class = "control-label" })</div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastModifiedDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+			
+            <div class="form-group">
+                <div class="col-md-2">@Html.LabelFor(model => model.LastModifiedByUserName, htmlAttributes: new { @class = "control-label" })</div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastModifiedByUserName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+			<!-- End of read-only system fields -->
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Resources.UIText_Save" class="btn btn-default btn-primary" />
+            </div>
+        </div>
+    </div>
+	</section>
+}

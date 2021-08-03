@@ -1,0 +1,48 @@
+{
+	"Name":"My Category 1", 
+	"ShortDescription": "My Category 1",
+	"Description": "Laptops, Desktops, Servers and other similar devices",
+	"Order": 1,
+	"CultureCode": "en-US",
+	"ChildCategories":
+	[
+		{
+			"Name":"My Subcategory 1", 
+			"ShortDescription": "My Subcategory 1",
+			"Description": "Personal & business laptops",
+			"Order": 1,
+			"CultureCode": "en-US",
+			"ChildCategories":
+			[
+			 {
+				"Name":"My SubSubcategory 1", 
+				"ShortDescription": "My SubSubcategory 1",
+				"Description": "Laptops for general purpose home usage.",
+				"Order": 1,
+				"CultureCode": "en-US"
+			 },
+			 {
+				"Name":"My SubSubcategory 2", 
+				"ShortDescription": "My SubSubcategory 2",
+				"Description": "Gaming laptops",
+				"Order": 2,
+				"CultureCode": "en-US"
+			 }
+			]
+		},
+		{
+			"Name":"My Subcategory 2", 
+			"ShortDescription": "My Subcategory 2",
+			"Description": "Veriaty of different desktops for all type of usages: home, small & medium business, enterprise and so on.",
+			"Order": 2,
+			"CultureCode": "en-US"
+		},
+		{
+			"Name":"My Subcategory 3", 
+			"ShortDescription": "My Subcategory 3",
+			"Description": "Veriaty of different servers for all type of business: small, medium and enterprise",
+			"Order": 3,
+			"CultureCode": "en-US"
+		}
+	]	
+}

@@ -1,0 +1,413 @@
+@using BAP.Common
+@using BAP.Resources
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@model BAP.Web.Models.HomeData
+@{
+    ViewBag.Title = Resources.UIText_HomePage;
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = authContext.GetCurrentOrganization(config);
+
+    var contactEmail = Resources.UIText_ContactEmail;
+    var contactPhone = Resources.UIText_ContactPhone;
+
+    if (currOrg != null)
+    {
+        if (!string.IsNullOrEmpty(currOrg.ContactEmail))
+        {
+            contactEmail = currOrg.ContactEmail;
+        }
+
+        if (!string.IsNullOrEmpty(currOrg.PhoneNumber))
+        {
+            contactPhone = currOrg.PhoneNumber + " " + currOrg.PhoneExtension;
+        }
+    }
+}
+
+<!-- begin #home -->
+<div id="home" class="content has-bg home">
+    <!-- begin content-bg -->
+    <div class="content-bg">
+        <img src="~/Content/themes/base/assets/img/bg/bg-home.jpg" alt="Home" />
+    </div>
+    <!-- end content-bg -->
+    <!-- begin container -->
+    <div class="container home-content">
+        <h1>Welcome to @currOrg.Name</h1>
+        <h3>@currOrg.Description</h3>
+        <p>
+            We have created a multi-purpose business process automation platform that takes care of automating almost any kind of business.<br />
+        </p>
+        <a href="http://bap-software.com/#AboutUs" class="btn btn-theme" target="_blank">Explore More</a> <a href="http://bap-software.com/Home/Pricing" class="btn btn-outline" target="_blank">Purchase Now</a><br />
+        <br />
+        or <a href="http://bap-software.com/#SubscribeToNewletter" target="_blank">subscribe</a> newsletter
+    </div>
+    <!-- end container -->
+</div>
+<!-- end #home -->
+<!-- begin #about -->
+<div id="about" class="content" data-scrollview="true">
+    <!-- begin container -->
+    <div class="container" data-animation="true" data-animation-type="fadeInDown">
+        <h2 class="content-title">About Us</h2>
+        <p class="content-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consectetur eros dolor,<br />
+            sed bibendum turpis luctus eget
+        </p>
+        <!-- begin row -->
+        <div class="row">
+            <!-- begin col-4 -->
+            <div class="col-md-4 col-sm-6">
+                <!-- begin about -->
+                <div class="about">
+                    <h3>Our Story</h3>
+                    <p>
+                        "BAP Software" is software development company specialized on business automation. We offer our product called "BAP" (Business Automation Platform).
+                        BAP is a business process management software consists of application building blocks.
+                        Using those blocks gives a way to quickly build any kind of business automation software.
+                    </p>
+                    <p>
+                        We have experience in automation of telecom, transport, medicine, real estate and finaces.
+                        Here we are glad to offer several ready to use applications:
+                        <ul>
+                            <li>BAP CMS (iGoSite)</li>
+                            <li>BAP Blog (iGoBlog)</li>
+                            <li>BAP eCommerce (iGoShop)</li>
+                        </ul>
+                    </p>
+                </div>
+                <!-- end about -->
+            </div>
+            <!-- end col-4 -->
+            <!-- begin col-4 -->
+            <div class="col-md-4 col-sm-6">
+                <h3>Our Philosophy</h3>
+                <!-- begin about-author -->
+                <div class="about-author">
+                    <div class="quote bg-silver">
+                        <i class="fa fa-quote-left"></i>
+                        <h3>We bring high-end software solutions,<br /><span>to make our customers life easier</span></h3>
+                        <i class="fa fa-quote-right"></i>
+                    </div>
+                    <div class="author">
+                        <div class="image">
+                            <img src="~/Content/themes/base/assets/img/user/user-1.jpg" alt="Sean Ngu" />
+                        </div>
+                        <div class="info">
+                            Victor Mamray
+                            <small>Founder</small>
+                        </div>
+                    </div>
+                </div>
+                <!-- end about-author -->
+            </div>
+            <!-- end col-4 -->
+            <!-- begin col-4 -->
+            <div class="col-md-4 col-sm-12">
+                <h3>Our Experience</h3>
+                <!-- begin skills -->
+                <div class="skills">
+                    <div class="skills-name">Front End</div>
+                    <div class="progress progress-striped">
+                        <div class="progress-bar progress-bar-success" style="width: 95%">
+                            <span class="progress-number">95%</span>
+                        </div>
+                    </div>
+                    <div class="skills-name">Programming</div>
+                    <div class="progress progress-striped">
+                        <div class="progress-bar progress-bar-success" style="width: 90%">
+                            <span class="progress-number">90%</span>
+                        </div>
+                    </div>
+                    <div class="skills-name">Database Design</div>
+                    <div class="progress progress-striped">
+                        <div class="progress-bar progress-bar-success" style="width: 85%">
+                            <span class="progress-number">85%</span>
+                        </div>
+                    </div>
+                    <div class="skills-name">ASP.Net MVC</div>
+                    <div class="progress progress-striped">
+                        <div class="progress-bar progress-bar-success" style="width: 80%">
+                            <span class="progress-number">80%</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- end skills -->
+            </div>
+            <!-- end col-4 -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end #about -->
+<!-- beign #service -->
+<div id="service" class="content" data-scrollview="true">
+    <!-- begin container -->
+    <div class="container">
+        <h2 class="content-title">Our Services</h2>
+        <p class="content-desc">
+            Here are types of services we can provide when build using BAP product.
+        </p>
+        @if (Model != null && Model.Services != null && Model.Services.Count > 0)
+        {
+            var rowsCount = Model.Services.Count / 3 + (Model.Services.Count % 3 > 0 ? 1 : 0);
+            for(int i = 0; i < rowsCount; i++)
+            {
+                <!-- begin row -->
+                <div class="row">
+                    @for(int j = 0; j < 3; j++)
+                    {
+                        if(i*j < Model.Services.Count)
+                        {
+                            var index = (i + 1) * (j + 1) - 1;
+                            <div class="col-md-4 col-sm-4">
+                                <div class="service">
+                                    <div class="icon bg-theme" data-animation="true" data-animation-type="bounceIn"><i class="@Model.Services[index].IconClass"></i></div>
+                                    <div class="info">
+                                        <h4 class="title">@Model.Services[index].Name</h4>
+                                        <p class="desc">@Model.Services[index].Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        }        
+    </div>
+    <!-- end container -->
+</div>
+<!-- end #about -->
+<!-- begin #client -->
+<div id="client" class="content has-bg bg-green" data-scrollview="true" style="padding-bottom:20px;">
+    <!-- begin content-bg -->
+    <div class="content-bg">
+        <img src="~/Content/themes/base/assets/img/bg/bg-client.jpg" alt="Client" />
+    </div>
+    <!-- end content-bg -->
+    <!-- begin container -->
+    <div class="container">
+        <h2 class="content-title">Our Price</h2>
+        <p class="content-desc">
+            Consider our competitive prices of the products we offer.
+        </p>
+    </div>
+    <!-- end container -->
+</div>
+<!-- end #client -->
+<!-- begin #pricing -->
+<div id="pricing" class="content" data-scrollview="true">
+    <!-- begin container -->
+    <div class="container">
+
+        <!-- begin pricing-table -->
+        <ul class="pricing-table col-4">
+            <li data-animation="true" data-animation-type="fadeInUp">
+                <div class="pricing-container">
+                    <h3>BAP CMS</h3>
+                    <div class="price">
+                        <div class="price-figure">
+                            <span class="price-number">FREE</span>
+                        </div>
+                    </div>
+                    <ul class="features">
+                        <li>Page Management</li>
+                        <li>Extenable Lookups</li>
+                        <li>Customizable UI Controls</li>
+                        <li>Media Management</li>
+                        <li>SEO Features</li>
+                        <li>24/7 Email support</li>
+                    </ul>
+                    <div class="footer">
+                        <a href="http://bap-software.com/Home/Pricing?tier=cms" class="btn btn-inverse btn-block">Register &amp; Download</a>
+                    </div>
+                </div>
+            </li>
+            <li data-animation="true" data-animation-type="fadeInUp">
+                <div class="pricing-container">
+                    <h3>BAP Blog</h3>
+                    <div class="price">
+                        <div class="price-figure">
+                            <span class="price-number">$299.99</span>
+                            <span class="price-tenure">perpetual</span>
+                        </div>
+                    </div>
+                    <ul class="features">
+                        <li>BAP CMS</li>
+                        <li>List of Blogs</li>
+                        <li>List of Authors</li>
+                        <li>Archiving</li>
+                        <li>Access Control</li>
+                        <li>24/7 Email support</li>
+                    </ul>
+                    <div class="footer">
+                        <a href="http://bap-software.com/Home/Pricing?tier=blog" class="btn btn-inverse btn-block">Buy Now</a>
+                    </div>
+                </div>
+            </li>
+            <li class="highlight" data-animation="true" data-animation-type="fadeInUp">
+                <div class="pricing-container">
+                    <h3>BAP eCommerce</h3>
+                    <div class="price">
+                        <div class="price-figure">
+                            <span class="price-number">$2999.99</span>
+                            <span class="price-tenure">perpetual</span>
+                        </div>
+                    </div>
+                    <ul class="features">
+                        <li>BAP CMS</li>
+                        <li>Product Management</li>
+                        <li>Shipping &amp; Payment</li>
+                        <li>Discounts</li>
+                        <li>Customers &amp; Orders</li>
+                        <li>Business Worklows</li>
+                        <li>Scheduled Jobs</li>
+                        <li>24/7 Email support</li>
+                    </ul>
+                    <div class="footer">
+                        <a href="http://bap-software.com/Home/Pricing?tier=ecommerce" class="btn btn-theme btn-block">Buy Now</a>
+                    </div>
+                </div>
+            </li>
+            <li data-animation="true" data-animation-type="fadeInUp">
+                <div class="pricing-container">
+                    <h3>Customized</h3>
+                    <div class="price">
+                        <div class="price-figure">
+                            <span class="price-number">Negotiable</span>
+                        </div>
+                    </div>
+                    <ul class="features">
+                        <li>eCommerce + Blog</li>
+                        <li>Document Templates</li>
+                        <li>Customized Shipping &amp; Payments</li>
+                        <li>Complex Business Flows</li>
+                        <li>External Data Storages</li>
+                        <li>Complex System Integrations</li>
+                    </ul>
+                    <div class="footer">
+                        <a href="#contact" class="btn btn-inverse btn-block">Contact us</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- end container -->
+</div>
+<!-- end #pricing -->
+<!-- begin #contact -->
+<div id="contact" class="content bg-silver-lighter" data-scrollview="true">
+    <!-- begin container -->
+    <div class="container">
+        <h2 class="content-title">Contact Us</h2>
+        <p class="content-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consectetur eros dolor,<br />
+            sed bibendum turpis luctus eget
+        </p>
+        <!-- begin row -->
+        <div class="row">
+            <!-- begin col-6 -->
+            <div class="col-md-6" data-animation="true" data-animation-type="fadeInLeft">
+                <h3>If you have a project you would like to discuss, get in touch with us.</h3>
+                <p>
+                    Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero dolor a purus.
+                </p>
+                <p>
+                    <strong>BAP Software, LLC</strong><br />
+                    @Html.Raw(Resources.UIText_ContactAddress)
+                </p>
+                <p>
+                    <span class="phone">@contactPhone</span><br />
+                    <a href="mailto:@contactEmail">@contactEmail</a>
+                </p>
+            </div>
+            <!-- end col-6 -->
+            <!-- begin col-6 -->
+            <div class="col-md-6 form-col" data-animation="true" data-animation-type="fadeInRight">
+                <form class="form-horizontal" id="form">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Name <span class="text-theme">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="FromName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Email <span class="text-theme">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="FromEmail" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Phone&nbsp;&nbsp;</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="FromPhone" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Message <span class="text-theme">*</span></label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" rows="10" id="FromMsg"></textarea>
+                            <div class="g-recaptcha" data-sitekey="@currOrg.reCaptchaSiteKey"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3"></label>
+                        <div class="col-md-9 text-left">
+                            <button type="button" id="send" class="btn btn-theme btn-block">Send Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- end col-6 -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end #contact -->
+
+@section scripts
+{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#send").click(function () {
+            $("body").css("cursor", "progress");
+
+            var email = {
+                RecaptchaResponse : grecaptcha.getResponse(),
+                FromName: $("#FromName").val().trim(),
+                FromPhone: $("#FromPhone").val().trim(),
+                FromEmail: $("#FromEmail").val().trim(),
+                FromMsg: $("#FromMsg").val().trim()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/SendEmail",
+                data: JSON.stringify(email),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    $("body").css("cursor", "default");
+                    if (data.success)
+                    {
+                        alert("Message has been sent", "Email");
+                        document.getElementById("form").reset();
+                        grecaptcha.reset();
+                    }
+                    else
+                        alert("Error. " + data.error, "Email");
+                },
+                error: function () {
+                    $("body").css("cursor", "default");
+                    alert("@Resources.ErrorText_GeneralCannotSendEmail", "Email");
+                }
+            });
+        });
+    });
+    </script>
+}
+

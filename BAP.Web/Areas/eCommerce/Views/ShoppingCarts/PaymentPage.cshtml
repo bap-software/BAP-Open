@@ -1,0 +1,57 @@
+﻿@using BAP.Resources
+@{
+    ViewBag.Title = "Payment Page";
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+}
+
+@section AddToHead{
+    @Html.Raw(ViewBag.PaymentHeaderStr)
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>@ViewBag.Title</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">@Resources.UIText_HomePage</a>
+                    </li>
+                    <li class="active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix logIn">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-1 col-sm-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>@ViewBag.Title</h3></div>
+                    <div class="panel-body">
+                        @if (!string.IsNullOrEmpty(ViewBag.PaymentHtmlStr))
+                        {
+                            @Html.Raw(ViewBag.PaymentHtmlStr)
+                        }
+
+                        @if(!string.IsNullOrEmpty(ViewBag.PaymentJavaScript))
+                        {
+                            <script>
+                                @Html.Raw(ViewBag.PaymentJavaScript)
+                            </script>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

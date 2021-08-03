@@ -1,0 +1,95 @@
+﻿@using BAP.UI.HtmlHelpers
+@model BAP.eCommerce.DAL.Entities.Customer
+
+@Html.HiddenFor(model => model.ShippingAddressId)
+@Html.HiddenFor(model => model.ShippingAddress.Id)
+@Html.HiddenFor(model => model.ShippingAddress.CreatedBy)
+@Html.HiddenFor(model => model.ShippingAddress.LastModifiedBy)
+@Html.HiddenFor(model => model.ShippingAddress.TenantUnit)
+@Html.HiddenFor(model => model.ShippingAddress.TenantUnitId)
+@Html.HiddenFor(model => model.ShippingAddress.OwnerGroup)
+@Html.HiddenFor(model => model.ShippingAddress.OwnerPermissions)
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingAddress.FirstName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.FirstName, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShippingAddress.LastName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.LastName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.LastName, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingAddress.ContactEmail, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.ContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.ContactEmail, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShippingAddress.CompanyName, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.CompanyName, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingAddress.AddressLine1, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.AddressLine1, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.AddressLine1, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShippingAddress.AddressLine2, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.AddressLine2, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingAddress.City, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.City, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.City, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShippingAddress.Zip, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.Zip, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.Zip, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingAddress.Country, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.BapCountryListFor(model => model.ShippingAddress.Country, new { @class = "form-control", onchange = "fillStates('#ShippingAddress_Country', '#ShippingAddress_State')" })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.Country, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShippingAddress.State, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.BapStateListFor(model => model.ShippingAddress.State, Model.ShippingAddress.Country, new { @class = "form-control", @style="width: 200px" })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.State, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingAddress.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "15" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShippingAddress.PhoneExtension, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.PhoneExtension, new { htmlAttributes = new { @class = "form-control", @maxlength = "5" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.PhoneExtension, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingAddress.CellNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.CellNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "15" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.CellNumber, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.ShippingAddress.FaxNumber, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4 col-sm-4">
+        @Html.EditorFor(model => model.ShippingAddress.FaxNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "15" } })
+        @Html.ValidationMessageFor(model => model.ShippingAddress.FaxNumber, "", new { @class = "text-danger" })
+    </div>
+</div>

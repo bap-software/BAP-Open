@@ -1,0 +1,76 @@
+﻿@using BAP.DAL;
+@{ 
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();    
+}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <!-- SITE TITTLE -->
+    <meta charset="utf-8">
+    <title>@ViewBag.Title | @BAP.Resources.Resources.UIText_ApplicationTitle</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="@ViewBag.Description" name="description" />
+    <meta content="BAP Software, Victor Mamray" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    @Styles.Render("~/Admin/Plugins/css")
+    @Styles.Render("~/Admin/Themes/css")
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    @Scripts.Render("~/Admin/top-scripts")
+    <!-- ================== END BASE JS ================== -->
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }
+</head>
+<body>
+
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade">
+
+        <!-- begin #content -->
+        <div id="content" class="content" style="margin: 0px">
+            @RenderBody()
+        </div>
+        <!-- end #content -->
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- end page container -->
+
+
+    <script>
+        $(document).ready(function () {
+            App.init();
+            Dashboard.init();
+            TreeView.init();
+            FormPlugins.init();
+        });
+    </script>
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    @Scripts.Render("~/Admin/jquery")
+    @Scripts.Render("~/Admin/bootstrap")
+    <!--[if lt IE 9]>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/respond.min.js"></script>
+        <script src="~/Areas/Administration/Content/Themes/assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <!-- ================== END BASE JS ================== -->
+    <!-- ================== BEGIN PAGE LEVEL JS - PLUGINS & CUSTOM ================== -->
+    @Scripts.Render("~/Admin/plugins")
+    @Scripts.Render("~/Admin/custom-scripts")
+    <!-- ================== END PAGE LEVEL JS ================== -->
+
+    @Html.Partial("_AlertModal")
+    @Html.Partial("_NotificationPartial")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

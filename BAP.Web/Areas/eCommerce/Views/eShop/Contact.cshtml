@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Contact";
+    ViewBag.FullTextSearchAction = "/eCommerce/Products";
+}
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Contact Us</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">Home</a>
+                    </li>
+                    <li class="active">Contact Us</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix signUp">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>How to find us</h3>
+                    </div>
+                    <div class="panel-body">
+                        <address>
+                            @ViewBag.AddressLine1<br />
+                            @ViewBag.AddressLine2<br />
+                            <abbr title="Phone">P:</abbr>
+                            @ViewBag.PhoneNumber
+                        </address>
+                        <address>
+                            <strong>Support:</strong>   <a class="link-dark" href="mailto:Support@example.com">@ViewBag.SupportEmail</a><br />
+                            <strong>Marketing:</strong> <a class="link-dark" href="mailto:Marketing@example.com">@ViewBag.ContactEmail</a>
+                        </address>
+                    </div>                    
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>Get in touch</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="" method="POST" role="form">                            
+                            <div class="form-group col-md-6">
+                                <label for="FromName">Name:</label>
+                                <input type="text" class="form-control" id="FromName" name="FromName" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="FromEmail">Email:</label>
+                                <input type="email" class="form-control" id="FromEmail" name="FromEmail" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="FromText">Message:</label>
+                                <textarea class="form-control" id="FromText" name="FromText" style="height:auto;" rows="8"></textarea>
+                            </div>        
+                            <div class="form-group col-md-12">
+                                <div class="col-md-3 col-md-offset-3"><button type="submit" class="btn btn-success btn-block">Send</button></div>
+                                <div class="col-md-3"><button type="reset" class="btn btn-defaukt btn-block">Reset</button></div>                                                                
+                            </div>                            
+                        </form>
+                    </div>                    
+                </div>                
+            </div>
+        </div>       
+    </div>
+</section>

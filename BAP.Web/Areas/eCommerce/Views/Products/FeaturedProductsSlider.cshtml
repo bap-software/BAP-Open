@@ -1,0 +1,123 @@
+﻿@using System.Linq
+@using BAP.Resources
+@using BAP.eCommerce.Resources
+@using BAP.eCommerce.BL.Context
+@model IList<BAP.Web.Areas.eCommerce.Models.FeaturedProductModel>
+@{
+    Layout = null;
+    bool quickAddToCart = (bool)ViewBag.QuickAddToCart;            
+    var currencySymbol = (string)ViewBag.CurrencySymbol;    
+}
+
+@if (Model.Count > 0)
+{
+    <!-- BEGIN #promotions -->
+    <div id="promotions" class="section-container bg-white">
+        <!-- BEGIN container -->
+        <div class="container">
+            <!-- BEGIN section-title -->
+            <h4 class="section-title clearfix">
+                <a href="@Url.Action("Index", "Products", new { area = "eCommerce"})" class="pull-right">@ResObject.UIText_ShowAll.ToUpper()</a>
+                @ResObject.UIText_ExclusivePromotions
+            <small>@Resources.CodeText_From.ToLower() @Model.Min(a => a.PublicDate).ToString("dd MMMM yyyy") - @Model.Max(a => a.PublicDate).ToString("dd MMMM yyyy")</small>
+            </h4>
+            <!-- END section-title -->
+            <!-- BEGIN row -->
+            <div class="row row-space-10">
+                <!-- BEGIN col-6 -->
+                <div class="col-md-6">
+                    <!-- BEGIN promotion -->
+                    <div class="promotion promotion-lg bg-black-darker">
+                        <div class="promotion-image text-right promotion-image-overflow-bottom">
+                            <img src="@Model.First().ImagePath" alt="" />
+                        </div>
+                        <div class="promotion-caption promotion-caption-inverse">
+                            <h4 class="promotion-title">@Model.First().Name</h4>
+                            <div class="promotion-price"><small>@Resources.CodeText_From.ToLower()</small> @currencySymbol@Model.First().Price</div>
+                            <p class="promotion-desc">@Html.Raw(Model.First().Promotion)</p>
+                            <a href="@Url.Action("Details", "Products", new {  pid  = Model.First().PublicId})" class="promotion-btn">@ResObject.UIText_ViewMore</a>
+                        </div>
+                    </div>
+                    <!-- END promotion -->
+                </div>
+                <!-- END col-6 -->
+                <!-- BEGIN col-3 -->
+                @if (Model.Count > 1)
+                {
+                    <div class="col-md-3 col-sm-6">
+                        <!-- BEGIN promotion -->
+                        <div class="promotion bg-blue">
+                            <div class="promotion-image promotion-image-overflow-bottom promotion-image-overflow-top">
+                                <img src="@Model[1].ImagePath" alt="" />
+                            </div>
+                            <div class="promotion-caption promotion-caption-inverse text-right">
+                                <h4 class="promotion-title">@Model[1].Name</h4>
+                                <div class="promotion-price"><small>@Resources.CodeText_From.ToLower()</small> @currencySymbol@Model[1].Price</div>
+                                <p class="promotion-desc">@Html.Raw(Model[1].Promotion)</p>
+                                <a href="@Url.Action("Details", "Products", new {  pid  = Model[1].PublicId})" class="promotion-btn">@ResObject.UIText_ViewMore</a>
+                            </div>
+                        </div>
+                        <!-- END promotion -->
+                        @if (Model.Count > 2)
+                        {
+                            <!-- BEGIN promotion -->
+                            <div class="promotion bg-silver">
+                                <div class="promotion-image text-center promotion-image-overflow-bottom">
+                                    <img src="@Model[2].ImagePath" alt="" />
+                                </div>
+                                <div class="promotion-caption text-center">
+                                    <h4 class="promotion-title">@Model[2].Name</h4>
+                                    <div class="promotion-price"><small>@Resources.CodeText_From.ToLower()</small> @currencySymbol@Model[2].Price</div>
+                                    <p class="promotion-desc">@Html.Raw(Model[2].Promotion)</p>
+                                    <a href="@Url.Action("Details", "Products", new {  pid  = Model[2].PublicId})" class="promotion-btn">@ResObject.UIText_ViewMore</a>
+                                </div>
+                            </div>
+                            <!-- END promotion -->
+                        }
+                    </div>
+                    <!-- END col-3 -->
+                }
+
+                @if (Model.Count > 3)
+                {
+                    <!-- BEGIN col-3 -->
+                    <div class="col-md-3 col-sm-6">
+                        <!-- BEGIN promotion -->
+                        <div class="promotion bg-silver">
+                            <div class="promotion-image promotion-image-overflow-right promotion-image-overflow-bottom text-right">
+                                <img src="@Model[3].ImagePath" alt="" />
+                            </div>
+                            <div class="promotion-caption text-center">
+                                <h4 class="promotion-title">$@Model[3].Name</h4>
+                                <div class="promotion-price"><small>@Resources.CodeText_From.ToLower()</small> @currencySymbol@Model[3].Price</div>
+                                <p class="promotion-desc">@Html.Raw(Model[3].Promotion)</p>
+                                <a href="@Url.Action("Details", "Products", new {  pid  = Model[3].PublicId})" class="promotion-btn">@ResObject.UIText_ViewMore</a>
+                            </div>
+                        </div>
+                        <!-- END promotion -->
+                        @if(Model.Count > 4)
+                        {
+                            <!-- BEGIN promotion -->
+                            <div class="promotion bg-black">
+                                <div class="promotion-image text-right">
+                                    <img src="@Model[4].ImagePath" alt="" />
+                                </div>
+                                <div class="promotion-caption promotion-caption-inverse">
+                                    <h4 class="promotion-title">@Model[4].Name</h4>
+                                    <div class="promotion-price"><small>@Resources.CodeText_From.ToLower()</small> @currencySymbol@Model[4].Price</div>
+                                    <p class="promotion-desc">@Html.Raw(Model[4].Promotion)</p>
+                                    <a href="@Url.Action("Details", "Products", new {  pid  = Model[4].PublicId})" class="promotion-btn">@ResObject.UIText_ViewMore</a>
+                                </div>
+                            </div>
+                            <!-- END promotion -->
+                        }                        
+                    </div>
+                    <!-- END col-3 -->
+                }
+            </div>
+            <!-- END row -->
+        </div>
+        <!-- END container -->
+    </div>
+    <!-- END #promotions -->
+}

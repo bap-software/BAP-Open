@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="None" controller="None" action="None" key="HomeKey">
+
+    <mvcSiteMapNode title="" action="" dynamicNodeProvider="BAP.UI.PluginsDynamicNodeProvider, BAP.UI" >
+      <mvcSiteMapNode title="" action="" dynamicNodeProvider="BAP.UI.PluginsActionDynamicNodeProvider, BAP.UI" />
+    </mvcSiteMapNode>
+    
+    <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Administration" controller="Home" action="Index" roles="Administrator,ContentManager,Supervisor" area="Administration" isadmin="true" icon="fa fa-laptop" order="999">
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Attachments" controller="Attachments" action="Index" area="Administration" roles="Administrator,ContentManager">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Attachments" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Attachments" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Attachments" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Attachments" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Blogs" controller="Blogs" action="Index" area="Administration" roles="Administrator,ContentManager">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Blogs" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Blogs" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Blogs" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Blogs" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_ContentControls" controller="ContentControls" action="Index" area="Administration" roles="Administrator,ContentManager">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="ContentControls" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="ContentControls" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="ContentControls" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="ContentControls" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_ContentControlTypes" controller="ContentControlTypes" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="ContentControlTypes" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="ContentControlTypes" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="ContentControlTypes" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="ContentControlTypes" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_ContentManagement" controller="ContentManagement" action="Index" area="Administration" roles="Administrator,ContentManager"/>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Countries" controller="Countries" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Countries" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Countries" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Countries" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Countries" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Currencies" controller="Currencies" action="Index" area="Administration" roles="Administrator,Supervisor">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Currencies" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Currencies" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Currencies" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Currencies" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_CustomConfigurations" controller="CustomConfigurations" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="CustomConfigurations" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="CustomConfigurations" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="CustomConfigurations" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="CustomConfigurations" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_DocumentTemplates" controller="DocumentTemplates" action="Index" area="Administration" roles="Administrator,Supervisor">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="DocumentTemplates" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="DocumentTemplates" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="DocumentTemplates" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="DocumentTemplates" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_FileSystem" controller="FileSystem" action="Index" area="Administration" roles="Administrator,ContentManager"  />
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_EventLog" controller="EventLogs" action="Index" area="Administration" roles="Administrator,Supervisor">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="EventLogs" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="EventLogs" action="Delete" area="Administration" preservedRouteParameters="id" />
+      </mvcSiteMapNode>
+      
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Lookups" controller="Lookups" action="Index" area="Administration" roles="Administrator,ContentManager">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Lookups" action="Create" area="Administration" preservedRouteParameters="id"/>
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Lookups" action="Details" area="Administration" preservedRouteParameters="id"/>
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Lookups" action="Edit" area="Administration" preservedRouteParameters="id"/>
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Lookups" action="Delete" area="Administration" preservedRouteParameters="id" />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Messages" controller="Messages" action="Index" area="Administration" roles="Administrator,Supervisor">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Messages" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Messages" action="Delete" area="Administration" preservedRouteParameters="id" />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Modules" controller="Modules" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Modules" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Modules" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Modules" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Modules" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+                     
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_NewsLetters" controller="NewsLetters" action="Index" area="Administration" roles="Administrator,Supervisor">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="NewsLetters" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="NewsLetters" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="NewsLetters" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="NewsLetters" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+      
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Subscribers" controller="Subscribers" action="Index" area="Administration" roles="Administrator,Supervisor">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Subscribers" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Subscribers" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Subscribers" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Subscribers" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+      
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Organization" controller="Organizations" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Organizations" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Organizations" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Organizations" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Organizations" action="Delete" area="Administration" preservedRouteParameters="id"   />    
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_OrganizationServices" controller="OrganizationServices" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="OrganizationServices" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="OrganizationServices" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="OrganizationServices" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="OrganizationServices" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+      
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_ScheduledTasks" controller="ScheduledTasks" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="ScheduledTasks" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="ScheduledTasks" action="Details" area="Administration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="ScheduledTasks" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="ScheduledTasks" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Subscriptions" controller="Subscriptions" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="Subscriptions" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="Subscriptions" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="Subscriptions" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="Subscriptions" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_Users" controller="OrganizationUsers" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="OrganizationUsers" action="Create" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="OrganizationUsers" action="Details" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="OrganizationUsers" action="Edit" area="Administration" preservedRouteParameters="id"   />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="OrganizationUsers" action="Delete" area="Administration" preservedRouteParameters="id"   />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_WorkflowClasses" controller="WorkflowClasses" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="WorkflowClasses" action="Create" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="WorkflowClasses" action="Details" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="WorkflowClasses" action="Edit" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="WorkflowClasses" action="Delete" area="Administration" preservedRouteParameters="id"  />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_WorkflowActions" controller="WorkflowActions" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="WorkflowActions" action="Create" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="WorkflowActions" action="Details" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="WorkflowActions" action="Edit" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="WorkflowActions" action="Delete" area="Administration" preservedRouteParameters="id"  />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_WorkflowStages" controller="WorkflowStages" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="WorkflowStages" action="Create" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="WorkflowStages" action="Details" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="WorkflowStages" action="Edit" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="WorkflowStages" action="Delete" area="Administration" preservedRouteParameters="id"  />
+      </mvcSiteMapNode>
+
+      <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Menu_WorkflowStageTransitions" controller="WorkflowStageTransitions" action="Index" area="Administration" roles="Administrator">
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Create" controller="WorkflowStageTransitions" action="Create" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Details" controller="WorkflowStageTransitions" action="Details" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Edit" controller="WorkflowStageTransitions" action="Edit" area="Administration" preservedRouteParameters="id"  />
+        <mvcSiteMapNode title="$resources:BAP.Resources.Resources,UIText_Delete" controller="WorkflowStageTransitions" action="Delete" area="Administration" preservedRouteParameters="id"  />
+      </mvcSiteMapNode>
+      
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+</mvcSiteMap>

@@ -1,0 +1,102 @@
+﻿@using BAP.eCommerce.Resources
+@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.eCommerce.DAL.Entities.ShippingOption
+
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+    var customConfigSupported = false;
+    if (ViewBag.CustomDataSupported != null)
+    {
+        customConfigSupported = (bool)ViewBag.CustomDataSupported;
+    }
+    var jsonWatermark = ViewBag.CustomDataExample as string;
+}
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingCarrier, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.BapParentDropDownFor(model => model.ShippingCarrier, engine, "Id", "Name", "ShortDescription", new { @class = "form-control" }, "ShippingCarrierId")
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.OptionCode, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.OptionCode, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.OptionCode, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TeaserImage, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.TeaserImage, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TeaserImage, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MaxPrice, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.MaxPrice, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.MaxPrice, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.Enabled, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@if (customConfigSupported)
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.CustomConfigJson, DisplayOptions.Humanize, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.CustomConfigJson, new { @class = "form-control", @rows = "5", @placeholder = jsonWatermark })
+            @Html.ValidationMessageFor(model => model.CustomConfigJson, "", new { @class = "text-danger" })
+            <br />
+            <button class="btn btn-default" type="button" onclick="copyExampleToClipboard('@ResObject.UIText_ExampleCopied');">@ResObject.UIText_CopyExampleToClipboard</button>
+            <input type="text" id="CustomConfigExampleText" value="@jsonWatermark" style="left:-1000px;position:absolute;" />
+        </div>
+    </div>
+
+    <script>
+        function copyExampleToClipboard(alertText) {
+            var copyText = document.getElementById("CustomConfigExampleText");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            alert(alertText);
+        }
+    </script>
+}
+
+

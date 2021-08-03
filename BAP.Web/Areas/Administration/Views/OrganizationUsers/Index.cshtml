@@ -1,0 +1,111 @@
+﻿@using BAP.Resources
+@using BAP.BL;
+@using PagedList.Mvc;
+@using BAP.UI.HtmlHelpers;
+@model PagedList.IPagedList<BAP.DAL.Entities.OrganizationUser>
+
+@{
+    ViewBag.Title = Resources.EntityLabel_OrganizationUser;
+    IOrganizationUserBL bl = ViewBag.BL;
+    Dictionary<string, string> sortData = (Dictionary<string, string>)ViewBag.SortData;
+    string currentFilter = ViewBag.CurrentFilter;
+    string currentSort = ViewBag.CurrentSort;
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("Create", "OrganizationUsers", new { Area = "Administration" })" class="btn btn-icon btn-success" title="@Resources.UIText_Create @Resources.EntityLabel_OrganizationUser"><i class="fa fa-plus"></i></a>
+    @ViewBag.Title<small></small>
+</h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">@Resources.UIText_SearchResults</h4>
+            </div>
+            <div class="panel-body">                
+                @if (Model.PageCount > 1)
+                {
+                    <div class="pagination-container">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                    </div>
+                }
+                <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                    <thead>
+                        <tr role="row">
+                            <th onclick="window.location = '@Url.Action("Index", new { page = 1, sortOrder = "", currentFilter = currentFilter, pageSize = Model.PageSize })';" title="Default Sort Order" style="cursor:pointer;">
+                                @Resources.UIText_Actions
+                            </th>
+
+                            @Html.BapSortingHeaderFor(model => model.First().UserName, sortData, currentSort, "Index", "OrganizationUsers", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+
+                            @Html.BapSortingHeaderFor(model => model.First().FullName, sortData, currentSort, "Index", "OrganizationUsers", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+
+                            @Html.BapSortingHeaderFor(model => model.First().LastModifiedDate, sortData, currentSort, "Index", "OrganizationUsers", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+
+                            @Html.BapSortingHeaderFor(model => model.First().LastModifiedByUserName, sortData, currentSort, "Index", "OrganizationUsers", "Administration", Model.PageNumber, currentFilter, pageSize: Model.PageSize)
+
+                        </tr>
+                    </thead>
+                    
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", new {id=item.Id})">
+                                    <i class="glyphicon glyphicon-th-list"></i>
+                                </a>
+                                @if (bl.CanWrite(item))
+                                {
+                                    <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="@Url.Action("Edit", new {id=item.Id})">
+                                        <i class="glyphicon glyphicon-edit"></i>
+                                    </a>
+                                }
+
+                                @if (bl.CanDelete(item))
+                                {
+                                    <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", new {id=item.Id})">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastModifiedByUserName)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+                @if (Model.PageCount > 1)
+                {
+                    <hr />
+                    <div class="pagination-container">
+                        <span>Page </span>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)<span> of </span>@Model.PageCount
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                    </div>
+                }                    
+            </div>
+        </div>
+    </div>
+</div>
+
+

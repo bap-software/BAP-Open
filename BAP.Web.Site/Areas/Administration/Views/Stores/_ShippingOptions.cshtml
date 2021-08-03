@@ -1,0 +1,52 @@
+﻿@using BAP.Resources
+@model BAP.eCommerce.DAL.Entities.Store
+
+<form action="@Url.Action("AddShipping")" method="post" class="form-horizontal form-bordered" novalidate>
+    <div class="form-group">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        <label class="control-label col-md-2 col-sm-2">@Resources.UIText_Store_ChooseShipping</label>
+        <div class="col-md-3 col-sm-3">
+            @Html.DropDownList("ShippingOptionId", null, htmlAttributes: new { @class = "form-control" })
+        </div>
+        <div class="col-md-7 col-sm-7">
+            <button type="submit" class="btn btn-sm btn-success">@Resources.UIText_Store_AddShippingOption</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                <thead>
+                    <tr>
+                        <th width="5%">@Resources.UIText_Actions</th>
+                        <th>@Html.DisplayNameFor(model => model.StoreShippingOptions.First().Name)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.StoreShippingOptions != null && Model.StoreShippingOptions.Count > 0)
+                    {
+                        foreach (var item in Model.StoreShippingOptions)
+                        {
+                            <tr>
+                                <td>
+                                    <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("RemoveShipping", new {id=Model.Id, shippingOptionId = item.Id})">
+                                        <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">@Resources.UIText_Store_NoShippingOptionsSelected</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,154 @@
+﻿@using BAP.Resources;
+@using BAP.UI.HtmlHelpers
+@model BAP.DAL.Entities.ScheduledTask
+
+@{
+    ViewBag.Title = Resources.EntityLabel_ScheduledTask + " " + Resources.UIText_Details;
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("Index", "ScheduledTasks", new { Area = "Administration"})" class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a> 
+    <a href="@Url.Action("Edit", new { Area = "Administration", Id = Model.Id})" class="btn btn-default btn-default btn-success" title="@Resources.UIText_Edit"><i class="glyphicon glyphicon-edit"></i></a> 
+    @Resources.EntityLabel_ScheduledTask<small></small>
+</h1>
+<!-- end page-header -->
+
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>                    
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+            </div>
+            <div class="panel-body panel-form">
+                <div class="form-horizontal form-bordered" novalidate>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                        @Html.LabelFor(model => model.ShortName, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-8 col-sm-8">
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter description" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Interval, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.Interval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter interval" } })
+                        </div>
+                        @Html.LabelFor(model => model.Recurring, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @if (Model.Recurring)
+                            {
+                                <i class="fa fa-check-square-o" style="font-size:xx-large;"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-square-o" style="font-size:xx-large;"></i>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.JobClass, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.JobClass, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter job class" } })
+
+                        </div>
+                        @Html.LabelFor(model => model.JobAssembly, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.JobAssembly, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter job assembly" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.JobData, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.JobData, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @placeholder = "Enter job data" } })
+                        </div>
+                        @Html.LabelFor(model => model.Enabled, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @if (Model.Enabled)
+                            {
+                                <i class="fa fa-check-square-o" style="font-size:xx-large;"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-square-o" style="font-size:xx-large;"></i>
+                            }
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LastResult, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @if (Model.LastResult)
+                            {
+                                <span>@Resources.UIText_Ok</span>
+                            }
+                            else
+                            {
+                                <span>@Resources.ErrorText_Error</span>
+                            }
+                        </div>
+                        @Html.LabelFor(model => model.LastMessage, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.LastMessage, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LastRun, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.LastRun, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                        @Html.LabelFor(model => model.NextRun, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.NextRun, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Executions, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @Html.EditorFor(model => model.Executions, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @type="text" } })
+                        </div>
+                        @Html.LabelFor(model => model.Running, DisplayOptions.Humanize, new { @class = "control-label col-md-2 col-sm-2" })
+                        <div class="col-md-3 col-sm-3">
+                            @if (Model.Running)
+                            {
+                                <i class="fa fa-check-square-o" style="font-size:xx-large;"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-square-o" style="font-size:xx-large;"></i>
+                            }
+
+                        </div>
+                    </div>
+
+                    @Html.Partial("_ReadOnlyFields")
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

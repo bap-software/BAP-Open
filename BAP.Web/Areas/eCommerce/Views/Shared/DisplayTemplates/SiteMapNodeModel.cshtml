@@ -1,0 +1,29 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapNodeModel
+@if (Model.IsCurrentNode && Model.SourceMetadata["HtmlHelper"].ToString() != "MvcSiteMapProvider.Web.Html.MenuHelper")
+{
+    <text>@Model.Title</text>
+}
+else if (Model.IsClickable)
+{
+    var titleText = !string.IsNullOrEmpty(Model.Description) ? "title='" + Model.Description + "'" : "";
+    var hasDropDown = false;
+    try
+    {
+        hasDropDown = Model != null && Model.Children != null && Model.Children.Count > 0 && Model.Children.Any(a => a.Action != null && a.Action.Contains("Index")) || (Model.Action == "Index" && Model.Controller == "Products");
+    }
+    catch (Exception) { }
+    
+
+    <a href="@Model.Url" @titleText @(hasDropDown ? "data-toggle='dropdown'":"")>
+        @Model.Title
+        @if (hasDropDown)
+        {
+        <i class="fa fa-angle-down"></i>
+        <span class="arrow top"></span>
+        }
+    </a>    
+}
+else
+{
+    <text>@Model.Title</text>
+}

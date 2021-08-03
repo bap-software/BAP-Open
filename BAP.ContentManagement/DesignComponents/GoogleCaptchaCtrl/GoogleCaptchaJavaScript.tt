@@ -1,0 +1,28 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<script type="text/javascript">
+    var googleCaptchaContent = '<#= GoogleCaptchaContent #>';
+	$("#hdnGoogleCaptchaContent").val(googleCaptchaContent);
+	setGoogleCaptchaValues();
+
+	function setGoogleCaptchaValues()
+	{
+		var googleSiteKey = $("#googleSiteKey").val();
+		var temp = googleCaptchaContent;
+		temp = temp.replace(/<%0%>/g, googleSiteKey);
+		$("#hdnGoogleCaptchaContent").val(temp);
+	}
+
+    $("#googleSiteKey").change(function () {  
+        setGoogleCaptchaValues();
+    });	
+</script>
+
+
+<#+
+public string GoogleCaptchaContent { get; set; }
+#>

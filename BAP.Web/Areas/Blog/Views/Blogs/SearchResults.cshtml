@@ -1,0 +1,66 @@
+﻿@using BAP.Resources
+@model BAP.Web.Areas.BlogsArea.Models.BlogSearchResults
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Home", new { Area = "" })">@Resources.UIText_Menu_Index</a></li>
+            <li><a href="@Url.Action("Index")">@Resources.FieldLabel_Blog_Blogs</a></li>
+        </ul>
+        <!-- begin row -->
+        <div class="row row-space-30">
+            <!-- begin col-9 -->
+            <div class="col-md-9">
+                @if (Model.Blogs != null && Model.Blogs.Any())
+                {
+                    <h4 class="section-title"><span>@Resources.FieldLabel_Blog_Blogs</span></h4>
+                    <ul class="sidebar-recent-post">
+                        @foreach (var blog in Model.Blogs.OrderByDescending(b => b.CreateDate))
+                        {
+                            <li>
+                                <div class="info">
+                                    <h4 class="title"><a href="@Url.Action("Details", new {pid=blog.GetPublicId()})">@blog.Name</a></h4>
+                                    <div class="date">@blog.CreateDate.GetValueOrDefault().ToString("MMMM dd, yyyy")</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                @if (Model.BlogPosts != null && Model.BlogPosts.Any())
+                {
+                    <h4 class="section-title"><span>@Resources.FieldLabel_Blog_BlogPosts</span></h4>
+                    <ul class="sidebar-recent-post">
+                        @foreach (var post in Model.BlogPosts.OrderByDescending(p => p.CreateDate))
+                        {
+                            <li>
+                                <div class="info">
+                                    <h4 class="title"><a href="@Url.Action("Details", new {pid=post.Blog.GetPublicId()})">@post.Title (from @post.Blog.Name)</a></h4>
+                                    <div class="date">@post.CreateDate.GetValueOrDefault().ToString("MMMM dd, yyyy")</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                @if (Model.BlogComments != null && Model.BlogComments.Any())
+                {
+                    <h4 class="section-title"><span>@Resources.FieldLabel_Blog_BlogComments</span></h4>
+                    <ul class="sidebar-recent-post">
+                        @foreach (var comment in Model.BlogComments.OrderByDescending(c => c.CreateDate))
+                        {
+                            <li>
+                                <div class="info">
+                                    <h4 class="title"><a href="@Url.Action("Details", new {pid=comment.Blog.GetPublicId()})">@comment.Title (from @comment.Blog.Name)</a></h4>
+                                    <div class="date">@comment.CreateDate.GetValueOrDefault().ToString("MMMM dd, yyyy")</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+            <!-- end col-9 -->
+            <!-- begin col-3 -->
+            <div class="col-md-3">
+                @Html.Partial("_SearchBlogs")
+            </div>
+            <!-- end col-3 -->
+        </div>
+    </div>

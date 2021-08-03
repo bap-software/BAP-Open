@@ -1,0 +1,52 @@
+﻿@using BAP.Resources
+@using BAP.Common;
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@{
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = authContext.GetCurrentOrganization(config);
+    var facebookUrl = "";
+    var twitterUrl = "";
+    var linkedinUrl = "";
+    var googleplusUrl = "";
+    var instagramUrl = "";
+    if (currOrg != null)
+    {
+        facebookUrl = currOrg.FacebookUrl;
+        twitterUrl = currOrg.TwitterUrl;
+        linkedinUrl = currOrg.LinkedinUrl;
+        googleplusUrl = currOrg.GoogleplusUrl;
+        instagramUrl = currOrg.InstagramUrl;
+    }
+}
+
+<div id="footer-copyright" class="footer-copyright">
+    <!-- begin container -->
+    <div class="container">
+        <span class="copyright">&copy; @DateTime.Today.Year @Resources.FieldLabel_Blog_PoweredBy</span>
+        <ul class="social-media-list">
+            @if (!string.IsNullOrWhiteSpace(facebookUrl))
+            {
+                <li><a href="@facebookUrl"><i class="fa fa-facebook fa-fw"></i></a></li>
+            }
+            @if (!string.IsNullOrWhiteSpace(twitterUrl))
+            {
+                <li><a href="@twitterUrl"><i class="fa fa-twitter fa-fw"></i></a></li>
+            }
+            @if (!string.IsNullOrWhiteSpace(googleplusUrl))
+            {
+                <li><a href="@googleplusUrl"><i class="fa fa-google-plus fa-fw"></i></a></li>
+            }
+            @if (!string.IsNullOrWhiteSpace(linkedinUrl))
+            {
+                <li><a href="@linkedinUrl"><i class="fa fa-linkedin fa-fw"></i></a></li>
+            }
+            @if (!string.IsNullOrWhiteSpace(instagramUrl))
+            {
+                <li><a href="@instagramUrl"><i class="fa fa-instagram fa-fw"></i></a></li>
+            }
+        </ul>
+    </div>
+    <!-- end container -->
+</div>

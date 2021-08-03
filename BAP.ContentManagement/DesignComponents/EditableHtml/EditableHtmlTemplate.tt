@@ -1,0 +1,9 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<h5>You about to add textarea to the page</h5>
+<label for="TextAreaRowsCount">Number of rows:</label><input type="number" id="TextAreaRowsCount" value="5" class="form-control" min="1"/>
+<label for="TextAreaIdSuffix">Control Id Suffix:</label><input type="text" id="TextAreaIdSuffix" value="1" class="form-control"/>
+<input type="hidden" id="hdnEditableHtmlContent" />

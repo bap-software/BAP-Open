@@ -1,0 +1,826 @@
+﻿@using System.Web.Script.Serialization;
+@using BAP.DAL;
+@using BAP.Common;
+@using BAP.Resources;
+@using BAP.ContentManagement.DesignerSettings;
+@using BAP.UI.HtmlHelpers;
+@model BAP.Web.Areas.Administration.Models.BAPContentManagementData
+@{
+    IAuthorizationContext authContext = ViewBag.AuthContextInstance;
+    IConfigHelper configHelper = ViewBag.ConfigHelperInstance;
+    ViewBag.SideBarMinified = true;
+    //ViewBag.RightSideBarMinified = true;
+    ViewBag.Title = Resources.EntityLabel_ContentManagement;
+    var navigateUrl = "/";
+    var currentPath = "";
+    if (Model != null && Model.CurrentNode != null)
+    {
+        if (!string.IsNullOrEmpty(Model.CurrentNode.Url))
+        {
+            navigateUrl = Model.CurrentNode.Url;
+        }
+        if (Model.CurrentNode.Content != null && Model.CurrentNode.Content.Id == 0)
+        {
+            navigateUrl = "";
+        }
+
+        currentPath = Model.CurrentNode.ViewPath;
+        if (!string.IsNullOrEmpty(currentPath))
+        {
+            currentPath = currentPath.Replace(Server.MapPath(@"/"), "");
+        }
+    }
+
+    //prepare data fro page settings
+    var currentArea = "";
+    var currentController = "";
+    var currentAction = "";
+    var currentContentNodeId = 0;
+    var currentContentViewId = 0;
+    PageSettings settings = null;
+    if (Model.CurrentNode != null && Model.CurrentNode.Content != null)
+    {
+        currentArea = Model.CurrentNode.Content.Area;
+        currentController = Model.CurrentNode.Content.Controller;
+        currentAction = Model.CurrentNode.Content.Action;
+        settings = Model.CurrentNode.PageSettings;
+        currentContentNodeId = Model.CurrentNode.Content.Id;
+    }
+    else
+    {
+        settings = (new PageSettings()).Init();
+    }
+    if (Model.CurrentViewId != null && Model.CurrentViewId.Value > 0)
+    {
+        currentContentViewId = Model.CurrentViewId.Value;
+    }
+
+    var serializer = new JavaScriptSerializer();
+    var areas = Model.RootNode.Controllers.OrderBy(b => b.Area).GroupBy(a => a.Area).Select(grp => new { Selected = (grp.First().Area == currentArea), Area = grp.First().Area });
+    var controllers = Model.RootNode.Controllers.Select(a => new { Selected = (a.Name == currentController), a.Area, Controller = a.Name, Namespace = a.Namespace });
+    var actions = from c in Model.RootNode.Controllers
+                  from a in c.Actions
+                  select new { Selected = (a.Name == currentAction), c.Area, Controller = c.Name, Action = a.Name };
+
+    var areasJsArray = string.Format("var arrAreas = {0};", serializer.Serialize(areas));
+    var ctrlsJsArray = string.Format("var arrControllers = {0};", serializer.Serialize(controllers));
+    var actionsJsArray = string.Format("var arrActions = {0};", serializer.Serialize(actions));
+    bool isContentManager = Html.IsContentManager(configHelper, authContext);
+    bool isApplication = Model.CurrentNode.Parent != null && Model.CurrentNode.Parent.IsApplication;
+    var roles = authContext.GetCurrentRoles(authContext.GetCurrentUserId(), configHelper);
+    var hasPermissions = Model.CurrentNode.Content != null && authContext.GetCurrentUserReadPermissions(roles, Model.CurrentNode.Content.OwnerPermissions) == AuthorizationConstants.ContentManagerReadPermission;
+    var isStatic = Model.CurrentNode.Content != null && Model.CurrentNode.Content.NavigationType == BAP.DAL.Entities.NavigationType.StaticHtml;
+}
+
+@section AddToHead
+{
+    <style type="text/css" media="screen">
+        #pageEditor {
+            width: 100%;
+            height: 72vh;
+        }
+
+        .design-panel-container {
+            padding-bottom: 0px;
+            padding-top: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .design-panel-tools {
+            list-style-type: none;
+            padding: 0;
+        }
+
+            .design-panel-tools li {
+                margin-bottom: 5px;
+                height: 30px;
+                padding-top: 5px;
+                padding-left: 5px;
+                cursor: move;
+                font-weight: bolder;
+            }
+    </style>
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">@ViewBag.Title<small></small></h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <!--Begin Tree View Panel-->
+    <div class="col-md-3 ui-sortable">
+        <div class="panel panel-inverse" data-sortable-id="tree-view-1" style="min-height:85vh;">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">Site Structure</h4>
+            </div>
+            <div class="panel-body">
+                <div>
+                    @if (!Model.CurrentNode.IsApplication)
+                    {
+                        <form action="@Url.Action("PageAction")" method="post" id="PageActionForm">
+                            <div class="input-group input-group-sm">
+                                @Html.AntiForgeryToken()                                
+                                <input type="hidden" name="actionType" id="actionType" />
+                                <input type="hidden" name="currentUrl" id="currentUrl" value="@Model.CurrentNode.Url" />
+                                <input type="hidden" name="currentTab" id="currentTab" value="@Model.CurrentTab" />
+                                <input type="hidden" name="newPageName" id="newPageName" class="form-control">                                
+                            </div>
+                        </form>
+                    }                    
+                    <div id="jstree-cms2" class="jstree jstree-1 jstree-default" role="tree">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End of Tree View Panel-->
+    <div class="col-md-9  ui-sortable">
+        <div class="panel panel-default panel-with-tabs" style="min-height:85vh;">
+            <div class="panel-heading">
+                <ul id="myTab" class="nav nav-tabs pull-left">
+                    <li class='@((Model.CurrentTab == "preview" || string.IsNullOrEmpty(Model.CurrentTab)) && !string.IsNullOrEmpty(navigateUrl) ? "active" : "")' style="@(string.IsNullOrEmpty(navigateUrl)? "display:none;":"")">
+                        <a class="tab-click-header" href="#pagePreview" data-tab-name="preview" data-toggle="tab" aria-expanded="@(Model.CurrentTab == "preview" ? "true" : "false")"><i class="fa fa-eye"></i> <span class="hidden-xs">Page Preview</span></a>
+                    </li>
+                    @if (!isContentManager || hasPermissions)
+                    {
+                        <li class='@(Model.CurrentTab == "design" && !string.IsNullOrEmpty(currentPath) ? "active" : "")' style="@(string.IsNullOrEmpty(currentPath) ? "display:none;" : "")">
+                            <a class="tab-click-header" href="#pageDesign" data-tab-name="design" data-toggle="tab" aria-expanded="@(Model.CurrentTab == "design" ? "true" : "false")" title="@currentPath"><i class="fa fa-paint-brush "></i> <span class="hidden-xs">Design</span></a>
+                        </li>
+                        <li class='@(Model.CurrentTab == "settings" && Model.CurrentNode.Content != null ? "active" : "")' style="@(Model.CurrentNode.Content == null ? "display:none;" : "")">
+                            <a class="tab-click-header" href="#pageSettings" data-tab-name="settings" data-toggle="tab" aria-expanded="@(Model.CurrentTab == "settings" ? "true" : "false")"><i class="fa fa-cog"></i> <span class="hidden-xs">Settings</span></a>
+                        </li>
+                    }
+                </ul>
+                <h4 class="panel-title">&nbsp;</h4>
+            </div>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade @(Model.CurrentTab == "preview" || string.IsNullOrEmpty(Model.CurrentTab) ? "active in" : "")" id="pagePreview">
+                    <a href="@(navigateUrl)" title="Open in another tab" target="_blank">Open page in new tab <i class="fa fa-external-link"></i></a>
+                    <iframe frameborder="0" src="@(navigateUrl)?previewMode=true" style="width:100%;height:75vh;" sandbox="allow-same-origin allow-scripts"></iframe>
+                </div>
+
+                <div class="tab-pane fade @(Model.CurrentTab == "design" ? "active in" : "")" id="pageDesign">
+
+                    <form action="@Url.Action("DesignAction")" method="post" class="form-inline" id="DesignActionForm">
+                        @Html.AntiForgeryToken()
+                        @{ var viewAvailable = Model.CurrentNode.Content != null && Model.CurrentNode.Content.Views != null && Model.CurrentNode.Content.Views.Count > 0;
+                        }
+                        <input type="hidden" name="nodeId" id="nodeId" value="@Model.CurrentNode.NodeId" />
+                        <input type="hidden" name="designActionType" id="designActionType" />
+                        <input type="hidden" name="designContent" id="designContent" />
+                        <input type="hidden" name="currentUrl" id="currentUrl" value="@Model.CurrentNode.Url" />
+                        <input type="hidden" name="currentTab" id="currentTab" value="design" />
+
+                        @if (viewAvailable && !isStatic)
+                        {
+                            <div class="form-group m-r-10">
+                                <label for="PageView" class="control-label">View: </label>
+                                <select name="currentViewId" id="currentViewId" class="form-control" onchange="$('#designActionType').val('reload'); $(this).closest('form').submit();">
+                                    @foreach (var view in Model.CurrentNode.Content.Views)
+                                    {
+                                        var selected = "";
+                                        if (Model.CurrentViewId != null && Model.CurrentViewId.Value == view.Id)
+                                        {
+                                            selected = "selected";
+                                        }
+                                        <option value="@view.Id" @selected>@view.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-default" onclick="$('#NewViewGroup').show(); $('#NewPageView').focus();"><i class="fa fa-plus"></i> <span>New</span></button>
+                            <div class="input-group" id="NewViewGroup" style="display:none;">
+                                <input type="text" id="newPageView" name="newPageView" placeholder="new view name" class="form-control" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" onclick="$('#NewPageView').val('');$('#NewViewGroup').hide();" title="Hide"><i class="fa fa-close"></i></button>
+                                </span>
+                            </div>
+                            <button id="btnDeleteContent" type="button" class="btn btn-success" data-confirm="Are you sure to delete this page view?" data-onclick="$('#designActionType').val('delete'); $('#DesignActionForm').submit();"><i class="glyphicon glyphicon-remove"></i> <span>Delete</span></button>
+                            <button id="btnDeleteContent" type="button" class="btn btn-success" data-confirm="Are you sure to make extra views editable?" data-onclick="$('#designActionType').val('extra'); $('#DesignActionForm').submit();"><i class="glyphicon glyphicon-gift"></i> <span>Add Views</span></button>
+                        }
+                        else if (Model.CurrentViewId.HasValue)
+                        { 
+                            <input type="hidden" name="CurrentViewId" id="CurrentViewId" value="@Model.CurrentViewId" />
+                        }
+                        @if (!isContentManager || !isApplication)
+                        {
+                            <button id="btnSaveContent" type="submit" class="btn btn-success" onclick="$('#designActionType').val('save'); $('#designContent').val(editor.getValue());"><i class="fa fa-save"></i> <span>@Resources.UIText_Save</span></button>
+                        }
+                        <button id="btnSaveContent" type="submit" class="btn btn-success" onclick="$('#designActionType').val('clearcache'); $('#designContent').val(editor.getValue());"><i class="fa fa-repeat"></i> <span>Clear cache</span></button>
+
+                    </form>
+
+
+                    <hr style="margin: 5px;" />
+                    <div id="pageEditor" ondragover="allowDrop(event)" ondrop="drop(event)">@Model.CurrentViewContent</div>
+                </div>
+
+                <div class="tab-pane fade @(Model.CurrentTab == "settings" ? "active in" : "")" id="pageSettings">
+                    @Html.Partial("_PageSettings")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section RightSideBar
+{
+    <!-- begin #sidebar-right -->
+    <div id="sidebar-right" class="sidebar sidebar-right">
+        <!-- begin sidebar scrollbar -->
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+            <div data-scrollbar="true" data-height="100%" data-init="true" style="overflow: hidden; width: auto; height: 100%;">
+                <!-- begin sidebar user -->
+                <ul class="nav m-t-10">
+                    <li class="nav-widget">
+                        <h4 class="text-info">Page Design Tools</h4>
+                    </li>
+                </ul>
+                <div class="panel-group m-b-0" id="accordion">
+                    @if (Model.DesignComponets != null && Model.DesignComponets.ComponentGroups != null)
+                    {
+                        foreach (var group in Model.DesignComponets.ComponentGroups)
+                        {
+                            bool groupExapnd = (settings != null && settings.CurrentDesignGroup == group.Name);
+                            <div class="panel panel-inverse">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        <a class="accordion-toggle accordion-toggle-styled design-group-header-click @(groupExapnd ? "" : "collapsed")" data-toggle="collapse" data-parent="#accordion" href="#tab@(group.Name)" data-group-name="@group.Name" aria-expanded="@(groupExapnd ? "true" : "false")">
+                                            <i class="fa fa-plus-circle pull-right text-success"></i>
+                                            @group.DisplayName
+                                        </a>
+                                    </h3>
+                                </div>
+                                <div id="tab@(group.Name)" class="panel-collapse collapse @(groupExapnd ? "in" : "")" aria-expanded="@(groupExapnd ? "true" : "false")" @(groupExapnd ? "" : "style='height: 0px;'")>
+                                    <div class="panel-body @((group.Components != null && group.Components.Count > 0)?"design-panel-container":"")">
+                                        @if (group.Components != null && group.Components.Count > 0)
+                                        {
+                                            <ul class="design-panel-tools">
+                                                @foreach (var component in group.Components)
+                                                {
+                                                    <li id="@component.Name" class="bg-aqua-lighter" onmouseover="$(this).attr('class', 'bg-aqua')" onmouseout="$(this).attr('class', 'bg-aqua-lighter')"
+                                                        draggable="true" ondragstart="drag(event)" data-show-dialog="@(component.HasDialog ? "true" : "false")" data-use-ckeditor="@(component.HasCKEditor ? "true" : "false")"
+                                                        data-content-field-id="@component.ContentHolderFieldId" data-content-title="@component.DisplayName" title="@component.Description" data-content-tag-name="@component.ContainerTag" data-content-css-class="@component.MainCss"
+                                                        data-content-before="@component.ContentBefore" data-content-after="@component.ContentAfter" data-content-name="@component.Name">
+                                                        <i class="@component.IconCss"></i> @component.DisplayName
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            @group.Description
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <!-- end sidebar user -->
+            </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 920px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+        </div>
+        <!-- end sidebar scrollbar -->
+    </div>
+    <div class="sidebar-bg sidebar-right"></div>
+    <!-- end #sidebar-right -->
+}
+
+<!-- Settings Modal -->
+<div class="modal fade" id="dropSettingsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="text" style="width:0px;height:0px;position:absolute;left:10px;top:10px;z-index:-10;" id="FocusControl" /><button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title" id="exampleModalLabel" style="font-weight:bolder;">Modal title</h5>
+            </div>
+            <div class="modal-body">
+                @if (Model.DesignComponets != null && Model.DesignComponets.ComponentGroups != null)
+                {
+                    foreach (var group in Model.DesignComponets.ComponentGroups)
+                    {
+                        if (group.Components != null && group.Components.Count > 0)
+                        {
+                            foreach (var component in group.Components)
+                            {
+                                <div style="display:none" class="component-settings-container" id="div@(component.Name)">@Html.Raw(component.DialogContent)</div>
+                            }
+                        }
+                    }
+                }
+            </div>
+            <input type="hidden" id="dismisResult" value="-1" />
+            <input type="hidden" id="dropElementData" value="" />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCloseSettingsModal">@Resources.UIText_Cancel</button>
+                <button type="button" class="btn btn-success" id="btnSaveSettingsModal">Insert</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action parameters display modal -->
+<div class="modal fade" id="actionParametersDisplayModal" tabindex="-1" role="dialog" aria-labelledby="actionParametersDisplayLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="text" style="width:0px;height:0px;position:absolute;left:10px;top:10px;z-index:-10;" id="FocusControl" /><button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title" id="actionParametersDisplayLabel" style="font-weight:bolder;">Action Parameters</h5>
+            </div>
+            <div class="modal-body">
+                <div id="ActionParametersContent" style="display:none;"></div>
+                <div id="ActionParametersEdit" style="display:none;">
+                    <textarea id="ActionParametersJson" class="form-control" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.UIText_Cancel</button>
+                <button type="button" class="btn btn-success" id="btnSaveParamsModal" style="display:none;">@Resources.UIText_Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+    @Html.Raw(areasJsArray)
+    @Html.Raw(ctrlsJsArray)
+    @Html.Raw(actionsJsArray)
+
+    var jsonTreeData = JSON.parse('@Html.Raw(ViewBag.TreeViewJsonData)');
+
+    var insertText = ' ';
+    var editor = ace.edit("pageEditor");
+    editor.setTheme("ace/theme/chrome");
+    editor.getSession().setMode("ace/mode/razor");
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        var targetId = ev.target.id;
+        var jsonData =
+        {
+            id: targetId,
+            showDialog: $('#' + targetId).attr("data-show-dialog"),
+            contentFieldId: $('#' + targetId).attr("data-content-field-id"),
+            useCKEditor: $('#' + targetId).attr("data-use-ckeditor"),
+            tagName: $('#' + targetId).attr("data-content-tag-name"),
+            cssClass: $('#' + targetId).attr("data-content-css-class"),
+            contentBefore: $('#' + targetId).attr("data-content-before"),
+            contentAfter: $('#' + targetId).attr("data-content-after"),
+            controlName: $('#' + targetId).attr("data-content-name")
+        };
+        if (jsonData.showDialog == "true")
+        {
+            $("#exampleModalLabel").text($('#' + targetId).attr("data-content-title"));
+            ev.dataTransfer.setData("text", insertText);
+            ev.dataTransfer.setData("text/json", JSON.stringify(jsonData));
+        }
+        else
+        {
+            ev.dataTransfer.setData("text", $("#div" + jsonData.id).html());
+            ev.dataTransfer.setData("text/json", JSON.stringify(jsonData));
+        }
+
+        ev.dataTransfer.effectAllowed = "copy";
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+
+        var textData = ev.dataTransfer.getData("text/json");
+        var jsonData = JSON.parse(textData);
+        if (jsonData.showDialog == "true") {
+            $("#dropElementData").val(textData);
+            $(".component-settings-container").hide();
+            $("#div" + jsonData.id).show();
+            $("#dropSettingsModal").modal({
+                "backdrop": "static",
+                "keyboard": true,
+                "show": true
+            });
+        }
+        else {
+            //AJAX call to save recently used control
+            CallUpdatePageSettings(null, null, null, jsonData.controlName);
+        }
+    }
+
+    $(document).ready(function () {
+
+        var showSideBar = "@(Model.CurrentTab == "design" && settings.ShowDesignPane)";
+        TogleDesignPane(showSideBar == "True");
+
+        $(document).savekey({
+            submit_button_id: "btnSaveContent"
+        });
+
+        $(document).savekey({
+            submit_button_id: "btnSaveSettings"
+        });
+
+        $("#btnCloseSettingsModal").click(function (e) {
+            editor.insert("");
+            $("#dismisResult").val("cancel");
+            $("#dropSettingsModal").modal('hide');
+        });
+
+        $("#btnSaveSettingsModal").click(function (e) {
+            var data = JSON.parse($("#dropElementData").val());
+            var text = "";
+            console.log(data);
+            if (data.useCKEditor == "true") {
+                //text = CKEDITOR.instances[data.contentFieldId].getData();
+                //CKEDITOR.instances[data.contentFieldId].setData("");
+                text = tinymce.get(data.contentFieldId).getContent();
+            }
+            else {
+                text = $("#" + data.contentFieldId).val();
+            }
+
+            if (data.tagName != "") {
+                text = '@@using(Html.BeginControl("' + data.controlName + '", null, null, "' + data.tagName + '", "' + data.cssClass + '", null)){\n' + text;
+
+                text += "}\n";
+            }
+            if (data.contentBefore != "") {
+                text = data.contentBefore + "\n" + text;
+            }
+            if (data.contentAfter != "") {
+                text = text + "\n" + data.contentAfter;
+            }
+            editor.insert(text);
+
+            $("#dismisResult").val("save");
+            $("#dropSettingsModal").modal('hide');
+
+            //AJAX call to save recently used control
+            CallUpdatePageSettings(null, null, null, data.controlName);
+        });
+
+        $("#dropSettingsModal").on("show.bs.modal", function () {
+            $("#dismisResult").val("-1");
+        });
+
+        $("#dropSettingsModal").on("hide.bs.modal", function () {
+            // if Esc button clicked
+            if ($("#dismisResult").val() == "-1")
+            {
+                editor.insert("");
+            }
+        });
+
+        // page settings scripts run
+        PopulateAreasDropDown();
+        PopulateControllersDropDown();
+        PopulateActionsDropDown();
+
+        $('#CurrentNode_Content_Area').change(function () {
+            PopulateControllersDropDown();
+            PopulateActionsDropDown();
+
+            var namespace = $('option:selected', $('#CurrentNode_Content_Controller')).attr('data-namespace');
+            $("#CurrentNode_Content_NameSpaces").val(namespace);
+        });
+
+        $('#CurrentNode_Content_Controller').change(function () {
+            PopulateActionsDropDown();
+            var namespace = $('option:selected', this).attr('data-namespace');
+            $("#CurrentNode_Content_NameSpaces").val(namespace);
+        });
+
+        ToggleMvcRouteGroups($("#CurrentNode_Content_NavigationType").val());
+        $("#CurrentNode_Content_NavigationType").change(function () {
+            ToggleMvcRouteGroups($(this).val());
+        });
+
+        $(".tab-click-header").click(function () {
+            var tabName = $(this).attr("data-tab-name");
+            var showDesignPane = "@(settings != null && settings.ShowDesignPane)";
+            TogleDesignPane(showDesignPane == "True" && tabName == "design");
+
+            //AJAX call to update page settings
+            CallUpdatePageSettings(tabName);
+        });
+
+        $(".setting-pane-click-header").click(function () {
+            //AJAX call to update page settings
+            CallUpdatePageSettings(null, null, $(this).attr("data-pane-name"));
+        });
+
+        $(".design-group-header-click").click(function () {
+            //AJAX call to update page settings
+            CallUpdatePageSettings(null, $(this).attr("data-group-name"));
+        });
+
+        $(".right-sidebar-header-click").click(function () {
+            //AJAX call to update page settings
+            var showSideBar = !($('#page-container').hasClass('page-right-sidebar-collapsed'));
+            CallUpdatePageSettings(null, null, null, null, showSideBar);
+        });
+
+        $("#btnSaveParamsModal").click(function () {
+            $("#actionParametersDisplayModal").modal('hide');
+            UpdateActionParametersValues($("#ActionParametersJson").val());
+        });
+
+
+        //Init tree view here
+        handleCMSJsTree();
+    });
+
+    function TogleDesignPane(showSideBar) {
+        if (showSideBar) {
+            $('#page-container').removeClass('page-right-sidebar-collapsed');
+        } else {
+            $('#page-container').addClass('page-right-sidebar-collapsed');
+        }
+    }
+
+    function CallUpdatePageSettings(pageTab, designGroup, settingsPane, controlUsed, showDesignPane) {
+        var updateParams = {
+            "nodeId": parseInt("@currentContentNodeId"),
+            "viewId": parseInt("@currentContentViewId"),
+            "pageTab": pageTab,
+            "designGroup": designGroup,
+            "settingsPane": settingsPane,
+            "controlUsed": controlUsed,
+            "showDesignPane": showDesignPane
+        };
+        var bearerToken = "@authContext.BearrerToken";
+        var callUrl = '/api/DesignPageSettings';
+        $.ajax({
+            type: "PUT",
+            url: callUrl,
+            data: JSON.stringify(updateParams),
+            contentType: "application/json",
+            beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + bearerToken); },
+            success: function (result) {
+                if (!result.Success) {
+                    console.log('Failed');
+                }
+            },
+            error: function (xhr) {
+                console.log('Exception: ' + xhr.responseText);
+            }
+        });
+    }
+
+    function ToggleMvcRouteGroups(navType)
+    {
+        if (navType != "2" && navType != "MvcRoute")
+        {
+            $(".mvc-route").hide();
+        }
+        else
+        {
+            $(".mvc-route").show();
+        }
+    }
+
+    function PopulateAreasDropDown()
+    {
+        var $select = $('#CurrentNode_Content_Area');
+        $select.empty();
+
+        for (var i = 0; i < arrAreas.length; i++)
+        {
+            var o = $('<option/>', { value: arrAreas[i].Area })
+                .text(arrAreas[i].Area)
+                .prop('selected', arrAreas[i].Selected);
+            o.appendTo($select);
+        }
+    }
+
+    function PopulateControllersDropDown() {
+        var currArea = $('#CurrentNode_Content_Area').val();
+        var $select = $('#CurrentNode_Content_Controller');
+        $select.empty();
+
+        var d = $('<option/>').text('@Resources.UIText_DropDown_SelectOption');
+        d.appendTo($select);
+
+        for (var i = 0; i < arrControllers.length; i++) {
+            if (arrControllers[i].Area == currArea)
+            {
+                var o = $('<option/>', { value: arrControllers[i].Controller })
+                .text(arrControllers[i].Controller)
+                .prop('selected', arrControllers[i].Selected)
+                .attr('data-namespace', arrControllers[i].Namespace);
+                o.appendTo($select);
+            }
+        }
+    }
+
+    function PopulateActionsDropDown() {
+        var currArea = $('#CurrentNode_Content_Area').val();
+        var currController = $('#CurrentNode_Content_Controller').val();
+        var $select = $('#CurrentNode_Content_Action');
+        $select.empty();
+
+        var d = $('<option/>').text('@Resources.UIText_DropDown_SelectOption');
+        d.appendTo($select);
+
+        for (var i = 0; i < arrActions.length; i++) {
+            if (arrActions[i].Area == currArea && arrActions[i].Controller == currController)
+            {
+                var o = $('<option/>', { value: arrActions[i].Action })
+                .text(arrActions[i].Action)
+                .prop('selected', arrActions[i].Selected);
+                o.appendTo($select);
+            }
+        }
+    }
+
+    function ShowActionParametersValues(action, values) {
+        if (action) {
+            $("#actionParametersDisplayLabel").text(action + " Parameters");
+        }
+        else {
+            $("#actionParametersDisplayLabel").text("Action Parameters");
+        }
+        $("#btnSaveParamsModal").hide();
+        $("#ActionParametersEdit").hide();
+        $("#ActionParametersContent").show();
+        $("#ActionParametersContent").text(values);
+        $("#actionParametersDisplayModal").modal({
+            "backdrop": "static",
+            "keyboard": true,
+            "show": true
+        });
+    }
+
+    function GetActionParametersValues(action, nodeId) {
+        var bearerToken = "@authContext.BearrerToken";
+        var callUrl = '/api/EditActionParametersValues?nodeId=' + nodeId;
+        if (action) {
+            $("#actionParametersDisplayLabel").text(action + " Parameters");
+        }
+        else {
+            $("#actionParametersDisplayLabel").text("Action Parameters");
+        }
+        $.ajax({
+            type: "GET",
+            url: callUrl,
+            contentType: "application/json",
+            beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + bearerToken); },
+            success: function (result) {
+                console.log(result);
+                if (!result.Success) {
+                    console.log('Failed');
+                }
+                else
+                {
+                    $("#ActionParametersContent").hide();
+                    $("#btnSaveParamsModal").show();
+                    $("#ActionParametersEdit").show();
+                    $("#ActionParametersJson").val(result.ParametersValuesJson);
+                    $("#actionParametersDisplayModal").modal({
+                        "backdrop": "static",
+                        "keyboard": true,
+                        "show": true
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.log('Exception: ' + xhr.responseText);
+            }
+        });
+    }
+
+    function UpdateActionParametersValues(paramsJson) {
+        var nodeId = parseInt("@currentContentNodeId");
+        var bearerToken = "@authContext.BearrerToken";
+        var callUrl = '/api/EditActionParametersValues?nodeId=' + nodeId;
+        var updateParams = {
+            "nodeId": nodeId,
+            "actionParametersJson": paramsJson
+        };
+        $.ajax({
+            type: "PUT",
+            url: callUrl,
+            contentType: "application/json",
+            data: JSON.stringify(updateParams),
+            beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + bearerToken); },
+            success: function (result) {
+                console.log(result);
+                if (!result.Success) {
+                    console.log('UpdateActionParametersValues Failed.');
+                }
+                else {
+                    console.log("Updated actions parameters values in DB.");
+                }
+            },
+            error: function (xhr) {
+                console.log('Exception: ' + xhr.responseText);
+            }
+        });
+        }
+
+    var handleCMSJsTree = function () {
+        $('#jstree-cms2').jstree({
+            "core": {
+                "check_callback": true,
+                "themes": {
+                    "responsive": true
+                },
+                "data": jsonTreeData                
+            },
+            "contextmenu": {
+                "items": function (node) {
+                    var tmp = $.jstree.defaults.contextmenu.items();
+                    delete tmp.create.action;
+                    delete tmp.remove.action;
+                    delete tmp.rename.action;
+                    delete tmp.ccp;
+                    tmp.create.label = "New Page";
+                    tmp.create.action = function (data) {
+                        var inst = $.jstree.reference(data.reference),
+                            obj = inst.get_node(data.reference);
+                        var newNodeId = inst.create_node(obj, "New Page", "last", function (new_node) {
+                            setTimeout(function () { inst.edit(new_node); }, 0);
+                        });
+                        console.log(newNodeId);
+                    };
+
+                    tmp.rename.action = function (data) {
+                        console.log(data);
+                        var inst = $.jstree.reference(data.reference),
+                            obj = inst.get_node(data.reference);
+                        inst.edit(obj);
+                    };
+
+                    tmp.remove.action = function (data) {
+                        console.log(data);
+                        BapConfirm('Are you sure to delete this page?', data.item.label, data, function (thisData) {
+                            $('#actionType').val('delete');
+                            $('#PageActionForm').submit();
+                        });
+                    };
+
+                    return tmp;
+                }
+            },
+            "types": {
+                "default": {
+                    "icon": "fa fa-folder text-warning fa-lg"
+                },
+                "file": {
+                    "icon": "fa fa-file text-inverse fa-lg"
+                }
+            },
+            "plugins": ["contextmenu", "types", "wholerow"]
+        });
+
+        $('#jstree-cms2').on('select_node.jstree', function (e, data) {
+            var link = $('#' + data.selected).find('a');
+            if (link.attr("href") != "#" && link.attr("href") != "javascript:;" && link.attr("href") != "") {
+                if (link.attr("target") === "_blank") {
+                    link.attr("href").target = "_blank";
+                }
+                document.location.href = link.attr("href");
+                return false;
+            }
+        });       
+
+        $("#jstree-cms2").on("rename_node.jstree", function (e, data) {
+            console.log('Rename');
+            console.log(data);
+            $("#newPageName").val(data.text);
+            if (data.old === "New Page") {
+                $('#actionType').val('create');
+            }
+            else {
+                $('#actionType').val('rename');
+            }
+            $('#PageActionForm').submit();
+        });
+    }
+    
+    </script>
+
+    @if (Model.DesignComponets != null && Model.DesignComponets.ComponentGroups != null)
+    {
+        foreach (var group in Model.DesignComponets.ComponentGroups)
+        {
+            if (group.Components != null && group.Components.Count > 0)
+            {
+                foreach (var component in group.Components)
+                {
+                    if (!string.IsNullOrEmpty(component.JavaScriptContent))
+                    {
+                        <!--Begin of @component.Name javascript-->
+                        @Html.Raw(component.JavaScriptContent)
+                        <!--End of @component.Name javascript-->
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,77 @@
+﻿@using System.Threading
+@using BAP.Common
+@using BAP.Resources
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+
+@{
+    var fLng = Thread.CurrentThread.CurrentCulture.Name;
+    var country = fLng.Split("-".ToCharArray())[1];
+
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = null;
+    if(authContext != null)
+    {
+        currOrg = authContext.GetCurrentOrganization(config);
+    }
+
+    var contactEmail = Resources.UIText_ContactEmail;
+    var logoText = Resources.UIText_ApplicationLogo;
+    var logoImage = "/img/home_medium.ico";
+    var facebookUrl = "";
+    var twitterUrl = "";
+    var linkedinUrl = "";
+    var googleplusUrl = "";
+    var instagramUrl = "";
+    if (currOrg != null)
+    {
+        if (!string.IsNullOrEmpty(currOrg.ContactEmail))
+        {
+            contactEmail = currOrg.ContactEmail;
+        }
+
+        if (!string.IsNullOrEmpty(currOrg.Name))
+        {
+            logoText = currOrg.Name;
+        }
+
+        if (!string.IsNullOrEmpty(currOrg.LogoPathUrl))
+        {
+            logoImage = currOrg.LogoPathUrl;
+        }
+
+        facebookUrl = currOrg.FacebookUrl;
+        twitterUrl = currOrg.TwitterUrl;
+        linkedinUrl = currOrg.LinkedinUrl;
+        googleplusUrl = currOrg.GoogleplusUrl;
+        instagramUrl = currOrg.InstagramUrl;
+    }
+}
+
+
+<!-- begin #header -->
+<div id="header" class="header navbar navbar-transparent navbar-fixed-top">
+    <!-- begin container -->
+    <div class="container">
+        <!-- begin navbar-header -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="@Url.Action("Index", "Home", new { Area = "" })" class="navbar-brand">
+                <span class="brand-logo"></span>
+                <span class="brand-text">
+                    <span class="text-theme">@logoText</span>
+                </span>
+            </a>            
+        </div>
+        <!-- end navbar-header -->
+        @Html.Partial("_TopMenuPartial")        
+
+    </div>
+    <!-- end container -->
+</div>
+<!-- end #header -->

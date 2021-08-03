@@ -1,0 +1,100 @@
+﻿@using BAP.Resources;
+@using BAP.Web.Areas.Administration.Controllers;
+@model BAP.Web.Areas.Administration.Models.BAPCustomConfigurationData
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = Resources.EntityLabel_CustomConfiguration;
+    ViewBag.SideBarMinified = true;
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">@ViewBag.Title</h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <!--Begin Tree View Panel-->
+    <div class="col-md-4 ui-sortable">
+        <div class="panel panel-inverse" data-sortable-id="tree-view-1" style="min-height:80vh;">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">@Resources.UIText_Assemblies_Classes</h4>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <div id="jstree-default" class="jstree jstree-1 jstree-default" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="j1_10" aria-busy="false">
+                        @Html.CustomConfigurationTreeView(Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End of Tree View Panel-->
+    <div class="col-md-8  ui-sortable">
+        <div class="panel panel-default panel-with-tabs" style="min-height:80vh;">
+            <div class="panel-heading">
+                <ul id="myTab" class="nav nav-tabs pull-left">
+                    <li class="@(Model.CurrentTab == "defaultConfiguration" || string.IsNullOrEmpty(Model.CurrentTab) ? "active" : "")">
+                        <a class="tab-click-header" href="#defaultConfiguration" data-tab-name="defaultConfiguration" data-toggle="tab" aria-expanded="@(Model.CurrentTab == "defaultConfiguration" ? "true" : "false")">
+                            <i class="fa fa-building"></i> <span class="hidden-xs">@Resources.FieldLabel_CustomConfiguration_DefaultConfiguration</span>
+                        </a>
+                    </li>
+                    <li class="@(Model.CurrentTab == "currentConfiguration" && Model.CurrentNode != null ? "active" : "")">
+                        <a class="tab-click-header" href="#currentConfiguration" data-tab-name="currentConfiguration" data-toggle="tab" aria-expanded="@(Model.CurrentTab == "currentConfiguration" ? "true" : "false")">
+                            <i class="fa fa-university"></i> <span class="hidden-xs">@Resources.FieldLabel_CustomConfiguration_CurrentConfiguration</span>
+                        </a>
+                    </li>
+                </ul>
+                <h4 class="panel-title">&nbsp;</h4>
+            </div>
+            <div id="myTabContent" class="tab-content">
+                <div>
+                    <button type="submit" class="btn btn-default btn-default btn-success" style="margin-bottom: 10px" onclick="updateConfiguration()" title="@Resources.UIText_Save"><i class="fa fa-floppy-o"></i> @Resources.UIText_Save</button>
+                </div>
+                <div class="tab-pane fade @(Model.CurrentTab == "defaultConfiguration" || string.IsNullOrEmpty(Model.CurrentTab) ? "active in" : "")" id="defaultConfiguration">
+                    <div id="divDefaultConfiguration"></div>
+                </div>
+                <div class="tab-pane fade @(Model.CurrentTab == "currentConfiguration" || string.IsNullOrEmpty(Model.CurrentTab) ? "active in" : "")" id="currentConfiguration">
+                    <div id="divCurrentConfiguration"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+</div>
+
+@section scripts
+{
+    <script>
+        const options = {
+            disable_array_add: true,
+            disable_array_delete: true,
+            disable_array_reorder: true,
+            disable_collapse: true,
+            disable_edit_json: true,
+            no_additional_properties: true
+        };
+        const containerDefaultConfiguration = document.getElementById("divDefaultConfiguration");
+        const editorDefaultConfiguration = new JSONEditor(containerDefaultConfiguration, options);
+        editorDefaultConfiguration.set(@Html.Raw(Model.CurrentNode.DefaultConfiguration));
+
+        const containerCurrentConfiguration = document.getElementById("divCurrentConfiguration");
+        const editorCurrentConfiguration = new JSONEditor(containerCurrentConfiguration, options);
+        editorCurrentConfiguration.set(@Html.Raw(Model.CurrentNode.CurrentConfiguration));
+
+        function updateConfiguration() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateConfiguration")",
+                data: {
+                    "id": @Model.CurrentNode.NodeId,
+                    "currentConfiguration": JSON.stringify(editorCurrentConfiguration.get())
+                },
+                success: function (response) {
+                    alert("@Resources.UIText_CustomConfiguration_Saved");
+                }
+            });
+        }
+    </script>
+}

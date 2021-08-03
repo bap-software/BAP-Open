@@ -1,0 +1,81 @@
+﻿@using BAP.Lookups
+@model BAP.DAL.Entities.BlogPost
+
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.Blog.Name)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Blog.Name)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Title)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Title)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ShortDescription)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ShortDescription)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Text)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Text)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.MainImageUrl)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.MainImageUrl)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.CreateDate)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.CreateDate)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.LastModifiedDate)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.LastModifiedDate)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.CreatedByUserName)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.CreatedByUserName)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.LastModifiedByUserName)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.LastModifiedByUserName)
+    </dd>
+
+</dl>

@@ -1,0 +1,192 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.BlogPost
+
+@{
+    ViewBag.Title = Resources.UIText_Details;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var comentCount = 0;
+    if (Model.BlogComments != null)
+    {
+        comentCount = Model.BlogComments.Count;
+    }
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>@Model.Blog.Name</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })">Home</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Blogs", new { Area = "Content" })">Blogs</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Details", "Blogs", new { Area = "Content", Id = Model.Blog.Id })">@Model.Blog.Name</a>                    
+                    </li>
+                    <li class="active">@Model.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix blogPage singleBlog">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-8 col-md-push-3 col-sm-push-4 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="thumbnail">
+                            <img src="@Model.MainImageUrl" alt="blog-image">
+                            <div class="caption">
+                                <div class="row">
+                                    <div class="col-md-3 col-md-push-9 col-sm-4 col-sm-push-8 col-xs-12">
+                                        <h5>@Resources.UIText_Details</h5>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-user" aria-hidden="true"></i>@Model.Blog.BlogAuthor.NickName</li>
+                                            <li><i class="fa fa-calendar" aria-hidden="true"></i>@Model.CreateDate.Value.ToString("MMM") @Model.CreateDate.Value.Day, @Model.CreateDate.Value.Year</li>
+                                            <li><i class="fa fa-tags" aria-hidden="true"></i>@Model.Blog.Tags</li>
+                                            <li><i class="fa fa-envelope" aria-hidden="true"></i>@comentCount</li>
+                                        </ul>
+                                        <h5>Share</h5>
+                                        <ul class="list-inline">
+                                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-tumblr" aria-hidden="true"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-9 col-md-pull-3 col-sm-8 col-sm-pull-4 col-xs-12">
+                                        <h3>@Model.Title</h3>
+                                        <h4>@Model.ShortDescription</h4>
+                                        <div style="text-align:justify;">@Html.Raw(Model.Text)</div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="pager">
+                                <li class="previous"><a href="#">previous</a></li>
+                                <li class="next"><a href="#">next</a></li>
+                            </ul>
+                            <div class="commentsArea">
+                                <h3>4 Comments</h3>
+                                <div class="media">
+                                    <a class="media-left" href="#">
+                                        <img class="media-object" src="/Content/Themes/Base/img/blog/avatar.jpg" alt="Image">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Jessica Brown </h4>
+                                        <h4><span><i class="fa fa-calendar" aria-hidden="true"></i>Mar 20, 2016</span></h4>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+                                        <button class="btn btn-link" type="submit">Reply</button>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <a class="media-left" href="#">
+                                        <img class="media-object" src="/Content/Themes/Base/img/blog/avatar.jpg" alt="Image">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Jessica Brown </h4>
+                                        <h4><span><i class="fa fa-calendar" aria-hidden="true"></i>Mar 20, 2016</span></h4>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+                                        <button class="btn btn-link" type="submit">Reply</button>
+                                        <div class="media">
+                                            <a class="media-left" href="#">
+                                                <img class="media-object" src="/Content/Themes/Base/img/blog/avatar.jpg" alt="Image">
+                                            </a>
+                                            <div class="media-body">
+                                                <h4 class="media-heading">Jessica Brown </h4>
+                                                <h4><span><i class="fa fa-calendar" aria-hidden="true"></i>Mar 20, 2016</span></h4>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+                                                <button class="btn btn-link" type="submit">Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="media">
+                                    <a class="media-left" href="#">
+                                        <img class="media-object" src="/Content/Themes/Base/img/blog/avatar.jpg" alt="Image">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Jessica Brown </h4>
+                                        <h4><span><i class="fa fa-calendar" aria-hidden="true"></i>Mar 20, 2016</span></h4>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+                                        <button class="btn btn-link" type="submit">Reply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form action="" method="POST" role="form" class="commentsForm">
+                            <h3>Leave Comments</h3>
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="" placeholder="Website">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3" placeholder="Comment"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <button type="submit" class="btn btn-primary">post comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4 col-md-pull-9 col-sm-pull-8 col-xs-12 sideBar">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2">
+                    <a href="#" class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></a>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">categories</div>
+                    <div class="panel-body">
+                        <ul class="list-unstyle sidebar-list">
+                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>Product <span>(1)</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default recentBlogPosts">
+                    <div class="panel-heading">recent posts</div>
+                    <div class="panel-body">
+                        <div class="media">
+                            <a class="media-left" href="blog-single-right-sidebar.html">
+                                <img class="media-object" src="/Content/Themes/Base/img/blog/blog-small-06.jpg" alt="Image">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="blog-single-right-sidebar.html">How It Was Invented.</a></h4>
+                                <p><i class="fa fa-calendar" aria-hidden="true"></i>Jan 13, 2017</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

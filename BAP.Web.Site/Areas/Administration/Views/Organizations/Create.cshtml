@@ -1,0 +1,36 @@
+﻿@using BAP.Resources
+@using BAP.eCommerce.Resources
+@model BAP.DAL.Entities.Organization
+@{
+    ViewBag.Title = Resources.UIText_Create;
+}
+
+<section class="featured-section edit">
+    <!-- category image -->
+    <div class="container">
+        <div class="wrap clearfix">
+            <h1 class="page-title"><span>@ViewBag.Title @Resources.EntityLabel_Organization</span></h1> <!-- category title -->
+            <p>
+                <a href="javascript:window.print()"><i class="fa fa-print"></i> @Resources.UIText_Print</a> |
+                <span class="add-to-fav"><a href="#"><i class="fa fa-star"></i> @Resources.UIText_AddToFavorites</a></span> <!-- go to add to favorites page, if not logged go to login page -->
+            </p>
+        </div>
+    </div>
+</section>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Partial("_EditFields")
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Resources.UIText_Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+

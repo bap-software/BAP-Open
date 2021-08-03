@@ -1,0 +1,19 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.BlogPost
+
+@{
+    ViewBag.Title = Resources.UIText_Delete;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>@Resources.UIText_SureToDelete @(Resources.EntityLabel_BlogPost)?</h3>
+<div>    	
+	@Html.Partial("_ReadOnlyFields")
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="@Resources.UIText_Delete" class="btn btn-default btn-primary" />
+        </div>
+    }
+</div>

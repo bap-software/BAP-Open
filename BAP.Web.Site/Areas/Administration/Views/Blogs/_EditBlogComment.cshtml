@@ -1,0 +1,55 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.BlogComment
+@{
+    ViewBag.Title = Resources.UIText_Edit;
+}
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>
+
+<div id="BlogCommentEditModal@(Model.Id)" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-entity-select">
+        <!-- Modal content-->
+        <div class="modal-content">
+            @using (Html.BeginForm("Edit", "BlogComments", FormMethod.Post, new { id = "editBlogComment" + Model.Id, enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="ModalTitle">@Resources.UIText_Edit @Resources.EntityLabel_BlogComment</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <!-- begin col-12 -->
+                        <div class="col-md-12">
+                            <div class="panel-body panel-form">
+                                <div class="form-horizontal form-bordered" data-parsley-validate="true" name="post-form" novalidate>
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.TenantUnit)
+                                    @Html.HiddenFor(model => model.TenantUnitId)
+                                    @Html.HiddenFor(model => model.BlogId)
+                                    @Html.HiddenFor(model => model.CreateDate)
+                                    @Html.HiddenFor(model => model.CreatedBy)
+                                    @Html.HiddenFor(model => model.LastModifiedDate)
+                                    @Html.HiddenFor(model => model.LastModifiedBy)
+                                    @Html.HiddenFor(model => model.TimeStamp)
+                                    @Html.HiddenFor(model => model.OwnerGroup)
+                                    @Html.HiddenFor(model => model.OwnerPermissions)
+                                    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+
+                                    @Html.Partial("_EditBlogCommentFields")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="@Resources.UIText_Save" class="btn btn-default btn-success" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.UIText_Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

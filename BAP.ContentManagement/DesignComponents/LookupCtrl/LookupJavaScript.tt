@@ -1,0 +1,39 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<script type="text/javascript">
+    var lookupContent = '<#= LookupContent #>';
+	$("#hdnLookupContent").val(lookupContent);
+	setLookupValues();
+
+	function setLookupValues()
+	{
+		var type = $("#lookupType").val();
+		var name = $("#lookupName").val();
+		var value = $("#lookupValue").val();
+		var temp = lookupContent;
+		temp = temp.replace(/<%0%>/g, type);
+		temp = temp.replace(/<%1%>/g, name);
+		temp = temp.replace(/<%2%>/g, value);
+		$("#hdnLookupContent").val(temp);
+	}
+
+    $("#lookupType").change(function () {  
+        setLookupValues();
+    });	
+
+	$("#lookupName").change(function () {  
+        setLookupValues();
+    });	
+
+	$("#lookupValue").change(function () {  
+        setLookupValues();
+    });	
+</script>
+
+<#+
+public string LookupContent { get; set; }
+#>

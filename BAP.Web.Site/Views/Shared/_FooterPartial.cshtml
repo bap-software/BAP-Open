@@ -1,0 +1,60 @@
+﻿@{ Html.RenderAction("CookiesNotice", "Home"); }
+<!-- Page Footer-->
+<!-- Default footer-->
+<footer class="section-relative section-top-66 section-bottom-34 page-footer bg-gray-base context-dark">
+    <div class="shell">
+        <div class="range range-sm-center text-lg-left">
+            <div class="cell-sm-8 cell-md-12">
+                <div class="range range-xs-center">
+                    <div class="cell-xs-7 text-xs-left cell-md-4 cell-lg-3 cell-lg-push-4">
+                        @{ Html.RenderAction("ServicesList", "Home", new { area = "" }); }
+                    </div>
+                    <div class="cell-xs-5 offset-top-41 offset-xs-top-0 text-xs-left cell-md-3 cell-lg-2 cell-lg-push-3">
+                        <h6 class="text-uppercase text-spacing-60">Useful Links</h6>
+                        <div class="reveal-block">
+                            <div class="reveal-inline-block">
+                                <ul class="list list-marked">
+                                    <li><a href="/about">About Us</a></li>
+                                    <li><a href="/services">Services</a></li>
+                                    <li><a href="/contact">Contact</a></li>
+                                    <li><a href="/pricing">Pricing</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cell-xs-12 offset-top-41 cell-md-5 offset-md-top-0 text-md-left cell-lg-4 cell-lg-push-2">
+                        <h6 class="text-uppercase text-spacing-60">Newsletter</h6>
+                        <p>Keep up with our always upcoming  product features  and technologies. Enter your e-mail and subscribe to  our newsletter.</p>
+                        <div class="offset-top-30">
+                            <form method="get" action="@Url.Action("RegisterSubscriber", "Home")">
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-addon"><span class="input-group-icon mdi mdi-email"></span></span>
+                                        <input placeholder="Type your E-Mail" type="email" name="email" id="email" class="form-control" required="required"><span class="input-group-btn">
+                                            <button type="submit" class="btn btn-sm btn-primary">Subscribe</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="cell-xs-12 offset-top-66 cell-lg-3 cell-lg-push-1 offset-lg-top-0">
+                        <a href="@Url.Action("Index")"><img style='margin-top: -5px;margin-left: -15px;' src='/Content/Themes/Base/images/bap/logo-light.png' alt='BAP Software' title="BAP Software" /></a>
+                        <!--p class="text-darker offset-top-4">Link to us</p-->
+                        <ul class="list-inline">
+                            <li><a href="https://www.facebook.com/bapsoftware/" class="icon fa fa-facebook icon-xxs icon-circle icon-darkest-filled" target="_blank"></a></li>
+                            <!--li><a href="#" class="icon fa fa-twitter icon-xxs icon-circle icon-darkest-filled"></a></li-->
+                            <li><a href="https://www.linkedin.com/company/bap-software" class="icon fa fa-linkedin icon-xxs icon-circle icon-darkest-filled" target="_blank"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shell offset-top-50">
+        <p class="small text-darker">
+            BAP Software &copy; <span id="copyright-year"></span> | <a href="/PrivacyPolicy">Privacy Policy</a>
+        </p>
+    </div>
+</footer>

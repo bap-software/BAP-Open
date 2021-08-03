@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7800B6DD-32E5-4296-84B7-E00A6CA80FE5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BAP.eCommerce.USPSShippingProvider</RootNamespace>
+    <AssemblyName>BAP.eCommerce.USPSShippingProvider</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
+    <OutputPath>bin\Dev\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Request\Address.cs" />
+    <Compile Include="Request\Package.cs" />
+    <Compile Include="Request\PackageWeight.cs" />
+    <Compile Include="Request\PackagingType.cs" />
+    <Compile Include="Request\RatedPackage.cs" />
+    <Compile Include="Request\RatedShipment.cs" />
+    <Compile Include="Request\Service.cs" />
+    <Compile Include="Request\ShipFrom.cs" />
+    <Compile Include="Request\ShipmentServiceOptions.cs" />
+    <Compile Include="Request\Shipper.cs" />
+    <Compile Include="Request\ShipTo.cs" />
+    <Compile Include="Request\TransactionReference.cs" />
+    <Compile Include="Request\UnitOfMeasure.cs" />
+    <Compile Include="Response\BillingWeight.cs" />
+    <Compile Include="Response\Charges.cs" />
+    <Compile Include="Response\RatingServiceSelectionResponse.cs" />
+    <Compile Include="Response\Response.cs" />
+    <Compile Include="Response\ServiceOptionsCharges.cs" />
+    <Compile Include="Response\TotalCharges.cs" />
+    <Compile Include="Response\TransportationCharges.cs" />
+    <Compile Include="UspsConfig.cs" />
+    <Compile Include="UspsProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Request\AccessRequest.cs" />
+    <Compile Include="Request\PickupType.cs" />
+    <Compile Include="Request\RatingServiceSelectionRequest.cs" />
+    <Compile Include="Request\Request.cs" />
+    <Compile Include="Utils\SerializationHelper.cs" />
+    <Compile Include="Request\Shipment.cs" />
+    <Compile Include="Utils\USPSRateRequest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BAP.BL\BAP.BL.csproj">
+      <Project>{3E43F6CA-8A8B-4944-8F62-0009B2492516}</Project>
+      <Name>BAP.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.eCommerce.Common\BAP.eCommerce.Common.csproj">
+      <Project>{4043dc50-6168-4e97-a29f-77126cf1f5ba}</Project>
+      <Name>BAP.eCommerce.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.DAL\BAP.DAL.csproj">
+      <Project>{FBBB9694-CF15-427A-9AB9-39CC0B6AEA7E}</Project>
+      <Name>BAP.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.eCommerce.BL\BAP.eCommerce.BL.csproj">
+      <Project>{9cb8055e-9fca-4358-9a83-0d322c6ff2ee}</Project>
+      <Name>BAP.eCommerce.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.eCommerce.DAL\BAP.eCommerce.DAL.csproj">
+      <Project>{84ced2c0-cec3-409c-9437-f4a5265f02ac}</Project>
+      <Name>BAP.eCommerce.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.Common\BAP.Common.csproj">
+      <Project>{01dcd4d5-fd00-4447-af2e-85b4c5fbd3f6}</Project>
+      <Name>BAP.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

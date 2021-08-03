@@ -1,0 +1,35 @@
+﻿
+<#+
+// Gets the related entity information for an association property where there is an associated foreign key property.
+// Note: ModelMetadata.RelatedEntities contains only the related entities associated through a foreign key property.
+
+RelatedModelMetadata GetRelatedModelMetadata(PropertyMetadata property, IDictionary<string, RelatedModelMetadata> relatedProperties){
+    RelatedModelMetadata propertyModel = null;
+    if(relatedProperties != null){
+        relatedProperties.TryGetValue(property.PropertyName, out propertyModel);
+    }    
+    return propertyModel;
+}
+
+// A foreign key, e.g. CategoryID, will have an association name of Category
+string GetAssociationName(PropertyMetadata property, IDictionary<string, RelatedModelMetadata> relatedProperties) {
+    RelatedModelMetadata propertyModel = GetRelatedModelMetadata(property, relatedProperties);
+    return propertyModel != null ? propertyModel.AssociationPropertyName : property.PropertyName;
+}
+
+// A foreign key, e.g. CategoryID, will have a value expression of Category.CategoryID
+string GetValueExpression(PropertyMetadata property, IDictionary<string, RelatedModelMetadata> relatedProperties) {
+    RelatedModelMetadata propertyModel = GetRelatedModelMetadata(property, relatedProperties);
+    return propertyModel != null ? propertyModel.AssociationPropertyName + "." + propertyModel.DisplayPropertyName : property.PropertyName;
+}
+
+// This will return the primary key property name, if and only if there is exactly
+// one primary key. Returns null if there is no PK, or the PK is composite.
+string GetPrimaryKeyName(Microsoft.AspNet.Scaffolding.Core.Metadata.PropertyMetadata[] primaryKeys) {
+    return (primaryKeys != null && primaryKeys.Count() >= 1) ? primaryKeys[0].PropertyName : null;
+}
+
+bool IsPropertyGuid(PropertyMetadata property) {
+    return String.Equals("System.Guid", property.TypeName, StringComparison.OrdinalIgnoreCase);
+}
+#>

@@ -1,0 +1,72 @@
+﻿@using BAP.eCommerce.Resources
+@model BAP.eCommerce.DAL.Entities.ShoppingCart
+@{
+    Layout = null;
+    var productCount = 0;
+    if (Model != null && Model.ShoppingCartProducts != null && Model.ShoppingCartProducts.Count > 0)
+    {
+        productCount = Model.ShoppingCartProducts.Count;
+    }
+}
+
+<a href="#" class="header-cart dropdown-toggle" data-toggle="dropdown">
+    <i class="fa fa-shopping-bag"></i>
+    <span class="total">@productCount</span>
+    <span class="arrow top"></span>
+</a>
+
+<div class="dropdown-menu dropdown-menu-cart p-0">
+    @if (Model != null && Model.ShoppingCartProducts != null && Model.ShoppingCartProducts.Count > 0)
+    {
+        <div class="cart-header">
+            <h4 class="cart-title">@String.Format(ResObject.UIText_ShoppingBagCount, @productCount)</h4>
+            <span class="cart-close">×</span>
+        </div>
+        <div class="cart-body">
+            <ul class="cart-item">
+                @foreach (var item in Model.ShoppingCartProducts)
+                {
+                    <li>
+                        <div class="cart-item-image"><img src="@item.Product.ImagePath" alt="@item.Product.Name" /></div>
+                        <div class="cart-item-info">
+                            <h4><a href="@Url.Action("Details", "Products", new { pid = item.Product.GetPublicId() })">@item.Product.Name</a></h4>
+                            <p class="price">@item.Count X @item.Product.Price</p>
+                        </div>
+                        <div class="cart-item-close">
+                            <a href="@Url.Action("RemoveFromCart", "ShoppingCarts", new {  Id = Model.Id, productId = item.Id})" data-toggle="tooltip" data-title="Remove">&times;</a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="cart-footer">
+            <div class="row row-space-10">
+                <div class="col-xs-6">
+                    <a href="@Url.Action("Details", "ShoppingCarts")" class="btn btn-default btn-block">@ResObject.UIText_ViewCart</a>
+                </div>
+                <div class="col-xs-6">
+                    <a href="@Url.Action("Checkout", "ShoppingCarts")" class="btn btn-inverse btn-block">@ResObject.UIText_Checkout</a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="cart-header">
+            <h4 class="cart-title">@ResObject.UIText_YourCartEmpty</h4>
+            <span class="cart-close">×</span>
+        </div>
+        <div class="cart-body">&nbsp;</div>
+        <div class="cart-footer">
+            <div class="row row-space-10">
+                <div class="col-xs-6">
+                    &nbsp;
+                </div>
+                <div class="col-xs-6">
+                    <a href="@Url.Action("Index", "Products")" class="btn btn-inverse btn-block">Go Shopping</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

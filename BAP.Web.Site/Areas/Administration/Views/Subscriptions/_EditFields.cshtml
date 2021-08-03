@@ -1,0 +1,74 @@
+﻿@using BAP.UI.HtmlHelpers
+@using BAP.Lookups
+@model BAP.DAL.Entities.Subscription
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.User, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @if (Model.Id == 0)
+        {
+            @Html.BapOrgUserDropDownFor(model => model.User, engine, "Id", "FullName", "", new { @class = "form-control" }, "UserId", null)
+            @Html.ValidationMessageFor(model => model.User.FullName, "", new { @class = "text-danger" })
+        }
+        else
+        {
+            @Html.EditorFor(model => model.User.FullName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        }
+
+    </div>
+    @Html.LabelFor(model => model.Organization, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.Organization.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.SubscriptionType, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.SubscriptionType, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SubscriptionType, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.InitialTerm, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.InitialTerm, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.InitialTerm, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.TermStart, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.BapDateFor(model => model.TermStart, new { @class = "form-control" }, StartDate.Today)
+        @Html.ValidationMessageFor(model => model.TermStart, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.TermEnd, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.BapDateFor(model => model.TermEnd, new { @class = "form-control" }, StartDate.Today)
+        @Html.ValidationMessageFor(model => model.TermEnd, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ContractDate, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.BapDateFor(model => model.ContractDate, new { @class = "form-control" }, StartDate.Today)
+        @Html.ValidationMessageFor(model => model.ContractDate, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.AutoRenew, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.AutoRenew, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.AutoRenew, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.RenewalTerm, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.RenewalTerm, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.RenewalTerm, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.SubTotal, new { @class = "control-label col-md-2 col-sm-2" })
+    <div class="col-md-3 col-sm-3">
+        @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SubTotal, "", new { @class = "text-danger" })
+    </div>
+</div>

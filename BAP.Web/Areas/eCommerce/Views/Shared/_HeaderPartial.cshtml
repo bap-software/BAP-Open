@@ -1,0 +1,152 @@
+﻿@using BAP.Common;
+@using BAP.Resources;
+@using BAP.eCommerce.Resources
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@{
+    var facebookUrl = "";
+    var twitterUrl = "";
+    var linkedinUrl = "";
+
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = null;
+    if (authContext != null)
+    {
+        currOrg = authContext.GetCurrentOrganization(config);
+    }
+
+    if (currOrg == null || authContext == null)
+    {
+        throw new Exception(Resources.UITtext_Error_UnknownOrganization);
+    }
+
+    var cultureHelper = new CultureHelper(currOrg.ImplementedCultures);
+    var currCountryCode = cultureHelper.GetCurrentCountryCode().ToLower();
+
+    facebookUrl = currOrg.FacebookUrl;
+    twitterUrl = currOrg.TwitterUrl;
+    linkedinUrl = currOrg.LinkedinUrl;
+
+    var logoImageUrl = currOrg.LogoPathUrl;
+    var applicationLogo = Resources.UIText_ApplicationLogo;
+    var applicationSlogan = Resources.UIText_ApplicationSlogan;
+    var nameParts = applicationLogo.Split(". ".ToCharArray());
+    var firstPartName = nameParts[0];
+    var secondPartname = "";
+    if(nameParts.Length > 1)
+    {
+        secondPartname = applicationLogo.Substring(firstPartName.Length);
+    }
+
+    var blogUrl = Url.Action("Index", "Blog", new { area = "Blog" });
+
+    var extraLangsAvailable = currOrg.ImplementedCultures != null && currOrg.ImplementedCultures.Length > 1;
+
+
+}
+<!-- BEGIN #top-nav -->
+<div id="top-nav" class="top-nav">
+    <!-- BEGIN container -->
+    <div class="container">
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown dropdown-hover">
+                    <a href="#" data-toggle="dropdown"><img src="~/flags/4x3/@(currCountryCode).svg" class="flag-img" alt="" /> @cultureHelper.GetLanguageName(cultureHelper.GetCurrentCulture()) 
+                    @if (extraLangsAvailable)
+                    { <i class="fa fa-angle-down"></i> }
+                    </a>
+                    @if (extraLangsAvailable)
+                    {
+                        <ul class="dropdown-menu">
+                            @foreach (var cult in currOrg.ImplementedCultures)
+                            {
+                                <li>
+                                    <a href="@Url.Action("ChangeLanguage", new { lng = cult})">
+                                        <img src="~/flags/4x3/@(cultureHelper.GetCountryCode(cult)).svg" class="flag-img" alt="" /> @cultureHelper.GetLanguageName(cult)
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+                <li><a href="@Url.Action("Contact", "eShop", new { area = "eCommerce"})">@ResObject.UIText_CustomerCare</a></li>
+                @if (Request.IsAuthenticated)
+                {
+                    <li><a href="@Url.Action("Index", "CustomerOrders")">@ResObject.UIText_OrderTracker</a></li>
+                }
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (!string.IsNullOrEmpty(blogUrl))
+                {
+                    <li><a href="@blogUrl">@Resources.EntityLabel_Blog</a></li>
+                }
+
+                @if (!string.IsNullOrEmpty(facebookUrl))
+                {
+                    <li><a href="@facebookUrl"><i class="fa fa-facebook f-s-14"></i></a></li>
+                }
+                @if (!string.IsNullOrEmpty(twitterUrl))
+                {
+                    <li><a href="@twitterUrl"><i class="fa fa-twitter f-s-14"></i></a></li>
+                }
+                @if (!string.IsNullOrEmpty(linkedinUrl))
+                {
+                    <li><a href="@linkedinUrl"><i class="fa fa-linkedin f-s-14"></i></a></li>
+                }
+            </ul>
+        </div>
+    </div>
+    <!-- END container -->
+</div>
+<!-- END #top-nav -->
+<!-- BEGIN #header -->
+<div id="header" class="header" data-fixed-top="true" style="z-index:1;">
+    <!-- BEGIN container -->
+    <div class="container">
+        <!-- BEGIN header-container -->
+        <div class="header-container">
+            <!-- BEGIN navbar-header -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="header-logo">
+                    <a href="/">
+                        @if (!string.IsNullOrEmpty(logoImageUrl))
+                        {
+                            <img src="@logoImageUrl" class="pull-left" style="margin-right: 10px;margin-top:6px;" />
+                        }
+                        else
+                        {
+                            <span class="brand"></span>
+                        }
+                        <div style="font-weight:bold;"><span>@firstPartName</span>@secondPartname</div>
+                        <small style="font-size:small;margin-left:5px;">@Resources.UIText_ApplicationSlogan</small>
+                    </a>
+                </div>
+            </div>
+            <!-- END navbar-header -->
+            @Html.Partial("_MainUpperMenu")
+            <!-- BEGIN header-nav -->
+            <div class="header-nav">
+                <ul class="nav pull-right">
+                    <li class="dropdown cart-dropdown" id="wishlist">
+                        @{Html.RenderAction("WishlistCount", "Products", new { Area = "eCommerce" });}
+                    </li>
+                    <li class="dropdown dropdown-hover" id="smalldetails">
+                        @{Html.RenderAction("SmallDetails", "ShoppingCarts", new { Area = "eCommerce" });}
+                    </li>
+                    <li class="divider"></li>
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+            <!-- END header-nav -->
+        </div>
+        <!-- END header-container -->
+    </div>
+    <!-- END container -->
+</div>
+<!-- END #header -->

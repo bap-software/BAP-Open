@@ -1,0 +1,260 @@
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@inherits System.Web.Mvc.WebViewPage<BAP.SelfSetup.Models.OrganizationConfig>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>BAP Installation</title>
+    <style>
+        h3 {
+            margin-top: 0;
+        }
+        .content {
+                margin: 50px auto;
+                max-width: 600px;
+                padding: 24px 12px;
+                border-radius: 12px;
+                -webkit-box-shadow: 0px 0px 46px 11px rgb(0 0 0 / 10%);
+                box-shadow: 0px 0px 46px 11px rgb(0 0 0 / 10%);
+        }
+       
+        .row {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        .row:nth-last-child(1) {
+             margin-bottom: 0;
+         }
+        .connection-string-row {
+        
+        }
+        .submit-row {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="row">
+        <h3>Setup BAP application</h3>
+    </div>
+
+    @using (Html.BeginForm("UpdateDefaultData", "BapInstaller", FormMethod.Post))
+    {
+        <div class="row">
+            <h4>Setup default organization</h4>
+        </div>
+        <div class="row">
+            <label>Name</label>
+            @Html.TextBoxFor(m => m.Name)
+        </div>
+        <div class="row">
+            <label>Description</label>
+            @Html.TextBoxFor(m => m.Description)
+        </div>
+        <div class="row">
+            <label>Tax ID</label>
+            @Html.TextBoxFor(m => m.TaxId)
+        </div>
+        <div class="row">
+            <label>Status</label>
+            @Html.TextBoxFor(m => m.Status)
+        </div>
+        <div class="row">
+            <label>Tenant Unit</label>
+            @Html.TextBoxFor(m => m.TenantUnit)
+        </div>
+        <div class="row">
+            <label>Tenant Unit ID</label>
+            @Html.TextBoxFor(m => m.TenantUnitId, new { type="number" })
+        </div>
+        <div class="row">
+            <label>Organization type</label>
+            @Html.TextBoxFor(m => m.OrganizationType, new { type="number" })
+        </div>
+        <div class="row">
+            <label>Address line 1</label>
+            @Html.TextBoxFor(m => m.AddressLine1)
+        </div>
+        <div class="row">
+            <label>Address line 2 </label>
+            @Html.TextBoxFor(m => m.AddressLine2)
+        </div>
+        <div class="row">
+            <label>City</label>
+            @Html.TextBoxFor(m => m.City)
+        </div>
+        <div class="row">
+            <label>Country</label>
+            @Html.TextBoxFor(m => m.Country)
+        </div>
+        <div class="row">
+            <label>County</label>
+            @Html.TextBoxFor(m => m.County)
+        </div>
+        <div class="row">
+            <label>State</label>
+            @Html.TextBoxFor(m => m.State)
+        </div>
+        <div class="row">
+            <label>Zip</label>
+            @Html.TextBoxFor(m => m.Zip)
+        </div>
+        <div class="row">
+            <label>Phone number</label>
+            @Html.TextBoxFor(m => m.PhoneNumber)
+        </div>
+        <div class="row">
+            <label>Phone extension</label>
+            @Html.TextBoxFor(m => m.PhoneExtension)
+        </div>
+        <div class="row">
+            <label>Fax number</label>
+            @Html.TextBoxFor(m => m.FaxNumber)
+        </div>
+        <div class="row">
+            <label>Logo path url</label>
+            @Html.TextBoxFor(m => m.LogoPathUrl)
+        </div>
+        <div class="row">
+            <label>FacebookUrl</label>
+            @Html.TextBoxFor(m => m.FacebookUrl)
+        </div>
+        <div class="row">
+            <label>TwitterUrl</label>
+            @Html.TextBoxFor(m => m.TwitterUrl)
+        </div>
+        <div class="row">
+            <label>LinkedinUrl</label>
+            @Html.TextBoxFor(m => m.LinkedinUrl)
+        </div>
+        <div class="row">
+            <label>GoogleplusUrl</label>
+            @Html.TextBoxFor(m => m.GoogleplusUrl)
+        </div>
+        <div class="row">
+            <label>InstagramUrl</label>
+            @Html.TextBoxFor(m => m.InstagramUrl)
+        </div>
+        <div class="row">
+            <label>Url</label>
+            @Html.TextBoxFor(m => m.Url)
+        </div>
+        <div class="row">
+            <label>BlogUrl</label>
+            @Html.TextBoxFor(m => m.BlogUrl)
+        </div>
+        
+        <div class="row">
+            <label>ContactEmail</label>
+            @Html.TextBoxFor(m => m.ContactEmail)
+        </div>
+        <div class="row">
+            <label>SupportEmail</label>
+            @Html.TextBoxFor(m => m.SupportEmail)
+        </div>
+        <div class="row">
+            <label>ImplementedCultures</label>
+            @Html.TextBoxFor(m => m.ImplementedCulturesText)
+        </div>
+        <div class="row">
+            <label>HostName</label>
+            @Html.TextBoxFor(m => m.HostName)
+        </div>
+        <div class="row">
+            <label>HostNameAliases</label>
+            @Html.TextBoxFor(m => m.HostNameAliasesText)
+        </div>
+        <div class="row">
+            <label>BapDefaultFromEmail</label>
+            @Html.TextBoxFor(m => m.BapDefaultFromEmail)
+        </div>
+        <div class="row">
+            <label>BapDefaultContactEmail</label>
+            @Html.TextBoxFor(m => m.BapDefaultContactEmail)
+        </div>
+        <div class="row">
+            <label>SmtpUserName</label>
+            @Html.TextBoxFor(m => m.SmtpUserName)
+        </div>
+        <div class="row">
+            <label>SmtpUserPassword</label>
+            @Html.TextBoxFor(m => m.SmtpUserPassword)
+        </div>
+        <div class="row">
+            <label>SmtpHostName</label>
+            @Html.TextBoxFor(m => m.SmtpHostName)
+        </div>
+        <div class="row">
+            <label>SmtpPort</label>
+            @Html.TextBoxFor(m => m.SmtpPort, new { type="number" })
+        </div>
+        <div class="row">
+            <label>SmtpUseSsl</label>
+            @Html.CheckBoxFor(m => m.SmtpUseSsl)
+        </div>
+        <div class="row">
+            <label>reCaptchaSiteKey</label>
+            @Html.TextBoxFor(m => m.reCaptchaSiteKey)
+        </div>
+        <div class="row">
+            <label>reCaptchaSecretKey</label>
+            @Html.TextBoxFor(m => m.reCaptchaSecretKey)
+        </div>
+        <div class="row">
+            <label>GetBearrerTokenDuringLogin</label>
+            @Html.CheckBoxFor(m => m.GetBearrerTokenDuringLogin)
+        </div>
+        <div class="row">
+            <label>AuthCookieName</label>
+            @Html.TextBoxFor(m => m.AuthCookieName)
+        </div>
+        <div class="row">
+            <label>AuthCookieExpirationTime</label>
+            @Html.TextBoxFor(m => m.AuthCookieExpirationTime, new { type="number" })
+        </div>
+        <div class="row">
+            <label>WebApiPublicClientId</label>
+            @Html.TextBoxFor(m => m.WebApiPublicClientId)
+        </div>
+        <div class="row">
+            <label>BearerTokenExpirationTime</label>
+            @Html.TextBoxFor(m => m.BearerTokenExpirationTime, new { type="number" })
+        </div>
+        <div class="row">
+            <label>WebApiAllowInsecureHttp</label>
+            @Html.CheckBoxFor(m => m.WebApiAllowInsecureHttp)
+        </div>
+        <div class="row">
+            <label>PublicFolder</label>
+            @Html.TextBoxFor(m => m.PublicFolderText)
+        </div>
+        <div class="row">
+            <label>BaseFolder</label>
+            @Html.TextBoxFor(m => m.BaseFolderText)
+        </div>
+        <div class="row">
+            <label>CookiesPopupEnabled</label>
+            @Html.CheckBoxFor(m => m.CookiesPopupEnabled)
+        </div>
+        <div class="row">
+            <label>GdprPopupEnabled</label>
+            @Html.CheckBoxFor(m => m.GdprPopupEnabled)
+        </div>
+        
+        <div class="row submit-row">
+            <input type="submit" value="Update data"/>
+        </div>
+    }
+
+</div>
+</body>
+</html>

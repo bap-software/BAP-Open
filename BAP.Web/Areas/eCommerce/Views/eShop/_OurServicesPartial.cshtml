@@ -1,0 +1,38 @@
+﻿@using BAP.Resources
+
+@model List<BAP.DAL.Entities.OrganizationService>
+
+@{
+    Layout = null;
+}
+
+@if (Model.Count > 0)
+{
+    <div id="policy" class="section-container p-t-30 p-b-30">
+        <!-- BEGIN container -->
+        <div class="container">
+            <!-- BEGIN row -->
+            <div class="row">
+                <!-- BEGIN policy -->
+                <!-- BEGIN col-4 -->
+
+                @foreach (var item in Model.OrderByDescending(x => x.LastModifiedDate).Take(3))
+                {
+                    <div class="col-md-4 col-sm-4">
+                        <div class="policy">
+                            <div class="policy-icon"><i class="@item.IconClass"></i></div>
+                            <div class="policy-info">
+                                <h4>@item.Name</h4>
+                                <p>@item.ShortDescription</p>
+                            </div>
+                        </div>
+                        <!-- END policy -->
+                    </div>
+                }
+                <!-- END col-4 -->
+            </div>
+            <!-- END row -->
+        </div>
+        <!-- END container -->
+    </div>
+}

@@ -1,0 +1,33 @@
+﻿@using BAP.Resources
+@using BAP.UI.Controllers
+@model BAP.DAL.Entities.Attachment
+
+@{
+    var parentId = "";
+    var parentType = "";
+    var parentView = "";
+
+    if (ViewData.ContainsKey(@"ParentType") && ViewData.ContainsKey(@"ParentId") &&
+        ViewData.ContainsKey(@"ParentView"))
+    {
+        parentType = ViewData[@"ParentType"].ToString();
+        parentView = ViewData[@"ParentView"].ToString();
+        parentId = ViewData[@"ParentId"].ToString();
+    }
+
+    if (string.IsNullOrEmpty(parentType) && Model != null && Model.ObjectId > 0 && !string.IsNullOrEmpty(Model.Object))
+    {
+        parentId = ((Model != null && Model.ObjectId > 0) ? Model.ObjectId.ToString() : "");
+        parentType = ((Model != null && !string.IsNullOrEmpty(Model.Object)) ? Model.Object : "");
+        parentView = @"Details";
+    }
+}
+
+@if (!string.IsNullOrEmpty(parentId) && !string.IsNullOrEmpty(parentType))
+{
+    <a href="@Url.Action(parentView, BaseController<BAP.DAL.Entities.Attachment>.GetControllerByEntity(parentType), new { id = parentId }, null)"><i class="glyphicon glyphicon-hand-left"></i>@Resources.UIText_Back</a>    
+}
+else
+{    
+    <a href="@Url.Action("Index")"><i class="glyphicon glyphicon-hand-left"></i>@Resources.UIText_Back</a>
+}

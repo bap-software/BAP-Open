@@ -1,0 +1,113 @@
+﻿@using BAP.Lookups
+@model BAP.DAL.Entities.OrganizationService
+
+@{
+    ILookupEngine engine = ViewBag.LookupEngineInstance;
+}
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShortDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShortDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IconClass)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IconClass)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Enabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Enabled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CultureCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CultureCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalizationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocalizationId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedByUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedByUserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedByUserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedByUserName)
+        </dd>
+
+
+    </dl>

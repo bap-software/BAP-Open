@@ -1,0 +1,25 @@
+﻿@using BAP.Resources
+@model BAP.DAL.Entities.BlogComment
+@{
+    ViewBag.Title = Resources.UIText_Details;
+}
+
+<div id="BlogCommentDetailsModal@(Model.Id)" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-entity-select">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="ModalTitle">@Resources.EntityLabel_BlogComment @Resources.UIText_Details</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    @Html.Partial("_ReadOnlyBlogCommentFields")
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.UIText_Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

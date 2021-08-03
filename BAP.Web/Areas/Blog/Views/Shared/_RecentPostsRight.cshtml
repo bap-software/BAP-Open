@@ -1,0 +1,23 @@
+﻿@using BAP.Resources
+@using BAP.DAL.Entities
+@{
+    var recentPosts = new List<Blog>();
+    if (ViewBag.RecentPosts != null)
+    {
+        recentPosts = (List<Blog>)ViewBag.RecentPosts;
+    }
+}
+<div class="section-container">
+    <h4 class="section-title"><span>@Resources.FieldLabel_Blog_RecentPost</span></h4>
+    <ul class="sidebar-recent-post">
+        @foreach (var blog in recentPosts)
+        {
+            <li>
+                <div class="info">
+                    <h4 class="title"><a href="@Url.Action("Details", new {pid=blog.GetPublicId()})">@blog.Name</a></h4>
+                    <div class="date">@blog.CreateDate.GetValueOrDefault().ToString("MMMM dd, yyyy")</div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>

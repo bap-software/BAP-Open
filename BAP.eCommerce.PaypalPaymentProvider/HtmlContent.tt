@@ -1,0 +1,80 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+
+<div class='<#= Data.ContainerCss #>'>
+	<div id="paypal-button-container"></div>
+
+    <script>
+        paypal.Button.render({
+
+            env: '<#= Data.Environment #>', // sandbox | production
+            
+            client: {
+                sandbox:    '<#= Data.SandboxClientId #>',
+                production: '<#= Data.ProductionClientId #>'
+            },
+
+            // Show the buyer a 'Pay Now' button in the checkout flow
+            commit: true,
+
+            // payment() is called when the button is clicked
+            payment: function(data, actions) {
+
+                // Make a call to the REST api to create the payment
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                amount: { total: '<#= Data.OrderTotal #>', currency: '<#= Data.OrderCurrency #>' }
+                            }
+                        ]
+                    }
+                });
+            },
+
+            // onAuthorize() is called when the buyer approves the payment
+            onAuthorize: function(data, actions) {				
+                // Make a call to the REST api to execute the payment
+                return actions.payment.execute().then(function(payment) {      
+					var callbackUrl = '<#= Data.CallBackUrl #>?orderid=<#= Data.OrderId #>';
+					if(typeof payment.id !== "undefined" )
+					{
+						callbackUrl += '&refid=' + payment.id;
+					}
+					if(typeof payment.create_time !== "undefined" )
+					{
+						callbackUrl += '&createtime=' + payment.create_time;
+					}
+					if(typeof payment.update_time !== "undefined" )
+					{
+						callbackUrl += '&updatetime=' + payment.update_time;
+					}
+					if(typeof payment.state !== "undefined" )
+					{
+						callbackUrl += '&state=' + payment.state;
+					}
+					if(typeof payment.intent !== "undefined" )
+					{
+						callbackUrl += '&intent=' + payment.intent;
+					}
+					if(typeof payment.note_to_payer !== "undefined" )
+					{
+						callbackUrl += '&notes=' + payment.note_to_payer;
+					}
+					if(typeof payment.failure_reason !== "undefined" )
+					{
+						callbackUrl += '&failurereason=' + payment.failure_reason;
+					}
+
+					window.location = callbackUrl;
+                });
+            }
+
+        }, '#paypal-button-container');
+
+    </script>
+</div>

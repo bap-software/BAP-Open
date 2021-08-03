@@ -1,0 +1,329 @@
+﻿@using BAP.Resources
+@using BAP.UI.HtmlHelpers
+@using BAP.Web.Areas.Administration.Controllers
+@using PagedList.Mvc;
+@model PagedList.IPagedList<BAP.DAL.Entities.Localization>
+
+@{
+    ViewBag.Title = Resources.UIText_Menu_Index;
+
+    Layout = "~/Areas/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = Resources.EntityLabel_Localization;
+    
+    string currentSort = ViewBag.CurrentSort;
+    var sortActionName = nameof(LocalizationsController.Index);
+    var sortControllerName = nameof(LocalizationsController).Replace("Controller", "");
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href="@Url.Action("Create", "Localizations", new { Area = "Administration" })" class="btn btn-icon btn-success" title="@Resources.UIText_Create @Resources.EntityLabel_Localization"><i class="fa fa-plus"></i></a>
+    @ViewBag.Title<small></small>
+</h1>
+<!-- end page-header -->
+
+@* Use this to get AntiForgeryToken and use it via Ajax request *@
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>                   
+                </div>
+                <h4 class="panel-title">@Resources.UIText_Search</h4>
+            </div>
+            <div class="panel-body">                
+                @using (Html.BeginForm("Index", "Localizations", FormMethod.Get, new Dictionary<string, object> { {"class", "localization-search-form"} }))
+                {
+                    <div>
+                        @Html.DisplayNameFor(model => model.First().Name): 
+                        @Html.Editor("LocalizationName", ViewBag.LocalizationName as string, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>  
+                    <div>
+                        @Html.DisplayNameFor(model => model.First().Value): 
+                        @Html.Editor("LocalizationValue", ViewBag.LocalizationValue as string, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>  
+                    <div class="localization-culture-dropdown-holder">
+                        @Html.DisplayNameFor(model => model.First().CultureCode): 
+                        @Html.DropDownList("LocalizationCultureCode", ViewBag.Cultures as List<SelectListItem>, new { @class = "form-control" })
+                    </div>  
+                    <input type="submit" class="btn btn-success" value="@Resources.UIText_Search" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- begin row -->
+<div class="row">
+    <!-- begin col-12 -->
+    <div class="col-md-12">
+        <!-- begin panel -->
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>                   
+                </div>
+                <h4 class="panel-title">@Resources.UIText_SearchResults</h4>
+            </div>
+            <div class="panel-body">  
+                
+                    <div class="dt-buttons btn-group">
+                        <a href="javascript:document.getElementById('MultirowActionForm').submit();" 
+                           class="btn btn-default buttons-html5 btn-sm" 
+                           tabindex="1" 
+                           aria-controls="data-table">
+                            <span>@Resources.UIText_Delete</span>
+                        </a>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-12">
+                        
+                            @using (Html.BeginForm("MultirowActionForm", "Localizations", FormMethod.Post, new { role = "row", id ="MultirowActionForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                
+                                <input type="hidden" id="selectedAction" name="selectedAction" value="delete" />
+                                                                                                             
+                                <input type="hidden" id="page" name="page" value="@Model.PageNumber" />
+                                <input type="hidden" id="pageSize" name="pageSize" value="@Model.PageSize" />
+                                <input type="hidden" id="currentSort" name="currentSort" value="@currentSort" />
+                                
+                                <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                                <thead>
+                                    <tr>
+                                        <th style="width:15px;"><input type="checkbox" id="check-all-rows" onchange="CheckAllChanged();"/></th>
+                                        <th>@Resources.UIText_Actions</th>
+
+                                        @Html.BapSortingHeaderFor(
+                                            expression: model => model.First().Name,
+                                            sortData: null,
+                                            currentSortExpression: currentSort,
+                                            indexAction: sortActionName,
+                                            indexController: sortControllerName,
+                                            indexArea: "Administration",
+                                            pageNumber: Model.PageNumber,
+                                            pageSize: Model.PageSize)
+                                        
+                                        @Html.BapSortingHeaderFor(
+                                            expression: model => model.First().Value,
+                                            sortData: null,
+                                            currentSortExpression: currentSort,
+                                            indexAction: sortActionName,
+                                            indexController: sortControllerName,
+                                            indexArea: "Administration",
+                                            pageNumber: Model.PageNumber,
+                                            pageSize: Model.PageSize)
+                                        
+                                        @Html.BapSortingHeaderFor(
+                                            expression: model => model.First().CultureCode,
+                                            sortData: null,
+                                            currentSortExpression: currentSort,
+                                            indexAction: sortActionName,
+                                            indexController: sortControllerName,
+                                            indexArea: "Administration",
+                                            pageNumber: Model.PageNumber,
+                                            pageSize: Model.PageSize)
+                                        
+                                        @Html.BapSortingHeaderFor(
+                                            expression: model => model.First().LastModifiedDate,
+                                            sortData: null,
+                                            currentSortExpression: currentSort,
+                                            indexAction: sortActionName,
+                                            indexController: sortControllerName,
+                                            indexArea: "Administration",
+                                            pageNumber: Model.PageNumber,
+                                            pageSize: Model.PageSize)
+                                    </tr>
+                                </thead>
+                                
+                                @{ var itemIndex = 0; }
+                                
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" id="checkRow" name="checkRow" class="check-row" value="@item.Id"/>
+                                        </td>
+            
+                                        <td>
+                                            <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", new {id = item.Id})">
+                                                <i class="glyphicon glyphicon-th-list"></i>
+                                            </a>
+                                            <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="@Url.Action("Edit", new {localizationName = item.Name})">
+                                                <i class="glyphicon glyphicon-edit"></i>
+                                            </a>
+                                            <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", new {id = item.Id})">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </a>
+                                        </td>
+            
+            
+                                        <td> @Html.DisplayFor(modelItem => item.Name) </td>
+            
+                                        <td>
+                                            <div id="read-value-div-@itemIndex">
+                                                <span>
+                                                    @Html.DisplayFor(modelItem => item.Value)
+                                                </span>
+                                                <span id="read-value-span-@itemIndex"
+                                                      title="@Resources.UIText_Edit"
+                                                      onclick="onEditLocalizationValueClick(this.id, @itemIndex)"><i class="glyphicon glyphicon-edit"></i></span>
+                                            </div>
+            
+                                            <div id="edit-value-div-@itemIndex" class="edit-value-div hidden-value">
+                                                @Html.EditorFor(model => item.Value, new {htmlAttributes = new {@class = "form-control"}})
+            
+                                                <input id="old-localization-value-@itemIndex" type="hidden" value="@item.Value">
+            
+                                                <button class="btn btn-square btn-default"
+                                                        type="button"
+                                                        title="@Resources.UIText_Back"
+                                                        onclick="onResetLocalizationValue(this.id, @itemIndex)"><i class="fa fa-reply"></i></button>
+                                                <button id="save-value-btn-@itemIndex"
+                                                        type="button"
+                                                        class="btn btn-default btn-default btn-success"
+                                                        title="@Resources.UIText_Save"
+                                                        onclick="onSaveLocalizationClick(this.id, @itemIndex, @item.Id)"><i class="fa fa-floppy-o"></i></button>
+                                            </div>
+            
+                                        </td>
+            
+                                        <td> @Html.DisplayFor(modelItem => item.CultureCode) </td>
+            
+                                        <td> @Html.DisplayFor(modelItem => item.LastModifiedDate) </td>
+            
+                                    </tr>
+            
+                                    itemIndex++;
+                                }
+                            </table>
+                            }
+                        
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (Model.PageCount > 1)
+{
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="dataTables_length" id="data-table_length">
+                <label>
+                    Items per page 
+                    <select id="data-table-length" name="data-table_length" aria-controls="data-table" class="form-control input-sm" onchange="OnPageSizeChange()">
+                        <option value="5" @(Model.PageSize == 5 ? "selected" : "")>5</option>
+                        <option value="10" @(Model.PageSize == 10 ? "selected" : "")>10</option>
+                        <option value="15" @(Model.PageSize == 15 ? "selected" : "")>15</option>
+                        <option value="20" @(Model.PageSize == 20 ? "selected" : "")>20</option>
+                        <option value="50" @(Model.PageSize == 50 ? "selected" : "")>50</option>
+                        <option value="100" @(Model.PageSize == 100 ? "selected" : "")>100</option>
+                    </select>
+                </label>
+            </div>
+            <div class="dataTables_info" id="data-table_info" role="status" aria-live="polite">Showing page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>
+        </div>
+
+        <div class="col-sm-7">
+            <div class="dataTables_paginate paging_simple_numbers" id="data-table_paginate">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new
+                    {
+                        page, 
+                        pageSize = ViewBag.PageSize,
+                        localizationName = ViewBag.LocalizationName, 
+                        localizationValue = ViewBag.LocalizationValue, 
+                        localizationCultureCode = ViewBag.LocalizationCultureCode,
+                        sortOrder = ViewBag.CurrentSort
+                    }))
+            </div>
+        </div>
+    </div>
+}
+
+<script >
+    function onSaveLocalizationClick(itemId, itemIndex, localizationId) {
+        const successCallback = () => {
+            showReadValueDiv(itemIndex);
+            hideEditValueDiv(itemIndex);
+            alert("@Resources.UIText_Localizations_InlineSaved");
+        };
+    
+        const newValue = getInputWithLocalizationValue(itemIndex).value;
+        const oldValue = getOldValueInput(itemIndex).value;
+    
+        if (newValue === oldValue) {
+            console.log("No request");
+            successCallback();
+            return;
+        }
+    
+        let requestUrl = "/Administration/Localizations/editLocalizationValue";
+        requestUrl += `?localizationId=${localizationId}`;
+        requestUrl += `&newValue=${JSON.stringify(newValue)}`;
+    
+        let form = $('#__AjaxAntiForgeryForm');
+        let token = $('input[name="__RequestVerificationToken"]', form).val();
+    
+        $.ajax({
+            type: "POST",
+            url: requestUrl,
+            data: {
+                "__RequestVerificationToken": token
+            }
+        })
+            .done(function () {
+                getInputWithLocalizationValue(itemIndex).value = newValue;
+                getSpanWithReadableLocalizationValue(itemIndex).innerHTML = newValue;
+                getOldValueInput(itemIndex).value = newValue;
+    
+                successCallback();
+            })
+            .fail(function (errorResult) {
+                console.log("Error result: ", errorResult);
+                alert("@Resources.UIText_Localizations_InlineSaveError");
+            });
+    }
+    
+    function OnPageSizeChange()
+    {
+        var url = '@Url.Action("Index", new { 
+                       page = 1, 
+                       localizationName = ViewBag.LocalizationName, 
+                       localizationValue = ViewBag.LocalizationValue, 
+                       localizationCultureCode = ViewBag.LocalizationCultureCode,
+                       sortOrder = ViewBag.CurrentSort 
+                   })';
+                   
+        url = url.replace('&amp;', '&');
+        url += "&pageSize=" + $('#data-table-length').val();
+        window.location = url;
+    }
+
+    function CheckAllChanged()
+    {
+        $('.check-row').prop("checked", $('#check-all-rows').is(':checked'));        
+    }
+    
+    function onDeleteItemsClick() {
+        const url = "@Url.Action("MultirowActionForm", new
+                     {
+                         selectedAction = "delete",
+                         sortOrder = ViewBag.CurrentSort,
+                         page = 1,
+                         pageSize = ViewBag.PageSize
+                     })";    
+    }
+</script>

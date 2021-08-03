@@ -1,0 +1,216 @@
+﻿@using BAP.DAL
+@using BAP.Resources
+@model BAP.Web.Areas.BlogsArea.Models.BlogModel
+@{
+    var authContext = (IAuthorizationContext)ViewBag.AuthContextInstance;
+    var isAuthenticated = authContext.IsAuthenticated;
+}
+
+<div class="container">
+    <!-- begin row -->
+    <div class="row row-space-30">
+        <!-- begin col-9 -->
+        <div class="col-md-9">
+            <!-- begin post-detail -->
+            <div class="post-detail section-container">
+                <ul class="breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home", new { Area = "" })">@Resources.UIText_Menu_Index</a></li>
+                    <li><a href="@Url.Action("Index")">@Resources.FieldLabel_Blog_Blogs</a></li>
+                    <li class="active">@Model.ShortDescription</li>
+                </ul>
+                <h4 class="post-title">
+                    @Model.ShortDescription
+                </h4>
+                <div class="post-by">
+                    @if (Model.BlogAuthorId > 0)
+                    {
+                        @Resources.FieldLabel_Blog_PostedBy <a href="@Url.Action("SearchBlogs", new { authorId = Model.BlogAuthorId })">@Model.BlogAuthor</a>
+                        <span class="divider">|</span>
+                    }
+                    @{
+                        var tags = Model.Tags != null ? Model.Tags.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
+                        foreach (var tag in tags)
+                        {
+                            <a href="#">@tag</a>
+                        }
+                        if (tags.Any())
+                        {
+                            <span class="divider">|</span>
+                        }
+                    }
+                    @Model.BlogComments.Count @Resources.FieldLabel_Blog_BlogComments
+                </div>
+                <!-- begin post-left-info -->
+                <div class="post-left-info">
+                    <div class="post-date">
+                        <span class="day">@Model.LastModifiedDate.GetValueOrDefault().ToString("dd")</span>
+                        <span class="month">@Model.LastModifiedDate.GetValueOrDefault().ToString("MMM").ToUpperInvariant()</span>
+                    </div>
+                </div>
+                <!-- end post-left-info -->
+                <!-- begin post-content -->
+                <div class="post-content">
+                    <!-- begin post-image -->
+                    <div class="post-image">
+                        <img src="/file/@Model.MainImageUrl" alt="" />
+                    </div>
+                    <!-- end post-image -->
+                    <!-- begin post-desc -->
+                    <div class="post-desc">
+                        <p>
+                            @Html.Raw(Model.Description)
+                        </p>
+                    </div>
+                    <!-- end post-desc -->
+                    @if (Model.Prev != null || Model.Next != null)
+                    {
+                        <ul class="pager">
+                            @if (Model.Prev != null)
+                            {
+                                <li class="previous"><a href="@Url.Action("Details", new { pid = Model.Prev.BlogPublicId, ppid = Model.Prev.PostPublicId })">previous</a></li>
+                            }
+                            @if (Model.Next != null)
+                            {
+                                <li class="next"><a href="@Url.Action("Details", new { pid = Model.Next.BlogPublicId, ppid = Model.Next.PostPublicId })">next</a></li>
+                            }
+                        </ul>
+                    }
+                </div>
+                <!-- end post-content -->
+            </div>
+            <!-- end post-detail -->
+            <!-- begin section-container -->
+            <div id="blogComments">
+                @Html.Partial("_BlogComments")
+            </div>
+            <!-- end section-container -->
+        </div>
+        <!-- end col-9 -->
+        <!-- begin col-3 -->
+        <div class="col-md-3">
+            @Html.Partial("_RightPanel")
+        </div>
+        <!-- end col-3 -->
+    </div>
+    <!-- end row -->
+</div>
+
+<div id="BlogCommentAddModal" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-entity-select">
+        <!-- Modal content-->
+        @using (Html.BeginForm("CreateComment", "Blogs", FormMethod.Post, new { id = "frmAddBlogCommentModal", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="ModalTitle">@Resources.UIText_Create @Resources.EntityLabel_BlogComment</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- begin col-12 -->
+                        <div class="col-md-12">
+                            <div class="panel-body panel-form">
+                                <div class="form-horizontal form-bordered" data-parsley-validate="true" name="post-form" novalidate>
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.BlogId)
+                                    @Html.Partial("_EditBlogCommentFields", new BAP.DAL.Entities.BlogComment())
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @if (isAuthenticated)
+                    {
+                        <button type="button" onclick="addBlogComment('#frmAddBlogCommentModal')" class="btn btn-inverse btn-lg">@Resources.FieldLabel_Blog_Comment_Submit</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-inverse btn-lg disabled">@Resources.FieldLabel_Blog_Comment_Submit</button>
+                    }
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.UIText_Cancel</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section styles
+{
+    <style>
+        .disabled {
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            color: gray;
+            cursor: not-allowed;
+        }
+    </style>
+}
+
+@section scripts
+{
+    <script>
+        function onReply(parentId) {
+            var opt = {
+                show: true,
+                keyboard: true
+            };
+            $("#BlogCommentAddModal").modal(opt);
+            $("#BlogCommentAddModal #ParentCommentId").val(parentId);
+            $("#BlogCommentAddModal #Title").val('');
+            $("#BlogCommentAddModal #Text").val('');
+            $("#BlogCommentAddModal #ModalTitle").html("@Resources.FieldLabel_Blog_Comment_Reply");
+        }
+
+        function addBlogComment(formId) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("CreateComment")",
+                data: $(formId).serialize(),
+                success: function (response) {
+                    $("#BlogCommentAddModal").modal("hide");
+                    $("#blogComments").html(response);
+                    $(formId + " #ParentCommentId").val('');
+                    $(formId + " #Title").val('');
+                    $(formId + " #Text").val('');
+                }
+            });
+        }
+
+        function likeBlogComment(id) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("LikeComment")",
+                data: { "commentId": id },
+                success: function (response) {
+                    $("#likeComment_" + id).html(response.LikeNumber);
+                    $("#dislikeComment_" + id).html(response.DislikeNumber);
+                }
+            });
+        }
+
+        function dislikeBlogComment(id) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("DislikeComment")",
+                data: { "commentId": id },
+                success: function (response) {
+                    $("#likeComment_" + id).html(response.LikeNumber);
+                    $("#dislikeComment_" + id).html(response.DislikeNumber);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $(".disabled").click(function () {
+                var opt = {
+                    show: true,
+                    keyboard: true
+                };
+                $("#LoginModal").modal(opt);
+            });
+        });
+    </script>
+}

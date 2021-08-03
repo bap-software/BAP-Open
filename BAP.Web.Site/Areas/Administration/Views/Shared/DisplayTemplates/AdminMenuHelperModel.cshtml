@@ -1,0 +1,54 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.MenuHelperModel
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+@foreach (var node in Model.Nodes.Where(a => a.Attributes.ContainsKey("isadmin") && a.Attributes["isadmin"] != null && a.Attributes["isadmin"].ToString() == "true")) {
+    var css = "";
+    var icon = "";
+    if(node.Attributes.ContainsKey("icon"))
+    {
+        icon = node.Attributes["icon"].ToString();
+    }
+
+    var pullRightIcon = "";
+    if(node.Children.Any(a => !string.IsNullOrWhiteSpace(a.Title)))
+    {
+        css = "has-sub";
+        pullRightIcon = "caret pull-right";
+    }
+    if(node.IsCurrentNode || (node.Children != null && node.Children.Any(a => a.IsCurrentNode || (a.Children != null && a.Children.Any(b => b.IsCurrentNode)))))
+    {
+        if (!string.IsNullOrWhiteSpace(css))
+        {
+            css += " ";
+        }
+        css += "active";
+    }
+    <li class="@css">
+        <a href="javascript:;">
+            <b class="@pullRightIcon"></b>
+            <i class="@icon"></i>
+            <span>@node.Title</span>            
+        </a>
+        @if (node.Children.Any(a => !string.IsNullOrWhiteSpace(a.Title)))
+        {
+            <ul class="sub-menu">
+                @foreach (var child in node.Children.Where(a => !string.IsNullOrWhiteSpace(a.Title)))
+                {
+                    var childCSS = "";
+                    var childIcon = "";
+                    if (child.Attributes.ContainsKey("icon"))
+                    {
+                        childIcon = child.Attributes["icon"].ToString();
+                    }
+                    if (child.IsCurrentNode || (child.Children != null && child.Children.Any(a => a.IsCurrentNode)))
+                    {
+                        childCSS = "active";
+                    }
+                    <li class="@childCSS">
+                        <a href="@child.Url">@if (!string.IsNullOrEmpty(childIcon)){ <i class="@childIcon"></i> } @child.Title</a>
+                    </li>
+                }
+            </ul>
+        }
+    </li>
+}

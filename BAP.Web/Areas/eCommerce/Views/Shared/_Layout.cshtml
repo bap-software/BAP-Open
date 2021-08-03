@@ -1,0 +1,85 @@
+﻿@using BAP.Common;
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@using BAP.UI.HtmlHelpers
+@{
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = null;
+    if (authContext != null)
+    {
+        currOrg = authContext.GetCurrentOrganization(config);
+    }
+}
+
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title | @currOrg.Name</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    @Html.Meta()
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    @Styles.Render("~/ecomm/css")
+
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    @Scripts.Render("~/ecomm/top-scripts")
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }
+
+    <style>
+        #email + div .btn,
+        #fulltext ~ span .btn {
+            padding: 6px 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="page-container" class="fade in">
+        @{ Html.RenderAction("CookiesNotice", "Account", new { area = "" }); }
+        @{ Html.RenderAction("GdprNotice", "Account", new { area = "" }); }
+
+        @Html.Partial("_HeaderPartial")
+
+        @RenderBody()
+
+        @Html.Partial("_FooterPartial")
+
+    </div>
+    @{ Html.RenderAction("WishlistHeader", "Products", new { area = "eCommerce" }); }
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <!--[if lt IE 9]>
+        <script src="~/Areas/eCommerce/Content/Themes/Base/assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="~/Areas/eCommerce/Content/Themes/Base/assets/crossbrowserjs/respond.min.js"></script>
+        <script src="~/Areas/eCommerce/Content/Themes/Base/assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/ecomm/plugin-scripts")
+    @Scripts.Render("~/ecomm/custom-scripts")
+    <!-- ================== END BASE JS ================== -->
+
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>
+
+    @Html.Partial("_NotificationPartial")
+    @Html.Partial("_LoginModal", new BAP.Web.Models.LoginViewModel() { Area = "eCommerce" })
+    @Html.Partial("_RegisterModal", new BAP.Web.Models.RegisterViewModel() { Area = "eCommerce" })
+    @Html.Partial("_ForgotPasswordModal", new BAP.Web.Models.ForgotPasswordViewModel() { Area = "eCommerce" })
+    @RenderSection("scripts", required: false)
+</body>
+</html>

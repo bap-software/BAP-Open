@@ -1,0 +1,100 @@
+﻿@using BAP.Common;
+@using BAP.Resources
+@using BAP.DAL;
+@using BAP.DAL.Entities;
+@{
+    var config = DependencyResolver.Current.GetService<IConfigHelper>();
+    var authContext = DependencyResolver.Current.GetService<IAuthorizationContext>();
+    Organization currOrg = authContext.GetCurrentOrganization(config);
+
+
+    var orgName = Resources.UIText_ApplicationLogo;
+    var contactEmail = currOrg.BapDefaultContactEmail;
+    var contactPhone = Resources.UIText_ContactPhone;
+    var logoImage = "/img/home_small.ico";
+    var facebookUrl = "";
+    var twitterUrl = "";
+    var linkedinUrl = "";
+    var googleplusUrl = "";
+    var instagramUrl = "";
+    if (currOrg != null)
+    {
+        if (!string.IsNullOrEmpty(currOrg.Name))
+        {
+            orgName = currOrg.Name;
+        }
+
+        if (!string.IsNullOrEmpty(currOrg.ContactEmail))
+        {
+            contactEmail = currOrg.ContactEmail;
+        }
+
+        if (!string.IsNullOrEmpty(currOrg.PhoneNumber))
+        {
+            contactPhone = currOrg.PhoneNumber + " " + currOrg.PhoneExtension;
+        }
+
+        if (!string.IsNullOrEmpty(currOrg.LogoPathUrl))
+        {
+            logoImage = currOrg.LogoPathUrl;
+        }
+
+        facebookUrl = currOrg.FacebookUrl;
+        twitterUrl = currOrg.TwitterUrl;
+        linkedinUrl = currOrg.LinkedinUrl;
+        googleplusUrl = currOrg.GoogleplusUrl;
+        instagramUrl = currOrg.InstagramUrl;
+    }
+}
+
+<!-- begin #footer -->
+<div id="footer" class="footer">
+    <div class="container">
+        <div class="footer-brand">
+            <div class="footer-brand-logo"></div>
+            @orgName
+        </div>
+        <p>
+            <a href="http://www.bap-software.com" target="_blank">
+                BAP Software
+            </a>
+            &copy; @DateTime.Now.Year
+        </p>
+        <p class="social-list">
+            <a href="mailto:@contactEmail" title="@Resources.UIText_ContactUsQuick">
+                <i class='fa fa-envelope-o'></i>
+            </a>
+            @if (!string.IsNullOrWhiteSpace(facebookUrl))
+            {
+                <a href="@facebookUrl"><i class="fa fa-facebook fa-fw"></i></a>
+            }
+            @if (!string.IsNullOrWhiteSpace(twitterUrl))
+            {
+                <a href="@twitterUrl"><i class="fa fa-twitter fa-fw"></i></a>
+            }
+            @if (!string.IsNullOrWhiteSpace(googleplusUrl))
+            {
+                <a href="@googleplusUrl"><i class="fa fa-google-plus fa-fw"></i></a>
+            }
+            @if (!string.IsNullOrWhiteSpace(linkedinUrl))
+            {
+                <a href="@linkedinUrl"><i class="fa fa-linkedin fa-fw"></i></a>
+            }
+            @if (!string.IsNullOrWhiteSpace(instagramUrl))
+            {
+                <a href="@instagramUrl"><i class="fa fa-instagram fa-fw"></i></a>
+            }
+        </p>
+    </div>
+</div>
+<!-- end #footer -->
+
+<style>
+    .footer {
+        position: relative;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+    }
+</style>

@@ -1,0 +1,89 @@
+﻿@using BAP.Resources
+@using BAP.eCommerce.Resources
+@using BAP.Web.Areas.Administration.Models
+@model BAP.eCommerce.DAL.Entities.CustomerOrder
+@{
+    Layout = "~/Areas/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.SideBarMinified = true;
+    ViewBag.Title = ResObject.EntityLabel_CustomerOrder + " " + Resources.UIText_Details;
+    var currentTab = "details";
+    if (ViewBag.CurrentTab != null)
+    {
+        currentTab = (string)ViewBag.CurrentTab;
+    }
+}
+
+<!-- begin page-header -->
+<h1 class="page-header">
+    <a href='@Url.Action("AdminIndex", "CustomerOrders")' class="btn btn-square btn-default" title="@Resources.UIText_Back"><i class="fa fa-reply"></i></a>
+    @ResObject.EntityLabel_CustomerOrder<small></small>
+</h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+    <div class="col-md-6">
+        @Html.Partial("_WorkflowPanel", Model)
+        @Html.Partial("_OrderPaymentsGrid")
+    </div>
+    <!-- begin col-6 -->
+    <div class="col-md-6">
+        <!-- begin panel -->
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">@ViewBag.Title</h4>
+                <!-- begin nav-tabs -->
+                <div class="tab-overflow">
+                    <ul class="nav nav-tabs nav-tabs-inverse">
+                        <li class="prev-button"><a href="javascript:;" data-click="prev-tab" class="text-success"><i class="fa fa-arrow-left"></i></a></li>
+                        <li class="@(currentTab == "details" ? "active" : "")"><a href="#nav-tab-1" data-toggle="tab"><i class="glyphicon glyphicon-list"></i> @ViewBag.Title</a></li>
+                        <li class="@(currentTab == "attachments" ? "active" : "")"><a href="#nav-tab-2" data-toggle="tab"><i class="glyphicon glyphicon-apple"></i> @ResObject.FieldLabel_Attachments</a></li>
+                        <li class="@(currentTab == "invoice" ? "active" : "")"><a href="#nav-tab-3" data-toggle="tab"><i class="glyphicon glyphicon-bell"></i> @ResObject.FieldLabel_Invoices</a></li>
+                        <li class="next-button"><a href="javascript:;" data-click="next-tab" class="text-success"><i class="fa fa-arrow-right"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body panel-form">
+                <div class="form-horizontal form-bordered" novalidate>
+                    <div class="tab-content">
+                        <div class="tab-pane fade @(currentTab == "details" ? "active in" : "")" id="nav-tab-1">
+                            <div class="form-horizontal form-bordered" novalidate>
+                                @Html.Partial("_ReadOnlyFields")
+                                @Html.Partial("_OrderItemsGrid")
+                            </div>
+                        </div>
+                        <div class="tab-pane fade @(currentTab == "attachments" ? "active in" : "")" id="nav-tab-2">
+                            <div class="form-horizontal form-bordered" novalidate>
+                                @Html.Partial("_Attachments", new EntityAttachment { Object = "CustomerOrder", ObjectId = Model.Id, Attachments = Model.Attachments })
+                            </div>
+                        </div>
+                        <div class="tab-pane fade @(currentTab == "invoice" ? "active in" : "")" id="nav-tab-3">
+                            <div class="form-horizontal form-bordered" novalidate>
+                                @Html.Partial("_Invoice")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function FilePreview(name, url, type) {
+            var opt = {
+                show: true,
+                keyboard: true
+            };
+            $("#ModalTitle").text(name);
+            $("#PreviewObject").prop("type", type);
+            $("#PreviewObject").prop("data", url);
+            $("#FilePreviewModal").modal(opt);
+        }
+    </script>
+}

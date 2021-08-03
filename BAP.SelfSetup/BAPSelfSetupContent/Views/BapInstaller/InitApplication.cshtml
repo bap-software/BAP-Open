@@ -1,0 +1,64 @@
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@inherits System.Web.Mvc.WebViewPage<BAP.SelfSetup.Models.DbConnectionConfig>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>BAP Installation</title>
+    <style>
+        h3 {
+            margin-top: 0;
+        }
+        .content {
+                margin: 50px auto;
+                max-width: 600px;
+                padding: 24px 12px;
+                border-radius: 12px;
+                -webkit-box-shadow: 0px 0px 46px 11px rgb(0 0 0 / 10%);
+                box-shadow: 0px 0px 46px 11px rgb(0 0 0 / 10%);
+        }
+       
+        .row {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        .row:nth-last-child(1) {
+             margin-bottom: 0;
+         }
+        .connection-string-row {
+        
+        }
+        .submit-row {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="row">
+        <h3>Setup BAP application</h3>
+    </div>
+
+    @using (Html.BeginForm("SetupDatabase", "BapInstaller", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.DbConnectionName)
+        <div class="row connection-string-row">
+            <label>DB connection string</label>
+            @Html.TextBoxFor(m => m.DbConnectionString, new {style = "width: 99%;"})
+        </div>
+        <div class="row submit-row">
+            <input type="submit" value="Setup"/>
+        </div>
+    }
+
+</div>
+</body>
+</html>

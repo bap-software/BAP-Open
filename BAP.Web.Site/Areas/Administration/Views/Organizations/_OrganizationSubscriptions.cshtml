@@ -1,0 +1,52 @@
+﻿@using BAP.Resources
+@using BAP.eCommerce.Resources
+@model BAP.DAL.Entities.Organization
+
+<form action="@Url.Action("AddSubscription")" method="post" class="form-horizontal form-bordered" novalidate>
+    <div class="form-group">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+    </div>
+    <div class="form-group">
+        <div class="col-md-12 col-sm-12">
+            <table class="table table-hover table-striped table-bordered dataTable no-footer dtr-inline">
+                <thead>
+                    <tr>
+                        <th width="10%">@Resources.UIText_Actions</th>
+                        <th>@Html.DisplayNameFor(model => model.Subscriptions.First().Name)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Subscriptions != null && Model.Subscriptions.Count > 0)
+                    {
+                        foreach (var item in Model.Subscriptions)
+                        {
+                            <tr>
+                                <td>
+                                    <a title="@Resources.UIText_Details" style="text-decoration: none;" href="@Url.Action("Details", "Subscriptions", new {id=item.Id})">
+                                        <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
+                                    </a>
+                                    <a title="@Resources.UIText_Edit" style="text-decoration: none;" href="@Url.Action("Edit", "Subscriptions", new {id=item.Id})">
+                                        <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
+                                    </a>
+                                    <a title="@Resources.UIText_Delete" style="text-decoration: none;" href="@Url.Action("Delete", "Subscriptions", new {id=item.Id})">
+                                        <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserTermRange)
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">@ResObject.UIText_Organization_NoSubscriptionsSelected</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

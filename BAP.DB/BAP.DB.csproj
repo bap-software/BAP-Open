@@ -1,0 +1,708 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{140BA15F-DC72-4687-BCFE-3C89B8DFA58E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BAP.DB.eCommerce</RootNamespace>
+    <AssemblyName>BAP.DB.eCommerce</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
+    <OutputPath>bin\Dev\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Countries, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Countries.2.0.0.1\lib\net461\Countries.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DB.cs" />
+    <Compile Include="Migrations\201905242100386_InitialCreate.cs" />
+    <Compile Include="Migrations\201905242100386_InitialCreate.Designer.cs">
+      <DependentUpon>201905242100386_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910291644527_ControlTypes.cs" />
+    <Compile Include="Migrations\201910291644527_ControlTypes.Designer.cs">
+      <DependentUpon>201910291644527_ControlTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911191634012_DiscountCouponUpdate.cs" />
+    <Compile Include="Migrations\201911191634012_DiscountCouponUpdate.Designer.cs">
+      <DependentUpon>201911191634012_DiscountCouponUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911231601323_StoreCreate.cs" />
+    <Compile Include="Migrations\201911231601323_StoreCreate.Designer.cs">
+      <DependentUpon>201911231601323_StoreCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911241818245_OrganizationUserUpdate.cs" />
+    <Compile Include="Migrations\201911241818245_OrganizationUserUpdate.Designer.cs">
+      <DependentUpon>201911241818245_OrganizationUserUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911250928045_StoreUpdate.cs" />
+    <Compile Include="Migrations\201911250928045_StoreUpdate.Designer.cs">
+      <DependentUpon>201911250928045_StoreUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911251817444_StoreUpdate1.cs" />
+    <Compile Include="Migrations\201911251817444_StoreUpdate1.Designer.cs">
+      <DependentUpon>201911251817444_StoreUpdate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911271842100_ContentControl2.cs" />
+    <Compile Include="Migrations\201911271842100_ContentControl2.Designer.cs">
+      <DependentUpon>201911271842100_ContentControl2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911281922572_SubscriptionUpdate.cs" />
+    <Compile Include="Migrations\201911281922572_SubscriptionUpdate.Designer.cs">
+      <DependentUpon>201911281922572_SubscriptionUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911291430138_FakeUpdate.cs" />
+    <Compile Include="Migrations\201911291430138_FakeUpdate.Designer.cs">
+      <DependentUpon>201911291430138_FakeUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912010804442_DesignSettings.cs" />
+    <Compile Include="Migrations\201912010804442_DesignSettings.Designer.cs">
+      <DependentUpon>201912010804442_DesignSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912141639108_Customer_Update.cs" />
+    <Compile Include="Migrations\201912141639108_Customer_Update.Designer.cs">
+      <DependentUpon>201912141639108_Customer_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912180821333_ReorderMenu.cs" />
+    <Compile Include="Migrations\201912180821333_ReorderMenu.Designer.cs">
+      <DependentUpon>201912180821333_ReorderMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912180844501_FixMenu.cs" />
+    <Compile Include="Migrations\201912180844501_FixMenu.Designer.cs">
+      <DependentUpon>201912180844501_FixMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912241845246_CustomConfigShipping.cs" />
+    <Compile Include="Migrations\201912241845246_CustomConfigShipping.Designer.cs">
+      <DependentUpon>201912241845246_CustomConfigShipping.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912261208084_ShippingMaxPrice.cs" />
+    <Compile Include="Migrations\201912261208084_ShippingMaxPrice.Designer.cs">
+      <DependentUpon>201912261208084_ShippingMaxPrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912281829520_UpdateProductSeo.cs" />
+    <Compile Include="Migrations\201912281829520_UpdateProductSeo.Designer.cs">
+      <DependentUpon>201912281829520_UpdateProductSeo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001140051465_ScheduledTask.cs" />
+    <Compile Include="Migrations\202001140051465_ScheduledTask.Designer.cs">
+      <DependentUpon>202001140051465_ScheduledTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001081038301_AttachmentsUpdate2.cs" />
+    <Compile Include="Migrations\202001081038301_AttachmentsUpdate2.Designer.cs">
+      <DependentUpon>202001081038301_AttachmentsUpdate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001151510365_ExtraUpdate1.cs" />
+    <Compile Include="Migrations\202001151510365_ExtraUpdate1.Designer.cs">
+      <DependentUpon>202001151510365_ExtraUpdate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001151527389_AmendOrgUser.cs" />
+    <Compile Include="Migrations\202001151527389_AmendOrgUser.Designer.cs">
+      <DependentUpon>202001151527389_AmendOrgUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001161208300_SubscriberUpdate.cs" />
+    <Compile Include="Migrations\202001161208300_SubscriberUpdate.Designer.cs">
+      <DependentUpon>202001161208300_SubscriberUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001170853499_SupportLocalization.cs" />
+    <Compile Include="Migrations\202001170853499_SupportLocalization.Designer.cs">
+      <DependentUpon>202001170853499_SupportLocalization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001180817437_Localization2.cs" />
+    <Compile Include="Migrations\202001180817437_Localization2.Designer.cs">
+      <DependentUpon>202001180817437_Localization2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001180824498_SetLocalizationData.cs" />
+    <Compile Include="Migrations\202001180824498_SetLocalizationData.Designer.cs">
+      <DependentUpon>202001180824498_SetLocalizationData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001181321761_UpdateOrganizationUserAddUserName.cs" />
+    <Compile Include="Migrations\202001181321761_UpdateOrganizationUserAddUserName.Designer.cs">
+      <DependentUpon>202001181321761_UpdateOrganizationUserAddUserName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001181312146_CreateufnGetUserName.cs" />
+    <Compile Include="Migrations\202001181312146_CreateufnGetUserName.Designer.cs">
+      <DependentUpon>202001181312146_CreateufnGetUserName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001180830493_SetLocalizationData2.cs" />
+    <Compile Include="Migrations\202001180830493_SetLocalizationData2.Designer.cs">
+      <DependentUpon>202001180830493_SetLocalizationData2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001201439394_UpdateContentManagerPermissions.cs" />
+    <Compile Include="Migrations\202001201439394_UpdateContentManagerPermissions.Designer.cs">
+      <DependentUpon>202001201439394_UpdateContentManagerPermissions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002061320482_AddBlogUrlToOrganization.cs" />
+    <Compile Include="Migrations\202002061320482_AddBlogUrlToOrganization.Designer.cs">
+      <DependentUpon>202002061320482_AddBlogUrlToOrganization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002071154282_ExtendBlogTextFields.cs" />
+    <Compile Include="Migrations\202002071154282_ExtendBlogTextFields.Designer.cs">
+      <DependentUpon>202002071154282_ExtendBlogTextFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002111154112_AddInvoiceTemplateToStore.cs" />
+    <Compile Include="Migrations\202002111154112_AddInvoiceTemplateToStore.Designer.cs">
+      <DependentUpon>202002111154112_AddInvoiceTemplateToStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002132053532_MessageExtendBody.cs" />
+    <Compile Include="Migrations\202002132053532_MessageExtendBody.Designer.cs">
+      <DependentUpon>202002132053532_MessageExtendBody.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002151049027_AddLogoAndSloganToManufacturer.cs" />
+    <Compile Include="Migrations\202002151049027_AddLogoAndSloganToManufacturer.Designer.cs">
+      <DependentUpon>202002151049027_AddLogoAndSloganToManufacturer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002201115092_CreateDocumentTemplate.cs" />
+    <Compile Include="Migrations\202002201115092_CreateDocumentTemplate.Designer.cs">
+      <DependentUpon>202002201115092_CreateDocumentTemplate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002211121568_ReduceInvoiceTemplateinStore.cs" />
+    <Compile Include="Migrations\202002211121568_ReduceInvoiceTemplateinStore.Designer.cs">
+      <DependentUpon>202002211121568_ReduceInvoiceTemplateinStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002250933071_AddTemplateTypeToTemplateType.cs" />
+    <Compile Include="Migrations\202002250933071_AddTemplateTypeToTemplateType.Designer.cs">
+      <DependentUpon>202002250933071_AddTemplateTypeToTemplateType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003020921585_AddCustomConfigJsonToPaymentOption.cs" />
+    <Compile Include="Migrations\202003020921585_AddCustomConfigJsonToPaymentOption.Designer.cs">
+      <DependentUpon>202003020921585_AddCustomConfigJsonToPaymentOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003021738166_AddModule.cs" />
+    <Compile Include="Migrations\202003021738166_AddModule.Designer.cs">
+      <DependentUpon>202003021738166_AddModule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003051315598_AddOrganizationModule.cs" />
+    <Compile Include="Migrations\202003051315598_AddOrganizationModule.Designer.cs">
+      <DependentUpon>202003051315598_AddOrganizationModule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003161051490_AddCountry.cs" />
+    <Compile Include="Migrations\202003161051490_AddCountry.Designer.cs">
+      <DependentUpon>202003161051490_AddCountry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003180918421_AddState.cs" />
+    <Compile Include="Migrations\202003180918421_AddState.Designer.cs">
+      <DependentUpon>202003180918421_AddState.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004021520362_AddCategoryCodeToBlog.cs" />
+    <Compile Include="Migrations\202004021520362_AddCategoryCodeToBlog.Designer.cs">
+      <DependentUpon>202004021520362_AddCategoryCodeToBlog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004040833245_AddSocialNetworkLinksToBlog.cs" />
+    <Compile Include="Migrations\202004040833245_AddSocialNetworkLinksToBlog.Designer.cs">
+      <DependentUpon>202004040833245_AddSocialNetworkLinksToBlog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004040838424_AddInstagramLinks.cs" />
+    <Compile Include="Migrations\202004040838424_AddInstagramLinks.Designer.cs">
+      <DependentUpon>202004040838424_AddInstagramLinks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004050727504_AddParentCommentToBlogComment.cs" />
+    <Compile Include="Migrations\202004050727504_AddParentCommentToBlogComment.Designer.cs">
+      <DependentUpon>202004050727504_AddParentCommentToBlogComment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004070734298_AddLikeDislikeNumberToBlogComment.cs" />
+    <Compile Include="Migrations\202004070734298_AddLikeDislikeNumberToBlogComment.Designer.cs">
+      <DependentUpon>202004070734298_AddLikeDislikeNumberToBlogComment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004071055035_AddBlogCommentUser.cs" />
+    <Compile Include="Migrations\202004071055035_AddBlogCommentUser.Designer.cs">
+      <DependentUpon>202004071055035_AddBlogCommentUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004071620122_AddNotificationFieldsToBlogComment.cs" />
+    <Compile Include="Migrations\202004071620122_AddNotificationFieldsToBlogComment.Designer.cs">
+      <DependentUpon>202004071620122_AddNotificationFieldsToBlogComment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004081133379_ExtendBlogCommentIndex.cs" />
+    <Compile Include="Migrations\202004081133379_ExtendBlogCommentIndex.Designer.cs">
+      <DependentUpon>202004081133379_ExtendBlogCommentIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004121909390_AddCustomConfiguration.cs" />
+    <Compile Include="Migrations\202004121909390_AddCustomConfiguration.Designer.cs">
+      <DependentUpon>202004121909390_AddCustomConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004201252409_RemoveIndexFromOrganizationModules.cs" />
+    <Compile Include="Migrations\202004201252409_RemoveIndexFromOrganizationModules.Designer.cs">
+      <DependentUpon>202004201252409_RemoveIndexFromOrganizationModules.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005221216475_OrgModuleExtension.cs" />
+    <Compile Include="Migrations\202005221216475_OrgModuleExtension.Designer.cs">
+      <DependentUpon>202005221216475_OrgModuleExtension.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005301821592_ProductExtra.cs" />
+    <Compile Include="Migrations\202005301821592_ProductExtra.Designer.cs">
+      <DependentUpon>202005301821592_ProductExtra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006030952303_ExtendWFAction.cs" />
+    <Compile Include="Migrations\202006030952303_ExtendWFAction.Designer.cs">
+      <DependentUpon>202006030952303_ExtendWFAction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006061208303_AddIsUnregisteredCheckoutAllowedToStore.cs" />
+    <Compile Include="Migrations\202006061208303_AddIsUnregisteredCheckoutAllowedToStore.Designer.cs">
+      <DependentUpon>202006061208303_AddIsUnregisteredCheckoutAllowedToStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006071418124_UpdateCustomerOrder.cs" />
+    <Compile Include="Migrations\202006071418124_UpdateCustomerOrder.Designer.cs">
+      <DependentUpon>202006071418124_UpdateCustomerOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006091550532_doctemplateupdateindex.cs" />
+    <Compile Include="Migrations\202006091550532_doctemplateupdateindex.Designer.cs">
+      <DependentUpon>202006091550532_doctemplateupdateindex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006121252132_ExtendDocTemplate.cs" />
+    <Compile Include="Migrations\202006121252132_ExtendDocTemplate.Designer.cs">
+      <DependentUpon>202006121252132_ExtendDocTemplate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006151728315_AttachmentExtend.cs" />
+    <Compile Include="Migrations\202006151728315_AttachmentExtend.Designer.cs">
+      <DependentUpon>202006151728315_AttachmentExtend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006181232112_ProductExtend.cs" />
+    <Compile Include="Migrations\202006181232112_ProductExtend.Designer.cs">
+      <DependentUpon>202006181232112_ProductExtend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006182039456_AttachmenttExtension.cs" />
+    <Compile Include="Migrations\202006182039456_AttachmenttExtension.Designer.cs">
+      <DependentUpon>202006182039456_AttachmenttExtension.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006182323496_OrderItemExtend.cs" />
+    <Compile Include="Migrations\202006182323496_OrderItemExtend.Designer.cs">
+      <DependentUpon>202006182323496_OrderItemExtend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006191553196_AttAccessFix.cs" />
+    <Compile Include="Migrations\202006191553196_AttAccessFix.Designer.cs">
+      <DependentUpon>202006191553196_AttAccessFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006241708471_SystemExtension.cs" />
+    <Compile Include="Migrations\202006241708471_SystemExtension.Designer.cs">
+      <DependentUpon>202006241708471_SystemExtension.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007091617157_WfActionAttrExtend.cs" />
+    <Compile Include="Migrations\202007091617157_WfActionAttrExtend.Designer.cs">
+      <DependentUpon>202007091617157_WfActionAttrExtend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007091709264_ShipmentExtension.cs" />
+    <Compile Include="Migrations\202007091709264_ShipmentExtension.Designer.cs">
+      <DependentUpon>202007091709264_ShipmentExtension.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007142058561_IndexesUpdate.cs" />
+    <Compile Include="Migrations\202007142058561_IndexesUpdate.Designer.cs">
+      <DependentUpon>202007142058561_IndexesUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007191807243_Localizations.cs" />
+    <Compile Include="Migrations\202007191807243_Localizations.Designer.cs">
+      <DependentUpon>202007191807243_Localizations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007211521471_ExtendProduct.cs" />
+    <Compile Include="Migrations\202007211521471_ExtendProduct.Designer.cs">
+      <DependentUpon>202007211521471_ExtendProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007212233514_ProductExtend2.cs" />
+    <Compile Include="Migrations\202007212233514_ProductExtend2.Designer.cs">
+      <DependentUpon>202007212233514_ProductExtend2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007221654281_ExtendSubscriptions.cs" />
+    <Compile Include="Migrations\202007221654281_ExtendSubscriptions.Designer.cs">
+      <DependentUpon>202007221654281_ExtendSubscriptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007241347401_Contentindexes.cs" />
+    <Compile Include="Migrations\202007241347401_Contentindexes.Designer.cs">
+      <DependentUpon>202007241347401_Contentindexes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007242322201_SragingEntity.cs" />
+    <Compile Include="Migrations\202007242322201_SragingEntity.Designer.cs">
+      <DependentUpon>202007242322201_SragingEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007282233080_ReworkLocalization.cs" />
+    <Compile Include="Migrations\202007282233080_ReworkLocalization.Designer.cs">
+      <DependentUpon>202007282233080_ReworkLocalization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007282306338_ReworkLocalization2.cs" />
+    <Compile Include="Migrations\202007282306338_ReworkLocalization2.Designer.cs">
+      <DependentUpon>202007282306338_ReworkLocalization2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012191909020_FixDeltas.cs" />
+    <Compile Include="Migrations\202012191909020_FixDeltas.Designer.cs">
+      <DependentUpon>202012191909020_FixDeltas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101270924085_AddRating.cs" />
+    <Compile Include="Migrations\202101270924085_AddRating.Designer.cs">
+      <DependentUpon>202101270924085_AddRating.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102160658274_ContentNodeUpdate.cs" />
+    <Compile Include="Migrations\202102160658274_ContentNodeUpdate.Designer.cs">
+      <DependentUpon>202102160658274_ContentNodeUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103181558483_ChangeFloatinType.cs" />
+    <Compile Include="Migrations\202103181558483_ChangeFloatinType.Designer.cs">
+      <DependentUpon>202103181558483_ChangeFloatinType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105131932334_Add_Supplier_Feature.cs" />
+    <Compile Include="Migrations\202105131932334_Add_Supplier_Feature.Designer.cs">
+      <DependentUpon>202105131932334_Add_Supplier_Feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105141739124_Fix_Supplier_Entity.cs" />
+    <Compile Include="Migrations\202105141739124_Fix_Supplier_Entity.Designer.cs">
+      <DependentUpon>202105141739124_Fix_Supplier_Entity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105261523401_Add_Supplier_ThirdPartyPaymentAllowed.cs" />
+    <Compile Include="Migrations\202105261523401_Add_Supplier_ThirdPartyPaymentAllowed.Designer.cs">
+      <DependentUpon>202105261523401_Add_Supplier_ThirdPartyPaymentAllowed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\eCommerceConfiguration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BAP.BL\BAP.BL.csproj">
+      <Project>{3E43F6CA-8A8B-4944-8F62-0009B2492516}</Project>
+      <Name>BAP.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.Common\BAP.Common.csproj">
+      <Project>{01dcd4d5-fd00-4447-af2e-85b4c5fbd3f6}</Project>
+      <Name>BAP.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.DAL\BAP.DAL.csproj">
+      <Project>{fbbb9694-cf15-427a-9ab9-39cc0b6aea7e}</Project>
+      <Name>BAP.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.eCommerce.DAL\BAP.eCommerce.DAL.csproj">
+      <Project>{84ced2c0-cec3-409c-9437-f4a5265f02ac}</Project>
+      <Name>BAP.eCommerce.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.eCommerce.WorkflowActions\BAP.eCommerce.WorkflowActions.csproj">
+      <Project>{5BF7A63C-80D6-466F-B744-8694C2046DB2}</Project>
+      <Name>BAP.eCommerce.WorkflowActions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.Resources\BAP.Resources.csproj">
+      <Project>{22d6cd05-3ac0-425b-804b-8f94ff448937}</Project>
+      <Name>BAP.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAP.Workflow\BAP.Workflow.csproj">
+      <Project>{A3AA1D79-08D6-490D-BBA5-959A1E91B96D}</Project>
+      <Name>BAP.Workflow</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201905242100386_InitialCreate.resx">
+      <DependentUpon>201905242100386_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910291644527_ControlTypes.resx">
+      <DependentUpon>201910291644527_ControlTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911191634012_DiscountCouponUpdate.resx">
+      <DependentUpon>201911191634012_DiscountCouponUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911231601323_StoreCreate.resx">
+      <DependentUpon>201911231601323_StoreCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911241818245_OrganizationUserUpdate.resx">
+      <DependentUpon>201911241818245_OrganizationUserUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911250928045_StoreUpdate.resx">
+      <DependentUpon>201911250928045_StoreUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911251817444_StoreUpdate1.resx">
+      <DependentUpon>201911251817444_StoreUpdate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911271842100_ContentControl2.resx">
+      <DependentUpon>201911271842100_ContentControl2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911281922572_SubscriptionUpdate.resx">
+      <DependentUpon>201911281922572_SubscriptionUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911291430138_FakeUpdate.resx">
+      <DependentUpon>201911291430138_FakeUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912010804442_DesignSettings.resx">
+      <DependentUpon>201912010804442_DesignSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912141639108_Customer_Update.resx">
+      <DependentUpon>201912141639108_Customer_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912180821333_ReorderMenu.resx">
+      <DependentUpon>201912180821333_ReorderMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912180844501_FixMenu.resx">
+      <DependentUpon>201912180844501_FixMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912241845246_CustomConfigShipping.resx">
+      <DependentUpon>201912241845246_CustomConfigShipping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912261208084_ShippingMaxPrice.resx">
+      <DependentUpon>201912261208084_ShippingMaxPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912281829520_UpdateProductSeo.resx">
+      <DependentUpon>201912281829520_UpdateProductSeo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001140051465_ScheduledTask.resx">
+      <DependentUpon>202001140051465_ScheduledTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001081038301_AttachmentsUpdate2.resx">
+      <DependentUpon>202001081038301_AttachmentsUpdate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001151510365_ExtraUpdate1.resx">
+      <DependentUpon>202001151510365_ExtraUpdate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001151527389_AmendOrgUser.resx">
+      <DependentUpon>202001151527389_AmendOrgUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001161208300_SubscriberUpdate.resx">
+      <DependentUpon>202001161208300_SubscriberUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001170853499_SupportLocalization.resx">
+      <DependentUpon>202001170853499_SupportLocalization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001180817437_Localization2.resx">
+      <DependentUpon>202001180817437_Localization2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001180824498_SetLocalizationData.resx">
+      <DependentUpon>202001180824498_SetLocalizationData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001181321761_UpdateOrganizationUserAddUserName.resx">
+      <DependentUpon>202001181321761_UpdateOrganizationUserAddUserName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001181312146_CreateufnGetUserName.resx">
+      <DependentUpon>202001181312146_CreateufnGetUserName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001180830493_SetLocalizationData2.resx">
+      <DependentUpon>202001180830493_SetLocalizationData2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001201439394_UpdateContentManagerPermissions.resx">
+      <DependentUpon>202001201439394_UpdateContentManagerPermissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002061320482_AddBlogUrlToOrganization.resx">
+      <DependentUpon>202002061320482_AddBlogUrlToOrganization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002071154282_ExtendBlogTextFields.resx">
+      <DependentUpon>202002071154282_ExtendBlogTextFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002111154112_AddInvoiceTemplateToStore.resx">
+      <DependentUpon>202002111154112_AddInvoiceTemplateToStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002132053532_MessageExtendBody.resx">
+      <DependentUpon>202002132053532_MessageExtendBody.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002151049027_AddLogoAndSloganToManufacturer.resx">
+      <DependentUpon>202002151049027_AddLogoAndSloganToManufacturer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002201115092_CreateDocumentTemplate.resx">
+      <DependentUpon>202002201115092_CreateDocumentTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002211121568_ReduceInvoiceTemplateinStore.resx">
+      <DependentUpon>202002211121568_ReduceInvoiceTemplateinStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002250933071_AddTemplateTypeToTemplateType.resx">
+      <DependentUpon>202002250933071_AddTemplateTypeToTemplateType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003020921585_AddCustomConfigJsonToPaymentOption.resx">
+      <DependentUpon>202003020921585_AddCustomConfigJsonToPaymentOption.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003021738166_AddModule.resx">
+      <DependentUpon>202003021738166_AddModule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003051315598_AddOrganizationModule.resx">
+      <DependentUpon>202003051315598_AddOrganizationModule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003161051490_AddCountry.resx">
+      <DependentUpon>202003161051490_AddCountry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003180918421_AddState.resx">
+      <DependentUpon>202003180918421_AddState.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004021520362_AddCategoryCodeToBlog.resx">
+      <DependentUpon>202004021520362_AddCategoryCodeToBlog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004040833245_AddSocialNetworkLinksToBlog.resx">
+      <DependentUpon>202004040833245_AddSocialNetworkLinksToBlog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004040838424_AddInstagramLinks.resx">
+      <DependentUpon>202004040838424_AddInstagramLinks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004050727504_AddParentCommentToBlogComment.resx">
+      <DependentUpon>202004050727504_AddParentCommentToBlogComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004070734298_AddLikeDislikeNumberToBlogComment.resx">
+      <DependentUpon>202004070734298_AddLikeDislikeNumberToBlogComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004071055035_AddBlogCommentUser.resx">
+      <DependentUpon>202004071055035_AddBlogCommentUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004071620122_AddNotificationFieldsToBlogComment.resx">
+      <DependentUpon>202004071620122_AddNotificationFieldsToBlogComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004081133379_ExtendBlogCommentIndex.resx">
+      <DependentUpon>202004081133379_ExtendBlogCommentIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004121909390_AddCustomConfiguration.resx">
+      <DependentUpon>202004121909390_AddCustomConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004201252409_RemoveIndexFromOrganizationModules.resx">
+      <DependentUpon>202004201252409_RemoveIndexFromOrganizationModules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005221216475_OrgModuleExtension.resx">
+      <DependentUpon>202005221216475_OrgModuleExtension.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005301821592_ProductExtra.resx">
+      <DependentUpon>202005301821592_ProductExtra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006030952303_ExtendWFAction.resx">
+      <DependentUpon>202006030952303_ExtendWFAction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006061208303_AddIsUnregisteredCheckoutAllowedToStore.resx">
+      <DependentUpon>202006061208303_AddIsUnregisteredCheckoutAllowedToStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006071418124_UpdateCustomerOrder.resx">
+      <DependentUpon>202006071418124_UpdateCustomerOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006091550532_doctemplateupdateindex.resx">
+      <DependentUpon>202006091550532_doctemplateupdateindex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006121252132_ExtendDocTemplate.resx">
+      <DependentUpon>202006121252132_ExtendDocTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006151728315_AttachmentExtend.resx">
+      <DependentUpon>202006151728315_AttachmentExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006181232112_ProductExtend.resx">
+      <DependentUpon>202006181232112_ProductExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006182039456_AttachmenttExtension.resx">
+      <DependentUpon>202006182039456_AttachmenttExtension.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006182323496_OrderItemExtend.resx">
+      <DependentUpon>202006182323496_OrderItemExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006191553196_AttAccessFix.resx">
+      <DependentUpon>202006191553196_AttAccessFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006241708471_SystemExtension.resx">
+      <DependentUpon>202006241708471_SystemExtension.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007091617157_WfActionAttrExtend.resx">
+      <DependentUpon>202007091617157_WfActionAttrExtend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007091709264_ShipmentExtension.resx">
+      <DependentUpon>202007091709264_ShipmentExtension.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007142058561_IndexesUpdate.resx">
+      <DependentUpon>202007142058561_IndexesUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007191807243_Localizations.resx">
+      <DependentUpon>202007191807243_Localizations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007211521471_ExtendProduct.resx">
+      <DependentUpon>202007211521471_ExtendProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007212233514_ProductExtend2.resx">
+      <DependentUpon>202007212233514_ProductExtend2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007221654281_ExtendSubscriptions.resx">
+      <DependentUpon>202007221654281_ExtendSubscriptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007241347401_Contentindexes.resx">
+      <DependentUpon>202007241347401_Contentindexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007242322201_SragingEntity.resx">
+      <DependentUpon>202007242322201_SragingEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007282233080_ReworkLocalization.resx">
+      <DependentUpon>202007282233080_ReworkLocalization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007282306338_ReworkLocalization2.resx">
+      <DependentUpon>202007282306338_ReworkLocalization2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012191909020_FixDeltas.resx">
+      <DependentUpon>202012191909020_FixDeltas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101270924085_AddRating.resx">
+      <DependentUpon>202101270924085_AddRating.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102160658274_ContentNodeUpdate.resx">
+      <DependentUpon>202102160658274_ContentNodeUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103181558483_ChangeFloatinType.resx">
+      <DependentUpon>202103181558483_ChangeFloatinType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105131932334_Add_Supplier_Feature.resx">
+      <DependentUpon>202105131932334_Add_Supplier_Feature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105141739124_Fix_Supplier_Entity.resx">
+      <DependentUpon>202105141739124_Fix_Supplier_Entity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105261523401_Add_Supplier_ThirdPartyPaymentAllowed.resx">
+      <DependentUpon>202105261523401_Add_Supplier_ThirdPartyPaymentAllowed.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Migrations\201910291644527_ControlTypes.sql" />
+    <Content Include="Migrations\201911191634012_DiscountCouponUpdate.sql" />
+    <Content Include="Migrations\201911231601323_StoreCreate.sql" />
+    <Content Include="Migrations\201911241818245_OrganizationUserUpdate.sql" />
+    <Content Include="Migrations\201911250928045_StoreUpdate.sql" />
+    <Content Include="Migrations\201911251817444_StoreUpdate1.sql" />
+    <Content Include="Migrations\201911271842100_ContentControl2.sql" />
+    <Content Include="Migrations\201911281922572_SubscriptionUpdate.sql" />
+    <Content Include="Migrations\201912010804442_DesignSettings.sql" />
+    <Content Include="Migrations\201912241845246_CustomConfigShipping.sql" />
+    <Content Include="Migrations\201912261208084_ShippingMaxPrice.sql" />
+    <Content Include="Migrations\201912281829520_UpdateProductSeo.sql" />
+    <Content Include="Migrations\202001081038301_AttachmentsUpdate2.sql" />
+    <Content Include="Migrations\202001151510365_ExtraUpdate1.sql" />
+    <Content Include="Migrations\202001161208300_SubscriberUpdate.sql" />
+    <Content Include="Migrations\202001170853499_SupportLocalization.sql" />
+    <Content Include="Migrations\202001180817437_Localization2.sql" />
+    <Content Include="Migrations\202001180824498_SetLocalizationData.sql" />
+    <Content Include="Migrations\202001201439394_UpdateContentManagerPermissions.sql" />
+    <Content Include="Migrations\InitialCreate.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
